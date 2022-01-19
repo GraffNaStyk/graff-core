@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Triggers\NAMESPACE;
+
+use App\Facades\Db\Db;
+
+class CLASSNAME
+{
+    private Db $db;
+
+    public function __construct(Db $db)
+    {
+        $this->db = $db;
+    }
+
+    public function created()
+    {
+
+    }
+
+    public function updated()
+    {
+
+    }
+
+    public function deleted()
+    {
+
+    }
+}

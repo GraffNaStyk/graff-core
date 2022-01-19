@@ -1,0 +1,7 @@
+<?php
+
+namespace App\NAMESPACE\AbstractionNSPATH;
+
+interface CLASSNAME
+{
+}

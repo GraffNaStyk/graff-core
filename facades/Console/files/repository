@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Repositories\NAMESPACE;
+
+class CLASSNAME
+{
+    public function __construct()
+    {
+
+    }
+}

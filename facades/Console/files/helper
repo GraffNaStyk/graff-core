@@ -1,0 +1,7 @@
+<?php
+
+namespace App\Helpers\NAMESPACE;
+
+class CLASSNAME
+{
+}

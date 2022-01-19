@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Services\NAMESPACE;
+
+use App\Facades\Http\AbstractService;
+
+class CLASSNAME extends AbstractService
+{
+    public function __construct()
+    {
+
+    }
+
+    public function boot()
+    {
+
+    }
+}
