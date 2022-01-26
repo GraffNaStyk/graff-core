@@ -4,7 +4,7 @@ namespace App\Facades\Console\Commands;
 
 use App\Facades\Console\ArgvParser;
 use App\Facades\Console\Command;
-use App\Helpers\Dir;
+use App\Facades\Helpers\Dir;
 
 class Controller extends Command
 {

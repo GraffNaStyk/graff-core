@@ -2,7 +2,7 @@
 
 namespace App\Facades\Cache;
 
-use App\Helpers\Dir;
+use App\Facades\Helpers\Dir;
 
 class Cache
 {

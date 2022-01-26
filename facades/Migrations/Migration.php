@@ -3,7 +3,6 @@
 namespace App\Facades\Migrations;
 
 use App\Facades\Config\Config;
-use App\Facades\Console\Model;
 use App\Facades\Db\Db;
 use App\Facades\Storage\Storage;
 

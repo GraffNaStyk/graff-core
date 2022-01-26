@@ -7,7 +7,7 @@ use App\Facades\Validator\Type;
 
 class Sanitizer
 {
-	public function clear($item)
+	public function clear($item): string|int|bool|array|null|float|object
 	{
 		if (! is_numeric($item)) {
 			$item = (string) urldecode($item);

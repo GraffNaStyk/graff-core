@@ -10,8 +10,8 @@ class Url
     public static function get(): string
     {
     	return Router::getAlias() === 'http'
-		    ? Url::base().$url
-		    : Url::base().'/'.Router::getAlias().$url;
+		    ? Url::base()
+		    : Url::base().'/'.Router::getAlias();
     }
 
     public static function base(): string
@@ -27,9 +27,7 @@ class Url
             return end($string);
         }
         
-        return isset($string[$offset])
-	        ? $string[$offset]
-			: null;
+        return $string[$offset] ?? null;
     }
 
     public static function link(string $link): string

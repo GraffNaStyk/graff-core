@@ -5,7 +5,8 @@ namespace App\Facades\Console;
 use App\Facades\Config\Config;
 use App\Facades\Security\Sanitizer;
 use App\Facades\Url\Url;
-use App\Helpers\Dir;
+use App\Facades\Helpers\Dir;
+use JetBrains\PhpStorm\NoReturn;
 
 class Command implements CommandInterface
 {
@@ -69,7 +70,7 @@ class Command implements CommandInterface
 		return $this;
 	}
 	
-	protected function close(): void
+	#[NoReturn] protected function close(): void
 	{
 		exit();
 	}

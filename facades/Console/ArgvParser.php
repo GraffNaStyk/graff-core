@@ -31,7 +31,7 @@ class ArgvParser
 				} else if (isset($this->argv[$index + 1]) && preg_match('/^[^-\=]+$/', $this->argv[$index + 1]) === 1) {
 					$configs[$matches[1]] = $this->argv[$index + 1];
 					$index++;
-				} elseif (strpos($matches[0], '--') === false) {
+				} elseif (! str_contains($matches[0], '--')) {
 					for ($j = 0; $j < strlen($matches[1]); $j += 1) {
 						$configs[$matches[1][$j]] = true;
 					}

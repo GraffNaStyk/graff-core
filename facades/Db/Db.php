@@ -6,7 +6,6 @@ use App\Facades\Config\Config;
 use App\Facades\Http\App;
 use App\Facades\Url\Url;
 use App\Facades\Validator\Type;
-use App\Helpers\Arr;
 use PDO;
 use PDOException;
 
@@ -609,7 +608,7 @@ class Db
 								WHERE TABLE_NAME='{$this->table}' AND COLUMN_NAME='{$field}'"
 		);
 
-		if (Arr::has($res, '0.params')) {
+		if (isset($res[0]->params)) {
 			return explode(',', str_replace(['(', ')', "'"], ['', '', ''], $res[0]->params));
 		}
 		

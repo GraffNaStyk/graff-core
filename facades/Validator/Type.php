@@ -4,7 +4,7 @@ namespace App\Facades\Validator;
 
 class Type
 {
-    public static function get($item)
+    public static function get($item): string|array|bool|int|null|float|object
     {
         if (is_array($item) || is_object($item)) {
             return $item;

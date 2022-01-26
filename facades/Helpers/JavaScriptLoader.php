@@ -5,7 +5,6 @@ namespace App\Facades\Helpers;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\View;
 use App\Facades\Url\Url;
-use App\Helpers\UrlSetter;
 
 trait JavaScriptLoader
 {

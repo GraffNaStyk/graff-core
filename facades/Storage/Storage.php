@@ -3,7 +3,7 @@
 namespace App\Facades\Storage;
 
 use App\Facades\Helpers\Str;
-use App\Helpers\Dir;
+use App\Facades\Helpers\Dir;
 use App\Models\File;
 
 class Storage

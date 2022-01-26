@@ -2,8 +2,6 @@
 
 namespace App\Facades\Http\Router;
 
-use App\Controllers\UserState;
-use App\Core\Kernel;
 use App\Facades\Config\Config;
 use App\Facades\Csrf\Csrf;
 use App\Facades\Dependency\Container;
@@ -374,8 +372,7 @@ final class Router extends Route
     {
         Log::custom('aborted', [
             'message'    => 'Aborted operation from router, code: '.$code.' '.Response::RESPONSE_CODES[$code],
-            'custom_msg' => $message,
-            'user'       => UserState::user()
+            'custom_msg' => $message
         ]);
 
         if (Config::get('app.enable_api') || Request::isAjax()) {

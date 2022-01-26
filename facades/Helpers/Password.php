@@ -6,7 +6,7 @@ class Password
 {
     public static function make(int $length = 8, int $cost = 12): array
     {
-        $password = Faker::hash($length);
+        $password = Str::hash($length);
         return ['string' => $password, 'hash' => password_hash($password, PASSWORD_BCRYPT, ['cost' => $cost])];
     }
 
