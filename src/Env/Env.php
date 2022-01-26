@@ -13,7 +13,7 @@ class Env
     	if (! empty(static::$env)) {
     		return;
 	    }
-    	
+
         $env         = file_get_contents(app_path('/app/config/.env'));
         $environment = [];
 

@@ -2,7 +2,6 @@
 
 namespace App\Facades\Http;
 
-use App\Facades\Header\Header;
 use App\Facades\Http\Router\Route;
 
 class Response

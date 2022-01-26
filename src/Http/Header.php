@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Facades\Header;
+namespace App\Facades\Http;
 
 use App\Facades\Config\Config;
 

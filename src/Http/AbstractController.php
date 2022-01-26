@@ -50,7 +50,7 @@ abstract class AbstractController
 	        ->setCode($status)
 	        ->setData([
 		        'ok'     => true,
-		        'msg'    => $message ?: 'Dane zostały zapisane',
+		        'msg'    => $message,
 		        'params' => $params,
 	        ])
 	        ->send();
@@ -64,7 +64,7 @@ abstract class AbstractController
 		    ->setCode($status)
 		    ->setData([
 			    'ok'     => false,
-			    'msg'    => $message ?: 'Wystąpił błąd',
+			    'msg'    => $message,
 			    'inputs' => Validator::getErrors(),
 			    'csrf'   => Session::get('@csrf.'.Router::csrfPath()),
 			    'params' => $params,

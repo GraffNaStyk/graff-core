@@ -43,7 +43,7 @@ class Url
         return in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
     }
 
-    #[Pure] public static function full(): string
+    public static function full(): string
     {
     	return Router::checkProtocol().'://'.$_SERVER['HTTP_HOST'];
     }
