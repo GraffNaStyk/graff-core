@@ -48,6 +48,12 @@ if (! function_exists('path')) {
 	}
 }
 
+if (! function_exists('src_path')) {
+	function src_path(?string $path = null): string {
+		return __DIR__ . '/../' . ($path !== null ? ltrim($path, '/') : null);
+	}
+}
+
 if (! function_exists('pd')) {
 	function pd($item, $die = true): void {
 		echo '<pre>';
