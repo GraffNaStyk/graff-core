@@ -9,8 +9,6 @@ use ReflectionClass;
 
 class Console
 {
-	private static string $facadeCommandDir;
-	
 	const COMMAND_DIR = 'app/commands';
 	const COMMAND_NAMESPACE = 'App\\Commands\\';
 	const FACADE_COMMAND_NAMESPACE = 'App\\Facades\\Console\\Commands\\';
@@ -22,6 +20,8 @@ class Console
 	private static ?string $commandName = null;
 	
 	private static bool $createInterface = false;
+	
+	private static string $facadeCommandDir;
 	
 	public function __construct(ArgvParser $argvParser)
 	{
@@ -42,11 +42,11 @@ class Console
 		if (is_dir(app_path(self::COMMAND_DIR))) {
 			$objects = [
 				...array_diff(scandir(app_path(self::COMMAND_DIR)), ['.', '..']),
-				...array_diff(scandir(app_path(self::$facadeCommandDir)), ['.', '..']),
+				...array_diff(scandir(self::$facadeCommandDir), ['.', '..']),
 			];
 		} else {
 			$objects = [
-				...array_diff(scandir(app_path(self::$facadeCommandDir)), ['.', '..']),
+				...array_diff(scandir(self::$facadeCommandDir), ['.', '..']),
 			];
 		}
 		
