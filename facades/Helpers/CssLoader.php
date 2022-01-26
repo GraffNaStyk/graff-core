@@ -38,6 +38,8 @@ trait CssLoader
 	
 	protected function enableCssAutoload(): void
 	{
+		$loaded = null;
+		
 		if (is_readable(css_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction().'.css'))) {
 			$loaded = trim('<link rel="stylesheet" href="'.
 				Url::full().'/'.str_replace(

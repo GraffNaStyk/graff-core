@@ -39,6 +39,8 @@ trait JavaScriptLoader
 	
 	protected function enableJsAutoload(): void
 	{
+		$loaded = null;
+		
 		if (is_readable(js_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction().'.js'))) {
 			$loaded = trim('<script type="application/javascript" src="'.
 				Url::full().'/'.str_replace(
