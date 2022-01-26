@@ -506,7 +506,6 @@ class Db
 
                 if ($this->first) {
                     return $pdo->fetch(PDO::FETCH_OBJ);
-//                    return Entity::resolve($pdo->fetch(PDO::FETCH_OBJ), $this->modelObject, true);
                 }
 
                 if ($this->selectGroup) {
@@ -514,7 +513,6 @@ class Db
                     return $pdo->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_OBJ);
                 } else {
                 	return $pdo->fetchAll(PDO::FETCH_OBJ);
-//                    return Entity::resolve($pdo->fetchAll(PDO::FETCH_OBJ), $this->modelObject);
                 }
             } catch (PDOException $e) {
                 Handle::throwException($e, $this->develop(true));
@@ -577,9 +575,7 @@ class Db
 
     public function getColumnsInfo(): ?array
     {
-        return $this->query(
-            'DESCRIBE '.$this->table
-        );
+        return $this->query('DESCRIBE '.$this->table);
     }
 
     public function startBracket(): Db

@@ -10,12 +10,7 @@ class ArgvParser
 	
 	const MAX_ARGV = 50;
 	
-	protected array $argv;
-	
-	public function __construct(array $argv)
-	{
-		$this->argv = $argv;
-	}
+	public function __construct(protected array $argv){}
 	
 	public function parse(): void
 	{

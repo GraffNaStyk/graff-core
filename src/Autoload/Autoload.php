@@ -6,12 +6,12 @@ class Autoload
 {
     public static function run(string $class): void
     {
-        $classArr = explode('\\', $class);
+        $classArr  = explode('\\', $class);
         $className = end($classArr);
         array_pop($classArr);
         $className = strtolower(implode('/', $classArr)).'/'.$className.'.php';
 
-        if ((bool) is_readable(path($className))) {
+        if (is_readable(path($className))) {
             require_once path($className);
         }
     }

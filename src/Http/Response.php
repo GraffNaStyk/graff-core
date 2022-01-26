@@ -37,11 +37,6 @@ class Response
 	
 	private int $responseCode = 200;
 	
-	public function __construct()
-	{
-		return $this;
-	}
-	
 	public function setHeader(string $name, string $value): self
 	{
 		$this->customHeaders[$name] = $value;

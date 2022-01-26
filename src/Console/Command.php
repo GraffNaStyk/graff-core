@@ -5,7 +5,6 @@ namespace App\Facades\Console;
 use App\Facades\Config\Config;
 use App\Facades\Security\Sanitizer;
 use App\Facades\Helpers\Dir;
-use JetBrains\PhpStorm\NoReturn;
 
 class Command implements CommandInterface
 {
@@ -66,7 +65,7 @@ class Command implements CommandInterface
 		return $this;
 	}
 	
-	#[NoReturn] protected function close(): void
+	protected function close(): void
 	{
 		exit();
 	}
@@ -94,10 +93,7 @@ class Command implements CommandInterface
 		$content   = str_replace('\\NAMESPACE', $namespace, $content);
 
 		if (file_put_contents($fullPath, $content)) {
-			$this->output(
-				'File:'.$fullPath.' created',
-				'green'
-			);
+			$this->output('File: '.$fullPath.' created', 'green');
 		} else {
 			$this->output(
 				'Cannot create file: '.app_path($path.'/'.ucfirst($name)).'.php',
@@ -108,7 +104,7 @@ class Command implements CommandInterface
 
 	public function getFile(string $name): string
 	{
-		return file_get_contents(__DIR__.'/files/'.$name);
+		return file_get_contents(__DIR__.'/Files/'.$name);
 	}
 	
 	protected function setNamespace(ArgvParser $argvParser): void

@@ -4,7 +4,6 @@ namespace App\Facades\Console;
 
 use App\Facades\Dependency\Container;
 use App\Facades\Dependency\ContainerBuilder;
-use App\Facades\Url\Url;
 use ReflectionClass;
 
 class Console
