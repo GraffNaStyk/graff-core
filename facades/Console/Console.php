@@ -9,7 +9,8 @@ use ReflectionClass;
 
 class Console
 {
-	const FACADE_COMMAND_DIR = 'app/facades/console/commands';
+	private static string $facadeCommandDir;
+	
 	const COMMAND_DIR = 'app/commands';
 	const COMMAND_NAMESPACE = 'App\\Commands\\';
 	const FACADE_COMMAND_NAMESPACE = 'App\\Facades\\Console\\Commands\\';
@@ -24,6 +25,8 @@ class Console
 	
 	public function __construct(ArgvParser $argvParser)
 	{
+		self::$facadeCommandDir = __DIR__.'/Commands';
+
 		$this->parser  = $argvParser;
 		$this->builder = new ContainerBuilder(new Container());
 		$this->builder->container->add(ArgvParser::class, $this->parser);
@@ -39,11 +42,11 @@ class Console
 		if (is_dir(app_path(self::COMMAND_DIR))) {
 			$objects = [
 				...array_diff(scandir(app_path(self::COMMAND_DIR)), ['.', '..']),
-				...array_diff(scandir(app_path(self::FACADE_COMMAND_DIR)), ['.', '..']),
+				...array_diff(scandir(app_path(self::$facadeCommandDir)), ['.', '..']),
 			];
 		} else {
 			$objects = [
-				...array_diff(scandir(app_path(self::FACADE_COMMAND_DIR)), ['.', '..']),
+				...array_diff(scandir(app_path(self::$facadeCommandDir)), ['.', '..']),
 			];
 		}
 		
