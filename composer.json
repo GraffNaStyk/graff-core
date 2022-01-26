@@ -9,8 +9,8 @@
   "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
-      "App\\": "/facades"
+      "App\\Facades\\": "/src"
     },
-    "files": ["facades/Helpers/Functions.php"]
+    "files": ["src/Helpers/Functions.php"]
   }
 }
