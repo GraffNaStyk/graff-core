@@ -58,15 +58,7 @@ class Console
 				$showTips  = false;
 
 				static::setCommandName($object::$name);
-
-				if ((bool) strpos($reflector->name, self::COMMAND_NAMESPACE) === false
-					&& Url::segment(static::getCommandName(), 'end', ':') !== 'command'
-				) {
-					static::setCanCreateInterface();
-				}
-
 				call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector));
-				
 				break;
 			}
 		}
@@ -105,15 +97,5 @@ class Console
 	public static function getCommandName(): ?string
 	{
 		return static::$commandName;
-	}
-	
-	private static function setCanCreateInterface(): void
-	{
-		static::$createInterface = true;
-	}
-	
-	public static function canCreateInterface(): bool
-	{
-		return static::$createInterface;
 	}
 }

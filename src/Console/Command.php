@@ -4,7 +4,6 @@ namespace App\Facades\Console;
 
 use App\Facades\Config\Config;
 use App\Facades\Security\Sanitizer;
-use App\Facades\Url\Url;
 use App\Facades\Helpers\Dir;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -31,10 +30,6 @@ class Command implements CommandInterface
 	
 	private string $fileNamespace = '/';
 	
-	private array $interfaceExceptions = [
-		'repository' => 'repositories'
-	];
-	
 	public function __construct()
 	{
 		$this->configure();
@@ -59,6 +54,7 @@ class Command implements CommandInterface
 		$handle = fopen('php://stdin','r');
 		$result = fgets($handle);
 		fclose($handle);
+
 		echo "\n";
 
 		return str_replace(["\n", "\r"], [''], $this->sanitizer->clear($result));
@@ -102,12 +98,6 @@ class Command implements CommandInterface
 				'File:'.$fullPath.' created',
 				'green'
 			);
-			
-			$check = $this->input('Do you want to create abstraction interface for this file? Type y/n');
-
-			if (Console::canCreateInterface() && $check === 'y') {
-				$this->createInterface(app_path($path), ucfirst($name), $namespace);
-			}
 		} else {
 			$this->output(
 				'Cannot create file: '.app_path($path.'/'.ucfirst($name)).'.php',
@@ -119,36 +109,6 @@ class Command implements CommandInterface
 	public function getFile(string $name): string
 	{
 		return file_get_contents(__DIR__.'/files/'.$name);
-	}
-
-	private function createInterface(string $path, string $name, string $namespace): void
-	{
-		Dir::create($path.'/abstraction'.$this->fileNamespace);
-		$interfaceName = Url::segment(Console::getCommandName(), 'end', ':');
-		$name = str_replace(ucfirst($interfaceName), '', $name);
-
-		$content = $this->getFile('interface');
-		$content = str_replace('CLASSNAME', ucfirst($name).'Interface', $content);
-
-		if (isset($this->interfaceExceptions[$interfaceName])) {
-			$content = str_replace('NAMESPACE', ucfirst($this->interfaceExceptions[$interfaceName]), $content);
-		} else {
-			$content = str_replace('NAMESPACE', ucfirst($interfaceName).'s', $content);
-		}
-
-		$content = str_replace('NSPATH', $namespace, $content);
-
-		$fullPath = str_replace('//', '/', $path.'/abstraction'.$this->fileNamespace.'/'.ucfirst($name).'Interface.php');
-
-		if (is_readable($fullPath)) {
-			$this->output('Cannot create interface')->close();
-		}
-
-		if (file_put_contents($fullPath, $content)) {
-			$this->output('Interface created')->close();
-		}
-		
-		$this->output('Cannot create interface')->close();
 	}
 	
 	protected function setNamespace(ArgvParser $argvParser): void
