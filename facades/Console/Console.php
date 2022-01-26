@@ -90,7 +90,7 @@ class Console
 	
 	private function getObjectName(string $object): string
 	{
-		if (str_contains($object, 'Command')) {
+		if (str_contains($object, 'Command') && $object !== 'Command.php') {
 			return self::COMMAND_NAMESPACE.str_replace('.php', '', $object);
 		} else {
 			return self::FACADE_COMMAND_NAMESPACE.str_replace('.php', '', $object);

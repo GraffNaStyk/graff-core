@@ -58,7 +58,7 @@ class Command implements CommandInterface
 		echo "\033[".$this->backgrounds[mb_strtolower($color)]."m".$message.": \033[0m";
 		$handle = fopen('php://stdin','r');
 		$result = fgets($handle);
-		fclose($result);
+		fclose($handle);
 		echo "\n";
 
 		return str_replace(["\n", "\r"], [''], $this->sanitizer->clear($result));
@@ -118,7 +118,7 @@ class Command implements CommandInterface
 
 	public function getFile(string $name): string
 	{
-		return file_get_contents(app_path('app/facades/console/files/'.$name));
+		return file_get_contents(__DIR__.'/files/'.$name);
 	}
 
 	private function createInterface(string $path, string $name, string $namespace): void
