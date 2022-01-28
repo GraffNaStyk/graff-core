@@ -71,8 +71,7 @@ class TwigExt extends AbstractExtension
 	public function route(): TwigFunction
 	{
 		return new TwigFunction('route', function ($route, $params = []) {
-			$route = Route::urls()[$route];
-			$url   = Url::full().Url::base().$route['url'];
+			$url = Url::full().Url::base().Route::urls()[$route];
 			
 			if (! empty($params)) {
 				foreach ($params as $key => $param) {

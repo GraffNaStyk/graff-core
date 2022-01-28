@@ -82,7 +82,6 @@ abstract class Route
 
     private static function match(string $as, string $route, string $method, int $rights): Collection
     {
-	    self::$urls[$route] = ['url' => $as, 'params' => []];
 	    $routes = explode('@', $route);
 	
 	    $collection = new Collection(
@@ -91,7 +90,7 @@ abstract class Route
 		    self::$namespace,
 		    $method,
 		    $rights,
-		    $routes[0].'@'.$routes[1],
+		    $route,
 		    self::$middleware,
 		    self::$alias
 	    );
@@ -101,8 +100,9 @@ abstract class Route
         } else {
             $url = self::$alias.rtrim($as, '/') ?? $routes[0].'/'.$routes[1];
         }
-
-	    self::$urls[$route] = ['url' => $as];
+	
+	    self::$urls[$route] = $as;
+	    self::$routes[$url] = $collection;
 
         if ($method !== 'get' && ! Config::get('app.enable_api')) {
             Csrf::make($route);
