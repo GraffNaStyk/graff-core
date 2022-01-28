@@ -67,23 +67,22 @@ class TwigExt extends AbstractExtension
             }
         });
     }
-
-    public function route(): TwigFunction
-    {
-        return new TwigFunction('route', function ($route, $params = []) {
-            $route =
-                Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().
-                Route::urls()[$route]['url'];
-
-            if (! empty($params)) {
-                $route = str_replace(array_keys($params), array_values($params), $route);
-                $route = str_replace(['{', '}'], ['', ''], $route);
-            }
-
-            echo $route;
-        });
-    }
-
+	
+	public function route(): TwigFunction
+	{
+		return new TwigFunction('route', function ($route, $params = []) {
+			$route = Route::urls()[$route];
+			$url   = Url::full().Url::base().$route['url'];
+			
+			if (! empty($params)) {
+				foreach ($params as $key => $param) {
+					$url = str_replace('{'.$key.'}', $param, $url);
+				}
+			}
+			
+			echo $url;
+		});
+	}
 
     public function tooltip(): TwigFunction
     {

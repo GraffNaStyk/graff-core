@@ -301,7 +301,7 @@ final class Router extends Route
 	        $pattern = preg_replace('/{(.*?)}/', '(.*?)', $key, -1);
 
             if (preg_match('#^'.$pattern.'$#', self::$url, $matches)) {
-                if ((string) $this->request->getMethod() !== (string) $route->getMethod()) {
+                if ($this->request->getMethod() !== (string) $route->getMethod()) {
                     self::abort(405);
                 }
 
@@ -323,7 +323,7 @@ final class Router extends Route
 	
 	private function setMatches(array $matches): void
 	{
-		if (strpos($matches[0][0], '/') !== false) {
+		if (str_contains($matches[0][0], '/')) {
 			$matches = explode('/', $matches[0][0]);
 		}
 		

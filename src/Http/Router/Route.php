@@ -82,17 +82,19 @@ abstract class Route
 
     private static function match(string $as, string $route, string $method, int $rights): Collection
     {
-        $routes = explode('@', $route);
-	   
-        $collection = new Collection(
+	    self::$urls[$route] = ['url' => $as, 'params' => []];
+	    $routes = explode('@', $route);
+	
+	    $collection = new Collection(
 		    ucfirst($routes[0]),
 		    $routes[1] ?? 'index',
 		    self::$namespace,
 		    $method,
 		    $rights,
-	        self::$middleware,
-	        self::$alias
-        );
+		    $routes[0].'@'.$routes[1],
+		    self::$middleware,
+		    self::$alias
+	    );
 
         if (self::$alias === null) {
             $url = self::$alias.$as ?? $routes[0].'/'.$routes[1];
@@ -100,7 +102,7 @@ abstract class Route
             $url = self::$alias.rtrim($as, '/') ?? $routes[0].'/'.$routes[1];
         }
 
-        self::$routes[$url] = $collection;
+	    self::$urls[$route] = ['url' => $as];
 
         if ($method !== 'get' && ! Config::get('app.enable_api')) {
             Csrf::make($route);
@@ -154,9 +156,9 @@ abstract class Route
     {
         return isset($_SERVER['HTTPS']) || (int) $_SERVER['SERVER_PORT'] === 443 ? 'https' : 'http';
     }
-
-    public static function urls(): array
-    {
-        return self::$urls;
-    }
+	
+	public static function urls(): array
+	{
+		return self::$urls;
+	}
 }
