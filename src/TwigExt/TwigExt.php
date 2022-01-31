@@ -21,9 +21,7 @@ class TwigExt extends AbstractExtension
             $this->tooltip(),
             $this->options(),
             $this->route(),
-            $this->assets(),
-	        $this->img_url(),
-	        $this->public_path()
+            $this->assets()
         ];
     }
 
@@ -46,33 +44,22 @@ class TwigExt extends AbstractExtension
     public function assets(): TwigFunction
     {
         return new TwigFunction('assets', function ($url) {
-            echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().'/public/assets'.$url;
+	        echo Url::full().'assets/'.ltrim('/', $url);
         });
     }
-	
-	public function public_path(): TwigFunction
-	{
-		return new TwigFunction('public_path', function ($url) {
-			echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().'/public/'.$url;
-		});
-	}
 
     public function url(): TwigFunction
     {
         return new TwigFunction('url', function ($url = null) {
-            if (Router::getAlias() === 'http') {
-                echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().$url;
-            } else {
-                echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().'/'.Router::getAlias().$url;
-            }
+	        echo Url::full().ltrim('/', $url);
         });
     }
 	
 	public function route(): TwigFunction
 	{
 		return new TwigFunction('route', function ($route, $params = []) {
-			$url = Url::full().Url::get().Route::urls()[$route];
-			
+			$url = Url::full().Route::urls()[$route];
+
 			if (! empty($params)) {
 				foreach ($params as $key => $param) {
 					$url = str_replace('{'.$key.'}', $param, $url);
@@ -96,11 +83,4 @@ class TwigExt extends AbstractExtension
             echo htmlspecialchars(json_encode($options));
         });
     }
-	
-	public function img_url(): TwigFunction
-	{
-		return new TwigFunction('uri_img', function ($url = null) {
-			echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().$url;
-		});
-	}
 }

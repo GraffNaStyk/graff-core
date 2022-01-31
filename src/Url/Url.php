@@ -2,23 +2,10 @@
 
 namespace App\Facades\Url;
 
-use App\Facades\Config\Config;
 use App\Facades\Http\Router\Router;
 
 class Url
 {
-    public static function get(): string
-    {
-    	return Router::getAlias() === 'http'
-		    ? Url::base()
-		    : Url::base().'/'.Router::getAlias();
-    }
-
-    public static function base(): string
-    {
-        return Config::get('app.url') === '/' ? '' : Config::get('app.url');
-    }
-
     public static function segment($string, $offset, $delimiter = '/'): ?string
     {
         $string = explode($delimiter, $string);
@@ -45,6 +32,11 @@ class Url
 
     public static function full(): string
     {
-    	return Router::checkProtocol().'://'.$_SERVER['HTTP_HOST'];
+    	return Router::checkProtocol().'://'.$_SERVER['HTTP_HOST'].'/'.self::withAlias();
+    }
+    
+    private static function withAlias(): ?string
+    {
+    	return Router::getAlias() !== 'http' ? Router::getAlias() : null;
     }
 }

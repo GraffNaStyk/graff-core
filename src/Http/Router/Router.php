@@ -234,7 +234,6 @@ final class Router extends Route
 
         ob_end_flush();
         ob_end_clean();
-        return;
     }
 
     private function getMethodParams(array $reflectionParams, object $controller): array
