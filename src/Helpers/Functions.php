@@ -2,13 +2,13 @@
 
 if (! function_exists('css_path')) {
 	function css_path(?string $path = null): string {
-		return __DIR__ . '/../../../../../public/css/' . ($path !== null ? ltrim($path, '/') : null);
+		return __DIR__ . '/../../../../../css/' . ($path !== null ? ltrim($path, '/') : null);
 	}
 }
 
 if (! function_exists('js_path')) {
 	function js_path(?string $path = null): string {
-		return __DIR__ . '/../../../../../public/js/' . ($path !== null ? ltrim($path, '/') : null);
+		return __DIR__ . '/../../../../../js/' . ($path !== null ? ltrim($path, '/') : null);
 	}
 }
 
@@ -32,7 +32,7 @@ if (! function_exists('storage_path')) {
 
 if (! function_exists('assets_path')) {
 	function assets_path(?string $path = null): string {
-		return __DIR__ . '/../../../../../public/assets/' . ($path !== null ? ltrim($path, '/') : null);
+		return __DIR__ . '/../../../../../assets/' . ($path !== null ? ltrim($path, '/') : null);
 	}
 }
 
