@@ -29,11 +29,17 @@ class Url
     {
         return in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
     }
-
-    public static function full(): string
-    {
-    	return Router::checkProtocol().'://'.$_SERVER['HTTP_HOST'].'/'.self::withAlias();
-    }
+	
+	public static function full(): string
+	{
+		$url = Router::checkProtocol().'://'.$_SERVER['HTTP_HOST'];
+		
+		if (self::withAlias() === null) {
+			return $url;
+		}
+		
+		return $url.'/'.self::withAlias();
+	}
     
     private static function withAlias(): ?string
     {
