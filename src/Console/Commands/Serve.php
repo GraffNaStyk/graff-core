@@ -34,6 +34,6 @@ class Serve extends Command
 			$this->host = $this->parser->get('h');
 		}
 		
-		exec("php -S {$this->host}:{$this->port} index.php");
+		exec("php -S {$this->host}:{$this->port} public/index.php");
 	}
 }
