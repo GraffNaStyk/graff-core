@@ -15,7 +15,7 @@ trait CssLoader
 		$loaded = [];
 		
 		foreach ($scripts as $item) {
-			$loaded[] = trim('<link rel="stylesheet" href="'.Url::full().$this->cssDir.$item.'.js">');
+			$loaded[] = trim('<link rel="stylesheet" href="'.Url::full().$this->cssDir.$item.'.css">');
 		}
 		
 		View::set(['css' => $loaded]);
@@ -31,7 +31,7 @@ trait CssLoader
 
 		foreach (new \DirectoryIterator(css_path($dir)) as $item) {
 			if ($item->getExtension() === 'css') {
-				$loaded[] = trim('<script type="application/javascript" src="'.Url::full().$this->cssDir.$dir.'/'.$item->getBaseName().'"></script>');
+				$loaded[] = trim('<link rel="stylesheet" href="'.Url::full().$this->cssDir.$dir.'/'.$item->getBaseName().'">');
 			}
 		}
 
