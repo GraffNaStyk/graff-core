@@ -101,7 +101,7 @@ abstract class Route
             $url = self::$alias.rtrim($as, '/') ?? $routes[0].'/'.$routes[1];
         }
 	
-	    self::$urls[$route] = $as;
+	    self::$urls[$route] = $url;
 	    self::$routes[$url] = $collection;
 
         if ($method !== 'get' && ! Config::get('app.enable_api')) {
