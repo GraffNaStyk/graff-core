@@ -3,6 +3,7 @@
 namespace App\Facades\Url;
 
 use App\Facades\Http\Router\Router;
+use JetBrains\PhpStorm\Pure;
 
 class Url
 {
@@ -30,7 +31,7 @@ class Url
         return in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
     }
 	
-	public static function full(): string
+	public static function fullWithAlias(): string
 	{
 		$url = Router::checkProtocol().'://'.$_SERVER['HTTP_HOST'];
 		
@@ -39,6 +40,11 @@ class Url
 		}
 		
 		return $url.'/'.self::withAlias();
+	}
+	
+	#[Pure] public static function full(): string
+	{
+		return Router::checkProtocol().'://'.$_SERVER['HTTP_HOST'];
 	}
     
     private static function withAlias(): ?string
