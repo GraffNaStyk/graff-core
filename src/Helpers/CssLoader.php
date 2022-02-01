@@ -8,12 +8,14 @@ use App\Facades\Url\Url;
 
 trait CssLoader
 {
+	protected string $cssDir = '/css';
+	
 	public function loadCss(... $scripts): void
 	{
 		$loaded = [];
 		
 		foreach ($scripts as $item) {
-			$loaded[] = trim('<link rel="stylesheet" href="'.Url::full().'/'.str_replace(app_path(), '', css_path($item)).'">');
+			$loaded[] = trim('<link rel="stylesheet" href="'.Url::full().$this->cssDir.$item.'.js">');
 		}
 		
 		View::set(['css' => $loaded]);
@@ -29,7 +31,7 @@ trait CssLoader
 
 		foreach (new \DirectoryIterator(css_path($dir)) as $item) {
 			if ($item->getExtension() === 'css') {
-				$loaded[] = trim('<link rel="stylesheet" href="'.Url::full().'/'.str_replace(app_path(), '', $item->getPathName()).'">');
+				$loaded[] = trim('<script type="application/javascript" src="'.Url::full().$this->cssDir.$dir.'/'.$item->getBaseName().'"></script>');
 			}
 		}
 
@@ -54,5 +56,10 @@ trait CssLoader
 		if ($loaded !== null) {
 			View::set(['css' => [$loaded]]);
 		}
+	}
+	
+	public function setCssDir(string $cssDir): void
+	{
+		$this->cssDir = $cssDir;
 	}
 }
