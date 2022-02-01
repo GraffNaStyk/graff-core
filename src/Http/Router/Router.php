@@ -378,6 +378,7 @@ final class Router extends Route
 	        echo (new Response())->json()->setData(['msg' => Response::RESPONSE_CODES[$code]])->setCode($code)->getResponse();
             exit;
         } else {
+        	pd($message);
             exit(require_once(view_path('errors/error.php')));
         }
     }

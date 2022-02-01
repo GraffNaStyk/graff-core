@@ -113,35 +113,23 @@ abstract class Route
 
     public static function when(string $when, string $then): void
     {
-        if (Config::get('app.url') !== '/') {
-            $route = rtrim(str_replace(Config::get('app.url'), '', Router::url()), '/');
-        } else {
-            $route = rtrim(Router::url(), '/');
-        }
+	    $route = rtrim(Router::url(), '/');
 
         if ($route === rtrim($when, '/')) {
             static::redirect($then);
         }
     }
 
-    public static function redirect(string $path, int $code = 302, bool $direct = false): void
+    public static function redirect(string $path, int $code = 302): void
     {
         session_write_close();
         session_regenerate_id();
-
-        if ($direct) {
-            header(
-                'location: '.self::checkProtocol().'://'.$_SERVER['HTTP_HOST'].Url::base().$path,
-                true,
-                $code
-            );
-        } else {
-            header(
-                'location: '.self::checkProtocol().'://'.$_SERVER['HTTP_HOST'].Url::get().$path,
-                true,
-                $code
-            );
-        }
+	
+	    header(
+		    'location: '.Url::full().$path,
+		    true,
+		    $code
+	    );
 
         exit;
     }
