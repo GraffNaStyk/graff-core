@@ -8,12 +8,14 @@ use App\Facades\Url\Url;
 
 trait JavaScriptLoader
 {
+	protected string $jsDir = '/js';
+	
 	public function loadJs(... $scripts): void
 	{
 		$loaded = [];
 		
 		foreach ($scripts as $item) {
-			$loaded[] = trim('<script type="application/javascript" src="'.Url::full().'/'.str_replace(app_path(), '', js_path($item)).'"></script>');
+			$loaded[] = trim('<script type="application/javascript" src="'.Url::full().$this->jsDir.$item.'.js"></script>');
 		}
 		
 		View::set(['js' => $loaded]);
@@ -29,7 +31,7 @@ trait JavaScriptLoader
 		
 		foreach (new \DirectoryIterator(js_path($dir)) as $item) {
 			if ($item->getExtension() === 'js') {
-				$loaded[] = trim('<script type="application/javascript" src="'.Url::full().'/'.str_replace(app_path(), '', $item->getPathName()).'"></script>');
+				$loaded[] = trim('<script type="application/javascript" src="'.Url::full().$this->jsDir.$dir.'/'.$item->getBaseName().'"></script>');
 			}
 		}
 
@@ -54,5 +56,10 @@ trait JavaScriptLoader
 		if ($loaded !== null) {
 			View::set(['js' => [$loaded]]);
 		}
+	}
+	
+	public function setJsDir(string $jsDir): void
+	{
+		$this->jsDir = $jsDir;
 	}
 }
