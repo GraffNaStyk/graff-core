@@ -209,7 +209,8 @@ final class Router extends Route
         }
 
         AbstractController::$routeParams = $this->routeParams();
-        
+        AbstractController::$routes = self::$urls;
+	       
         $constructorParams = $this->builder->getConstructorParameters($reflectionClass);
         $params            = $reflectionMethod->getParameters();
         $controller        = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
@@ -378,7 +379,6 @@ final class Router extends Route
 	        echo (new Response())->json()->setData(['msg' => Response::RESPONSE_CODES[$code]])->setCode($code)->getResponse();
             exit;
         } else {
-        	pd($message);
             exit(require_once(view_path('errors/error.php')));
         }
     }

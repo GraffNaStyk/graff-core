@@ -4,11 +4,13 @@ namespace App\Facades\Http;
 
 use App\Facades\Http\Router\Router;
 use App\Facades\Storage\Storage;
+use App\Facades\Url\Url;
 use App\Facades\Validator\Validator;
 
 abstract class AbstractController
 {
 	public static array $routeParams = [];
+	public static array $routes      = [];
 	
     public function __construct()
     {
@@ -26,7 +28,33 @@ abstract class AbstractController
     {
         return (new Response())->redirect($path, $code, $direct)->send();
     }
+    
+    public function redirectToRoute(string $route, int $code = 302, bool $direct = false): Response
+    {
+    	$route = $this->routes($route);
+    	
+    	if ($route === null) {
+    		throw new \LogicException('Route '.$route.' not exist');
+	    }
 
+	    return (new Response())->redirect($route, $code, $direct)->send();
+    }
+
+    public function path(string $route, bool $relative = false): string
+    {
+	    $route = $this->routes($route);
+	
+	    if ($route === null) {
+		    throw new \LogicException('Route '.$route.' not exist');
+	    }
+	    
+	    if ($relative) {
+	    	return $route;
+	    }
+	    
+	    return Url::fullWithAlias().$route;
+    }
+    
     public function setData(array $data): void
     {
         View::set($data);
@@ -91,5 +119,10 @@ abstract class AbstractController
 	    }
     	
     	return static::$routeParams[$param];
+    }
+    
+    private function routes(string $route): ?string
+    {
+        return self::$routes[$route] ?? null;
     }
 }
