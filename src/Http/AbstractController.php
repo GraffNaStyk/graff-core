@@ -52,7 +52,7 @@ abstract class AbstractController
 	    	return $route;
 	    }
 	    
-	    return Url::fullWithAlias().$route;
+	    return Url::full().$route;
     }
     
     public function setData(array $data): void
