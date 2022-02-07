@@ -51,8 +51,10 @@ class ContainerBuilder
 			&& interface_exists($reflector->getName())
 		) {
 			$reflector = new ReflectionClass(Config::get('interfaces.' . $reflector->getName()));
-		} else if ($reflector->isInterface()) {
-			throw new \LogicException($reflector->getName() . ' is not register in interfaces.php or not exist');
+		} else {
+			if ($reflector->isInterface()) {
+				throw new \LogicException($reflector->getName() . ' is not register in interfaces.php or not exist');
+			}
 		}
 		
 		return $reflector;
