@@ -61,8 +61,8 @@ final class View
     public static function set(array $data): void
     {
         foreach ($data as $key => $value) {
-        	if (isset(self::$data[$key])) {
-		        self::$data[$key] = array_unique(array_merge(self::$data[$key], $value));
+        	if (isset(self::$data[$key]) && is_array($value)) {
+		        self::$data[$key] = array_unique([...self::$data[$key], ...$value]);
 	        } else {
 		        self::$data[$key] = $value;
 	        }

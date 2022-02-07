@@ -55,7 +55,7 @@ class Response
 	
 	public function json(): self
 	{
-		$this->setHeader('Content-type', 'application/json; charset=utf-8');
+		$this->setHeader('Content-type', 'application/json;charset=utf-8');
 		$this->isJsonResponse = true;
 		
 		return $this;
@@ -153,9 +153,9 @@ class Response
 		if ($this->isFileResponse || $this->isDownloadResponse) {
 			return readfile($this->content);
 		}
-
+		
 		if ($this->isRedirectResponse) {
-			Route::redirect($this->redirectData['path'], $this->redirectData['code'], $this->redirectData['direct']);
+			Route::redirect($this->redirectData['path'], $this->redirectData['code']);
 			exit;
 		}
 		

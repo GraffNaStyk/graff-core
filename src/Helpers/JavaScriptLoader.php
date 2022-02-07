@@ -30,7 +30,7 @@ trait JavaScriptLoader
 		$loaded = [];
 		
 		foreach (new \DirectoryIterator(js_path($dir)) as $item) {
-			if ($item->getExtension() === 'js') {
+			if ($item->getExtension() === 'js' && $item->isReadable()) {
 				$loaded[] = trim('<script type="application/javascript" src="'.Url::full().$this->jsDir.$dir.'/'.$item->getBaseName().'"></script>');
 			}
 		}
