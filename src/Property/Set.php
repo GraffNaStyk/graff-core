@@ -4,10 +4,6 @@ namespace App\Facades\Property;
 
 class Set
 {
-	private static array $item;
-	private static array $data;
-	private static $objectToSet;
-	
     public static function set($where, $data, $item)
     {
         $item = explode('.', $item);

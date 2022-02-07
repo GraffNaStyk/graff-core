@@ -57,56 +57,18 @@ class Session
         setcookie($item, false, - 1, '/', getenv('SERVER_NAME'), Router::checkProtocol() === 'https', true);
     }
 
-    public static function flashAll(): array
-    {
-        return $_COOKIE;
-    }
-
-    public static function msg($items, $color = 'success'): void
-    {
-        if (is_array($items)) {
-            foreach ($items as $val)
-                $_SESSION['msg'][] = $val;
-        } else {
-            $_SESSION['msg'][] = $items;
-        }
-
-        $_SESSION['color'] = $color;
-    }
-
-    public static function getMsg(): array
-    {
-        return $_SESSION['msg'] ?: [];
-    }
-
-    public static function getColor(): ?string
-    {
-        return $_SESSION['color'] ?: '';
-    }
-
-    public static function clearMsg(): void
-    {
-        unset($_SESSION['msg']);
-        unset($_SESSION['color']);
-        unset($_SESSION['unused']);
-    }
-
     public static function checkIfDataHasBeenProvided($request)
     {
         $_SESSION['unused'] = $request;
     }
 
-    public static function collectProvidedData()
-    {
-        if (isset($_SESSION['unused'])) {
-            return $_SESSION['unused'];
-        }
-
-        return null;
-    }
-
     public static function destroy(): void
     {
         session_destroy();
+    }
+    
+    public static function id(): string|bool
+    {
+    	return session_id();
     }
 }

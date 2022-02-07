@@ -2,7 +2,6 @@
 
 namespace App\Facades\Http;
 
-use App\Facades\Header\Header;
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
 use App\Facades\Property\PropertyFacade;
@@ -14,6 +13,7 @@ use App\Facades\Validator\Type;
 final class Request
 {
 	use PropertyFacade;
+	use Header;
 	
     protected array $file = [];
 
@@ -21,7 +21,7 @@ final class Request
 
     protected array $data = [];
 
-    protected array $headers = [];
+    public array $headers = [];
     
     private Sanitizer $sanitizer;
 
@@ -47,7 +47,7 @@ final class Request
     public function isOptionsCall(): bool
     {
         if ($_SERVER['REQUEST_METHOD'] === self::METHOD_OPTIONS) {
-            Header::setAllowedOptions();
+            self::setAllowedOptions();
             return true;
         }
 
@@ -84,26 +84,28 @@ final class Request
         ) {
             $this->data = (array) json_decode(file_get_contents('php://input'));
         }
+        
+        unset($_POST, $_GET, $_FILES);
     }
 
     public function isPost(): bool
     {
-        return $this->method === 'post';
+        return $this->method === self::METHOD_POST;
     }
 
     public function isGet(): bool
     {
-        return $this->method === 'get';
+        return $this->method === self::METHOD_GET;
     }
 
     public function isDelete(): bool
     {
-        return $this->method === 'delete';
+        return $this->method === self::METHOD_DELETE;
     }
 
     public function isPut(): bool
     {
-        return $this->method === 'put';
+        return $this->method === self::METHOD_PUT;
     }
 	
 	private function setHeaders(): void
@@ -151,7 +153,7 @@ final class Request
 		}
 	}
 
-    public function reSanitize(array $data): array
+    protected function reSanitize(array $data): array
     {
         foreach ($data as $key => $item) {
             if (is_array($item)) {
@@ -185,7 +187,7 @@ final class Request
 
     public function all(): array
     {
-        return (array) $this->data;
+        return $this->data;
     }
 
     public function file(?string $file = null)
@@ -202,7 +204,7 @@ final class Request
         return Has::check($this->data, $offset);
     }
 
-    public function set($item, $data): void
+    public function set(mixed $item, mixed $data): void
     {
         $this->data = array_merge($this->data, Set::set($this->data, Type::get($data), $item));
     }
@@ -221,7 +223,7 @@ final class Request
 		$headers = getallheaders();
 		
 		if (isset($headers['Is-Fetch-Request'])
-			&& (string) mb_strtolower($headers['Is-Fetch-Request']) === 'true'
+			&& mb_strtolower($headers['Is-Fetch-Request']) === 'true'
 		) {
 			return true;
 		}

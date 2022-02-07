@@ -4,7 +4,7 @@ namespace App\Facades\Validator\Rules;
 
 abstract class Rule
 {
-	protected $field;
+	protected mixed $field;
 	
 	protected string $description;
 
