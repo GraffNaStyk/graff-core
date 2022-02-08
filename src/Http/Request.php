@@ -145,21 +145,6 @@ final class Request
 		return $headers;
 	}
 
-    public function header(string $header)
-    {
-        return $this->headers[mb_strtolower($header)] ?? false;
-    }
-
-    public function hasHeader(string $item): bool
-    {
-        return Has::check($this->headers(), mb_strtolower($item));
-    }
-
-    public function headers(): array
-    {
-        return $this->headers;
-    }
-
     public function setData(array $data): void
     {
         $this->data = array_merge($this->data, $data);
