@@ -88,8 +88,8 @@ final class Request
                 break;
         }
 
-        if ($this->hasHeader('Content-Type')
-	        && mb_strtolower($this->header('Content-Type')) === 'application/json'
+        if ($this->headers->has('Content-Type')
+	        && mb_strtolower($this->headers->get('Content-Type')) === 'application/json'
         ) {
             $this->data = (array) json_decode(file_get_contents('php://input'));
         }
