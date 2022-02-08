@@ -23,6 +23,11 @@ class Cookie
 		return Has::check($_COOKIE, $item);
 	}
 	
+	public static function all(): array
+	{
+		return $_COOKIE;
+	}
+	
 	public static function remove($item): void
 	{
 		unset($_COOKIE[$item]);
