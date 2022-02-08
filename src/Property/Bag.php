@@ -27,6 +27,11 @@ class Bag
 		return Get::check($this->bag, $offset);
 	}
 	
+	public function all()
+	{
+		return $this->get();
+	}
+	
 	public function set($data, ?string $offset): void
 	{
 		$this->bag = array_merge($this->bag, Set::set($this->bag, Type::get($data), $offset));
