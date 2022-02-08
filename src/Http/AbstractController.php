@@ -21,7 +21,6 @@ abstract class AbstractController
     {
         Storage::private()->make('logs')->make('cache');
         Session::remove('beAjax');
-        Session::clearMsg();
     }
 
     public function redirect(?string $path, int $code = 302, bool $direct = false): Response
