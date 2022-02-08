@@ -2,6 +2,7 @@
 
 namespace App\Facades\Http;
 
+use App\Facades\Property\Bag;
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
 use App\Facades\Property\PropertyFacade;
@@ -21,7 +22,11 @@ final class Request
 
     protected array $data = [];
 
-    public array $headers = [];
+    public Bag $headers;
+    
+    public Bag $server;
+    
+    public Bag $cookie;
     
     private Sanitizer $sanitizer;
 
@@ -40,8 +45,8 @@ final class Request
     {
     	$this->sanitizer = new Sanitizer();
         $this->isOptionsCall();
+	    $this->initialize();
         $this->setHeaders();
-        $this->setMethod();
     }
 
     public function isOptionsCall(): bool
@@ -54,8 +59,12 @@ final class Request
         return false;
     }
 
-    private function setMethod()
+    private function initialize(): void
     {
+	    $this->server  = new Bag($_SERVER);
+	    $this->cookie  = new Bag($_COOKIE);
+	    $this->headers = new Bag($this->setHeaders());
+	    
         if (isset($_FILES) && ! empty($_FILES)) {
             $this->file = $_FILES;
         }
@@ -106,11 +115,13 @@ final class Request
         return $this->method === self::METHOD_PUT;
     }
 	
-	private function setHeaders(): void
+	private function setHeaders(): array
 	{
+		$headers = [];
+		
 		if (function_exists('getallheaders')) {
 			foreach (getallheaders() as $key => $item) {
-				$this->headers[mb_strtolower($key)] = $item;
+				$headers[mb_strtolower($key)] = $item;
 			}
 		} else {
 			$rx_http = '/\AHTTP_/';
@@ -126,15 +137,17 @@ final class Request
 						$arh_key = implode('-', $rx_matches);
 					}
 					
-					$this->headers[mb_strtolower($arh_key)] = $val;
+					$headers[mb_strtolower($arh_key)] = $val;
 				}
 			}
 		}
+		
+		return $headers;
 	}
 
     public function header(string $header)
     {
-        return isset($this->headers[mb_strtolower($header)]) ? $this->headers[mb_strtolower($header)] : false;
+        return $this->headers[mb_strtolower($header)] ?? false;
     }
 
     public function hasHeader(string $item): bool
