@@ -7,12 +7,7 @@ use ReflectionClass;
 
 class ContainerBuilder
 {
-	public Container $container;
-	
-	public function __construct(Container $container)
-	{
-		$this->container = $container;
-	}
+	public function __construct(public Container $container){}
 	
 	public function reflectConstructorParams(array $reflectionParams): array
 	{

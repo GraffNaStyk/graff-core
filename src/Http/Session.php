@@ -36,27 +36,6 @@ class Session
         $_SESSION = Remove::remove($_SESSION, $item);
     }
 
-    public static function flash($item, $value = 1, $seconds = 60): void
-    {
-        setcookie($item, $value, time() + $seconds, '/', getenv('SERVER_NAME'), Router::checkProtocol() === 'https', true);
-    }
-
-    public static function getFlash($item): ?bool
-    {
-        return Get::check($_COOKIE, $item);
-    }
-
-    public static function hasFlash($item): bool
-    {
-        return Has::check($_COOKIE, $item);
-    }
-
-    public static function removeFlash($item): void
-    {
-        unset($_COOKIE[$item]);
-        setcookie($item, false, - 1, '/', getenv('SERVER_NAME'), Router::checkProtocol() === 'https', true);
-    }
-
     public static function checkIfDataHasBeenProvided($request)
     {
         $_SESSION['unused'] = $request;
