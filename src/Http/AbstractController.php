@@ -59,9 +59,9 @@ abstract class AbstractController
         View::set($data);
     }
 
-    public function render(array $data = []): Response
+    public function render(array $data = [], array $headers = []): Response
     {
-    	return (new Response())->setContent(View::render($data))->send();
+    	return (new Response())->setContent(View::render($data))->setHeaders($headers)->send();
     }
 	
 	public function validate(array $request, object $rule): bool
