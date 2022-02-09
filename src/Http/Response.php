@@ -33,6 +33,8 @@ class Response
 	
 	private array $customHeaders = [];
 	
+	private array $cookies = [];
+	
 	private array $redirectData = [];
 	
 	private int $responseCode = 200;
@@ -134,6 +136,22 @@ class Response
 		return $this;
 	}
 	
+	public function setCookie(string $name, string $value, int $seconds = 60): self
+	{
+		$this->cookies[$name] = ['value' => $value, 'time' => $seconds];
+		
+		return $this;
+	}
+	
+	public function setCookies(array $cookies): self
+	{
+		foreach ($cookies as $key => $cookie) {
+			$this->setCookie($key, is_array($cookie) ? $cookie['value'] : $cookie, $cookie['time']);
+		}
+		
+		return $this;
+	}
+	
 	public function getResponse(): ?string
 	{
 		if (! headers_sent()) {
@@ -144,6 +162,12 @@ class Response
 				foreach ($this->customHeaders as $name => $value) {
 					\header($name.': '.$value);
 				}
+			}
+		}
+		
+		if (! empty($this->cookies)) {
+			foreach ($this->cookies as $key => $cookie) {
+				Cookie::flash($key, $cookie['value'], $cookie['time']);
 			}
 		}
 
