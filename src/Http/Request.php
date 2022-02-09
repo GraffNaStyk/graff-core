@@ -5,8 +5,10 @@ namespace App\Facades\Http;
 use App\Facades\Property\Bag;
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
+use App\Facades\Property\ParametersBag;
 use App\Facades\Property\PropertyFacade;
 use App\Facades\Property\Remove;
+use App\Facades\Property\ServerBag;
 use App\Facades\Property\Set;
 use App\Facades\Security\Sanitizer;
 use App\Facades\Validator\Type;
@@ -63,7 +65,7 @@ final class Request
     {
 	    $this->server  = new Bag($_SERVER);
 	    $this->cookie  = new Bag($_COOKIE);
-	    $this->headers = new Bag($this->setHeaders());
+	    $this->headers = new ParametersBag($this->setHeaders());
 	    
         if (isset($_FILES) && ! empty($_FILES)) {
             $this->file = $_FILES;
