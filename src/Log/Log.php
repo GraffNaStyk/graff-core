@@ -2,8 +2,8 @@
 
 namespace App\Facades\Log;
 
+use App\Facades\Helpers\Dir;
 use App\Facades\Http\Router\Router;
-use App\Facades\Storage\Storage;
 
 class Log
 {
@@ -12,11 +12,11 @@ class Log
         $log = '['.date('Y-m-d H:i:s').'] [url]: '.Router::url().' [client]: '.php_sapi_name();
         $log .= ' [ip]: '.$_SERVER['REMOTE_ADDR'].' [host]: '.gethostbyaddr($_SERVER['REMOTE_ADDR']).' ';
         $log .= json_encode($data, JSON_PRETTY_PRINT);
-
-        Storage::private()->make('logs/'.$type);
-
+        
+        Dir::create( storage_path('/var/logs/'.$type));
+        
         file_put_contents(
-            storage_path('private/logs/'.$type.'/'.date('Y-m-d').'.log'),
+            storage_path('/var/logs/'.$type.'/'.date('Y-m-d').'.log'),
             $log.PHP_EOL,
             FILE_APPEND
         );

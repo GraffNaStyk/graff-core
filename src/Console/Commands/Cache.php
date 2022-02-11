@@ -10,7 +10,7 @@ class Cache extends Command
 {
 	public static string $name = 'app:clear:cache';
 	
-	public function __construct(ArgvParser $argvParser)
+	public function __construct(ArgvParser $argvParser, protected Storage $storage)
 	{
 		$this->parser = $argvParser;
 		parent::__construct();
@@ -20,7 +20,7 @@ class Cache extends Command
 	{
 		$this->output('Execute command...', 'green');
 		
-		if (Storage::private()->remove('/cache')) {
+		if ($this->storage->disk('/var')->remove('/cache')) {
 			$this->output('Cache cleared', 'green');
 		}
 		

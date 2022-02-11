@@ -2,9 +2,7 @@
 
 namespace App\Facades\Storage;
 
-use App\Facades\Helpers\Str;
 use App\Facades\Helpers\Dir;
-use App\Models\File;
 
 class Storage
 {
@@ -148,5 +146,10 @@ class Storage
 		}
 		
 		return true;
+	}
+	
+	public static function create(): Storage
+	{
+		return new self();
 	}
 }

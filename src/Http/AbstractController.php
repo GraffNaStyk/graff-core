@@ -19,7 +19,6 @@ abstract class AbstractController
 
     public function boot(): void
     {
-        Storage::private()->make('logs')->make('cache');
         Session::remove('beAjax');
     }
 

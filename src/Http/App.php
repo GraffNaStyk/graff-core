@@ -2,6 +2,7 @@
 
 namespace App\Facades\Http;
 
+use App\Facades\Helpers\Dir;
 use App\Facades\Http\Router\Router;
 
 final class App
@@ -19,5 +20,8 @@ final class App
 		if (session_status() === PHP_SESSION_NONE) {
 			session_start();
 		}
+
+		Dir::create(storage_path('/var/logs'));
+		Dir::create(storage_path('/var/cache'));
 	}
 }
