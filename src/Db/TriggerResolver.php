@@ -3,6 +3,7 @@
 namespace App\Facades\Db;
 
 use App\Facades\Config\Config;
+use App\Facades\Dependency\ContainerBuilder;
 use App\Facades\Http\Router\Router;
 use ReflectionClass;
 
@@ -16,7 +17,7 @@ class TriggerResolver
 	        $reflector = new ReflectionClass($object);
 	
 	        if ($reflector->hasMethod('__construct')) {
-	        	$container = Router::getInstance()->getContainer();
+	        	$container = ContainerBuilder::getInstance();
 		        $container->container->replace(get_class($db), $db);
 
 		        $constructorParams = $container->reflectConstructorParams(

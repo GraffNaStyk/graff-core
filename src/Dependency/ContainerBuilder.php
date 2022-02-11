@@ -7,7 +7,18 @@ use ReflectionClass;
 
 class ContainerBuilder
 {
-	public function __construct(public Container $container){}
+	private static ?ContainerBuilder $containerBuilder = null;
+	
+	public function __construct(public Container $container)
+	{
+		if (self::$containerBuilder instanceof ContainerBuilder || self::$containerBuilder !== null) {
+			throw new \LogicException('Cannot load container two times');
+		}
+		
+		if (self::$containerBuilder === null) {
+			self::$containerBuilder = $this;
+		}
+	}
 	
 	public function reflectConstructorParams(array $reflectionParams): array
 	{
@@ -66,5 +77,14 @@ class ContainerBuilder
 		}
 		
 		return $constructorParams;
+	}
+	
+	public static function getInstance(): ContainerBuilder
+	{
+		if (self::$containerBuilder == null) {
+			throw new \LogicException('Cannot get Container instance before create them');
+		}
+		
+		return self::$containerBuilder;
 	}
 }

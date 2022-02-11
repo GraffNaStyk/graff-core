@@ -29,18 +29,11 @@ final class Router extends Route
     private ContainerBuilder $builder;
 
     private static ?Collection $route = null;
-
-    private static ?Router $instance = null;
     
     const TEST_METHOD_PREFIX = 'test';
 
     public function __construct()
     {
-        if (self::$instance !== null) {
-            throw new \LogicException('Cannot load router two times');
-        }
-	
-	    self::$instance = $this;
         $this->request  = new Request();
 
         if ($this->request->isOptionsCall()) {
@@ -51,16 +44,6 @@ final class Router extends Route
 	    $this->builder = new ContainerBuilder(new Container());
 	    $this->csrf    = new Csrf();
 	    $this->builder->container->add(Request::class, $this->request);
-    }
-
-    public static function getInstance(): Router
-    {
-        return self::$instance;
-    }
-    
-    public function getContainer(): ContainerBuilder
-    {
-    	return $this->builder;
     }
 
     public function boot(): void
