@@ -26,6 +26,9 @@ class ErrorListener
 			}
 			
 			(new (Config::get('app.error_listener')))->listen($exception);
+		} else if (php_sapi_name() === 'cli') {
+			dd($exception);
+			exit;
 		} else if (Config::get('app.dev')) {
 			(new LogErrorFormatter($exception))->format();
 		} else {

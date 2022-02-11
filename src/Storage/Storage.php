@@ -47,7 +47,7 @@ class Storage
         return $this;
     }
     
-    public function put(string $file, string $content, ?string $flags = null): Storage
+    public function put(string $file, string $content, ?int $flags = null): Storage
     {
     	$file = ltrim($file, '/');
     	

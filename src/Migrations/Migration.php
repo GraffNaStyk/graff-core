@@ -19,8 +19,6 @@ class Migration
 	
     public function up(bool $isDump = false)
     {
-        $this->makeJsonFile();
-        
         $migrationContent = (array) json_decode(
 	        $this->storage->get('/db/migrations.json'),
             true
@@ -42,8 +40,6 @@ class Migration
 
     public function down()
     {
-        $this->makeJsonFile(true);
-
         foreach (glob(app_path('/app/migrate/Migration_*.php')) as $migration) {
             $migration = self::MIGRATION_DIR.basename(str_replace('.php', '', $migration));
             $migration = new $migration();
@@ -65,11 +61,6 @@ class Migration
 	    } catch (\PDOException $e) {
 	    	dd($e->getMessage());
 	    }
-    }
-
-    private function makeJsonFile($replace = false)
-    {
-        $this->storage->put('/db/migrations.json', '{}', $replace);
     }
 
     private function sortByDate(array $files): array

@@ -10,7 +10,7 @@ class Log extends Command
 {
 	public static string $name = 'app:clear:logs';
 	
-	public function __construct(ArgvParser $argvParser)
+	public function __construct(ArgvParser $argvParser, protected Storage $storage)
 	{
 		$this->parser = $argvParser;
 		parent::__construct();
@@ -18,8 +18,7 @@ class Log extends Command
 	
 	public function execute(): int
 	{
-		Storage::private()->remove('/logs');
-		
+		$this->storage->disk('/var')->remove('/logs');
 		return Command::SUCCESS;
 	}
 }
