@@ -23,5 +23,6 @@ final class App
 
 		Dir::create(storage_path('/var/logs'));
 		Dir::create(storage_path('/var/cache'));
+		Dir::create(storage_path('/var/db'));
 	}
 }

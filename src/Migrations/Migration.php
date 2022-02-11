@@ -9,13 +9,20 @@ use App\Facades\Storage\Storage;
 class Migration
 {
 	const MIGRATION_DIR = '\\App\\Migrate\\';
+	protected Storage $storage;
+	
+	public function __construct()
+	{
+		$this->storage = Storage::create();
+		$this->storage->disk('/var');
+	}
 	
     public function up(bool $isDump = false)
     {
         $this->makeJsonFile();
-
+        
         $migrationContent = (array) json_decode(
-            Storage::private()->get('/db/migrations.json'),
+	        $this->storage->get('/db/migrations.json'),
             true
         );
 
@@ -28,9 +35,9 @@ class Migration
                 $migration->up(new Schema(Config::get('app.model_path').$migration->model, $isDump));
             }
         }
-
-        Storage::private()
-            ->put('/db/migrations.json', json_encode($migrationContent, JSON_PRETTY_PRINT), true);
+	
+	    $this->storage
+            ->put('/db/migrations.json', json_encode($migrationContent, JSON_PRETTY_PRINT), FILE_APPEND);
     }
 
     public function down()
@@ -43,7 +50,7 @@ class Migration
             $migration->down(new Schema(Config::get('app.model_path').$migration->model));
         }
 
-        Storage::private()->remove('/db/migrations.json');
+        $this->storage->remove('/db/migrations.json');
     }
 
     public function dump()
@@ -62,7 +69,7 @@ class Migration
 
     private function makeJsonFile($replace = false)
     {
-        Storage::private()->make('db')->put('/db/migrations.json', '{}', $replace);
+        $this->storage->put('/db/migrations.json', '{}', $replace);
     }
 
     private function sortByDate(array $files): array
