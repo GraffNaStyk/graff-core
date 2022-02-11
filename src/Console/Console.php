@@ -27,7 +27,7 @@ class Console
 		self::$facadeCommandDir = __DIR__.'/Commands';
 
 		$this->parser  = $argvParser;
-		$this->builder = new ContainerBuilder(new Container());
+		$this->builder = ContainerBuilder::getInstance();
 		$this->builder->container->add(ArgvParser::class, $this->parser);
 
 		$this->parser->parse();
