@@ -10,7 +10,7 @@ class Sanitizer
 	public function clear($item): string|int|bool|array|null|float|object
 	{
 		if (! is_numeric($item)) {
-			$item = (string) urldecode($item);
+			$item = urldecode($item);
 		}
 		
 		if (Config::get('app.security.enabled')) {

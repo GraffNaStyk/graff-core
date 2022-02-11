@@ -173,7 +173,7 @@ class Response
 
 		ob_flush();
 		ob_clean();
-		
+
 		if ($this->isFileResponse || $this->isDownloadResponse) {
 			return readfile($this->content);
 		}

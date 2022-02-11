@@ -18,14 +18,6 @@ class Url
         return $string[$offset] ?? null;
     }
 
-    public static function link(string $link): string
-    {
-        $link = strtolower(trim(preg_replace('~[^\\pL\d]+~u', '-', $link)));
-        $link = iconv('utf-8', 'us-ascii//TRANSLIT', $link);
-        $link = preg_replace('~[^-\w]+~', '', $link);
-        return substr($link, 0, - 1);
-    }
-
     public static function isLocalhost(): bool
     {
         return in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);

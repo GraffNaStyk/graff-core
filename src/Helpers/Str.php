@@ -18,4 +18,12 @@ class Str
 
         return $hash;
     }
+	
+	public static function sanitize(string $string): string
+	{
+		$string = strtolower(trim(preg_replace('~[^\\pL\d]+~u', '-', $string)));
+		$string = iconv('utf-8', 'us-ascii//TRANSLIT', $string);
+		$string = preg_replace('~[^-\w]+~', '', $string);
+		return trim($string);
+	}
 }

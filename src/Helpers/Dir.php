@@ -10,7 +10,9 @@ class Dir
     	$path = rtrim($path, '/');
 
         if (! is_dir($path)) {
-            mkdir($path, $permission, true);
+            if (! mkdir($path, $permission, true)) {
+            	throw new \DomainException('Cannot create directory in path '.$path);
+            }
         }
     }
 }
