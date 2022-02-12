@@ -18,8 +18,6 @@ class Console
 	
 	private static ?string $commandName = null;
 	
-	private static bool $createInterface = false;
-	
 	private static string $facadeCommandDir;
 	
 	public function __construct(ArgvParser $argvParser)

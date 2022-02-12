@@ -86,7 +86,7 @@ class Response
 	{
 		$this->setHeaders(
 			[
-				'Content-Type'              => 'application/octet-stream',
+				'Content-Type'              => mime_content_type($file),
 				'Cache-Control'             => 'private',
 				'Content-Transfer-Encoding' => 'Binary',
 				'Content-Length'            => filesize($file),

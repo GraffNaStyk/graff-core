@@ -47,12 +47,19 @@ class Storage
         return $this;
     }
     
+    public function path(string $path): string
+    {
+    	return $this->disk.$path;
+    }
+    
     public function put(string $file, string $content, ?int $flags = null): Storage
     {
     	$file = ltrim($file, '/');
+    	$mask = umask(0);
     	
     	if (file_put_contents($this->disk.'/'.$file, $content, $flags)) {
 		    chmod($this->disk.'/'.$file, 0775);
+		    umask($mask);
 	    } else {
     		throw new \DomainException('Cannot create file in path '.$this->disk.'/'.$file);
 	    }
