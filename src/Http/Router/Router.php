@@ -278,6 +278,10 @@ final class Router extends Route
 
     public function setParams(): void
     {
+	    if (php_sapi_name() === 'cli' || php_sapi_name() === 'cli-server') {
+		    $this->resolveCliCall();
+	    }
+	    
         $routeExist = false;
 
         foreach (self::$routes as $key => $route) {
@@ -370,4 +374,27 @@ final class Router extends Route
     {
         return self::$route->getController().'@'.self::$route->getAction();
     }
+	
+	private function resolveCliCall()
+	{
+		$response = new Response();
+		
+		if (preg_match('/\.(?:css|js|jpe?g|gif|png|ico|ttf|woff)$/', self::$url)) {
+			$path = app_path('/public'.self::$url);
+			$file = file_get_contents($path);
+			
+			if (str_contains(self::$url, '.css')) {
+				$response->setHeader('Content-type', 'text/css');
+			} else if (str_contains(self::$url, '.js')) {
+				$response->setHeader('Content-type', 'application/javascript');
+			} else if (str_contains(self::$url, '.ttf')  || str_contains(self::$url, '.woff')) {
+				$response->setHeader('Content-type', 'font/woff2');
+			} else {
+				$response->setHeader('Content-type', mime_content_type($path));
+			}
+			
+			echo $response->setContent($file)->getResponse();
+			exit;
+		}
+	}
 }

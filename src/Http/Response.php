@@ -119,7 +119,10 @@ class Response
 	public function setContent(string $content): self
 	{
 		$this->content = $content;
-		$this->setHeader('Content-type', 'text/html;charset=utf-8');
+		
+		if (! isset($this->customHeaders['Content-type'])) {
+			$this->setHeader('Content-type', 'text/html;charset=utf-8');
+		}
 		
 		return $this;
 	}
