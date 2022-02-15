@@ -2,6 +2,7 @@
 
 namespace App\Facades\Db;
 
+use App\Attributes\Table\Table;
 use App\Facades\Config\Config;
 use App\Facades\Http\App;
 use App\Facades\Url\Url;
@@ -21,6 +22,7 @@ class Db
     public ?string $as = null;
 	private string $connection = 'default';
 	private static array $connections = [];
+	private Entity $entity;
 
     private static array $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -32,9 +34,10 @@ class Db
 
     public function __construct($model)
     {
-        $this->table = $model::$table;
-	    $this->model = Url::segment($model, 'end', '\\');
+        $this->table       = $model::$table;
+	    $this->model       = Url::segment($model, 'end', '\\');
 		$this->modelObject = $model;
+		$this->entity      = new Entity($model);
 		
         if (property_exists($model, 'trigger')) {
             $this->hasTrigger = $model::$trigger;
@@ -505,14 +508,14 @@ class Db
                 $pdo->execute($this->data);
 
                 if ($this->first) {
-                    return $pdo->fetch(PDO::FETCH_OBJ);
+                    return $this->entity->parse($pdo->fetch(PDO::FETCH_OBJ));
                 }
 
                 if ($this->selectGroup) {
                     $this->selectGroup = false;
                     return $pdo->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_OBJ);
                 } else {
-                	return $pdo->fetchAll(PDO::FETCH_OBJ);
+                	return $this->entity->parse($pdo->fetchAll(PDO::FETCH_OBJ));
                 }
             } catch (PDOException $e) {
                 Handle::throwException($e, $this->develop(true));
@@ -527,7 +530,7 @@ class Db
 	    $pdo = self::$db->prepare($this->query);
 	    $pdo->execute($this->data);
 	
-	    while ($record = $pdo->fetch(PDO::FETCH_OBJ)) {
+	    while ($record = $this->entity->parse($pdo->fetch(PDO::FETCH_OBJ))) {
 	    	yield $record;
 	    	unset($record);
 	    }
@@ -589,11 +592,6 @@ class Db
     {
         $this->query .= ')';
         return $this;
-    }
-
-    public function __call($name, $arguments)
-    {
-        self::$db->{$name}();
     }
 	
 	public function getEnumValues(string $field): array

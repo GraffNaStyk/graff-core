@@ -26,4 +26,9 @@ class Str
 		$string = preg_replace('~[^-\w]+~', '', $string);
 		return trim($string);
 	}
+	
+	public static function toSnakeCase(string $string): string
+	{
+		return strtolower(preg_replace('/(?<!^)[A-Z]+|(?<!^|\d)[\d]+/', '_$0', $string));
+	}
 }
