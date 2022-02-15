@@ -14,7 +14,7 @@ class Entity
 	
 	public function parse(array|object $items): array|object
 	{
-		if (! Config::get('use_entity')) {
+		if (! Config::get('app.use_entity')) {
 			return $items;
 		}
 		
