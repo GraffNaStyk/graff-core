@@ -399,7 +399,7 @@ class Db
     public function exist()
     {
         $res = $this->first();
-
+        
         if (empty($res)) {
             return false;
         }
@@ -506,10 +506,14 @@ class Db
             try {
                 $pdo = self::$db->prepare($this->query);
                 $pdo->execute($this->data);
-
-                if ($this->first) {
-                    return $this->entity->parse($pdo->fetch(PDO::FETCH_OBJ));
-                }
+	
+	            if ($this->first) {
+		            if (! $res = $pdo->fetch(PDO::FETCH_OBJ)) {
+			            return null;
+		            }
+		
+		            return $this->entity->parse($res);
+	            }
 
                 if ($this->selectGroup) {
                     $this->selectGroup = false;
