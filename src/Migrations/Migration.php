@@ -4,7 +4,6 @@ namespace App\Facades\Migrations;
 
 use App\Facades\Config\Config;
 use App\Facades\Db\Db;
-use App\Facades\Dependency\AttributeReflector;
 use App\Facades\Storage\Storage;
 
 class Migration
@@ -31,14 +30,12 @@ class Migration
             if (! isset($migrationContent[$migration]) || $isDump) {
                 $migrationContent[$migration] = ['date' => date('Y-m-d H:i:s')];
                 $migration = new $migration();
-                $attrReflector = new AttributeReflector();
-                $attrReflector->reflect(new \ReflectionClass($migration));
-                $migration->up(new Schema(Config::get('app.model_path').$attrReflector->get('table'), $isDump));
+	            $migration->up(new Schema(Config::get('app.model_path').$migration->model, $isDump));
             }
         }
 	
 	    $this->storage
-            ->put('/db/migrations.json', json_encode($migrationContent, JSON_PRETTY_PRINT), FILE_APPEND);
+		    ->put('/db/migrations.json', json_encode($migrationContent, JSON_PRETTY_PRINT));
     }
 
     public function down()
@@ -46,9 +43,7 @@ class Migration
         foreach (glob(app_path('/app/migrate/Migration_*.php')) as $migration) {
             $migration = self::MIGRATION_DIR.basename(str_replace('.php', '', $migration));
             $migration = new $migration();
-	        $attrReflector = new AttributeReflector();
-	        $attrReflector->reflect(new \ReflectionClass($migration));
-            $migration->down(new Schema(Config::get('app.model_path').$attrReflector->get('table')));
+	        $migration->down(new Schema(Config::get('app.model_path').$migration->model));
         }
 
         $this->storage->remove('/db/migrations.json');
