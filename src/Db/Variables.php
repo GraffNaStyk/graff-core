@@ -37,6 +37,4 @@ trait Variables
     private int $startBracketCount = 0;
 	
 	private ?string $model;
-	
-	protected string $modelObject;
 }

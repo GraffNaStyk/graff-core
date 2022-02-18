@@ -3,6 +3,7 @@
 namespace App\Facades\Migrations;
 
 use App\Facades\Db\Db;
+use App\Facades\Dependency\AttributeReflector;
 
 class Blueprint
 {
@@ -44,7 +45,9 @@ class Blueprint
     public function __construct($model, $store = false)
     {
         $this->db = new Db($model);
-        $this->table = $this->db->table;
+	    $attrReflector = new AttributeReflector();
+	    $attrReflector->reflect(new \ReflectionClass($model));
+        $this->table = $attrReflector->get('table');
         $this->store = $store;
     }
     

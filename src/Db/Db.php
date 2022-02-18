@@ -4,6 +4,7 @@ namespace App\Facades\Db;
 
 use App\Attributes\Table\Table;
 use App\Facades\Config\Config;
+use App\Facades\Dependency\AttributeReflector;
 use App\Facades\Http\App;
 use App\Facades\Url\Url;
 use App\Facades\Validator\Type;
@@ -14,15 +15,13 @@ class Db
 {
     use Variables;
     use Builder;
-
-    /**
-     * @var PDO
-     */
-    private static ?object $db = null;
+    
+    private static PDO|null $db = null;
     public ?string $as = null;
 	private string $connection = 'default';
 	private static array $connections = [];
 	private Entity $entity;
+	private AttributeReflector $reflector;
 
     private static array $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -31,18 +30,17 @@ class Db
         PDO::ATTR_EMULATE_PREPARES => false,
 //	    PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8;'
     ];
-
-    public function __construct($model)
-    {
-        $this->table       = $model::$table;
-	    $this->model       = Url::segment($model, 'end', '\\');
-		$this->modelObject = $model;
+	
+	public function __construct(string $model)
+	{
 		$this->entity      = new Entity($model);
+		$this->reflector   = new AttributeReflector();
+		$this->reflector->reflect(new \ReflectionClass($model));
 		
-        if (property_exists($model, 'trigger')) {
-            $this->hasTrigger = $model::$trigger;
-        }
-    }
+		$this->table       = $this->reflector->get('table');
+		$this->model       = Url::segment($model, 'end', '\\');
+		$this->hasTrigger = $this->reflector->get('isTriggered');
+	}
     
     public function connection(string $connection): Db
     {
