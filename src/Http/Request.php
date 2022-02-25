@@ -31,6 +31,8 @@ final class Request
     public Bag $cookie;
     
     private Sanitizer $sanitizer;
+    
+    private bool $isJson = false;
 
     const METHOD_POST = 'post';
     const METHOD_GET = 'get';
@@ -70,6 +72,8 @@ final class Request
         if (isset($_FILES) && ! empty($_FILES)) {
             $this->file = $_FILES;
         }
+	
+	    $data = (array) json_decode(file_get_contents('php://input'));
 
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'POST':
@@ -82,19 +86,26 @@ final class Request
                 break;
             case 'DELETE':
                 $this->method = 'delete';
-                $this->data = (array) json_decode(file_get_contents('php://input'));
+                $this->data = $data;
                 break;
             case 'PUT':
                 $this->method = 'put';
-                $this->data = (array) json_decode(file_get_contents('php://input'));
+                $this->data = $data;
                 break;
         }
-
-        if ($this->headers->has('Content-Type')
-	        && mb_strtolower($this->headers->get('Content-Type')) === 'application/json'
+        
+        if (($this->headers->has('Content-Type')
+	        && $this->headers->get('Content-Type') === 'application/json')
+	        || ! empty($data)
         ) {
-            $this->data = (array) json_decode(file_get_contents('php://input'));
+            $this->data   = $data;
+            $this->isJson = true;
         }
+    }
+    
+    public function isJson(): bool
+    {
+        return $this->isJson;
     }
 
     public function isPost(): bool
@@ -123,7 +134,7 @@ final class Request
 		
 		if (function_exists('getallheaders')) {
 			foreach (getallheaders() as $key => $item) {
-				$headers[mb_strtolower($key)] = $item;
+				$headers[$key] = $item;
 			}
 		} else {
 			$rx_http = '/\AHTTP_/';
@@ -139,7 +150,7 @@ final class Request
 						$arh_key = implode('-', $rx_matches);
 					}
 					
-					$headers[mb_strtolower($arh_key)] = $val;
+					$headers[$arh_key] = $val;
 				}
 			}
 		}
@@ -150,11 +161,6 @@ final class Request
     public function setData(array $data): void
     {
         $this->data = array_merge($this->data, $data);
-    }
-
-    public function getData(): array
-    {
-        return $this->data;
     }
 	
 	public function sanitize(): void

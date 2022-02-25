@@ -136,6 +136,7 @@ class Schema extends Blueprint
         }
 
         $this->otherImplementation .= ' UNIQUE ('.$this->currentFieldName.$uniques.'), ';
+        
         return $this;
     }
 

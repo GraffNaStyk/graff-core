@@ -17,7 +17,7 @@ class Migration
 		$this->storage->disk('/var');
 	}
 	
-    public function up(bool $isDump = false)
+    public function up(bool $isDump = false): void
     {
         $migrationContent = (array) json_decode(
 	        $this->storage->get('/db/migrations.json'),
@@ -38,7 +38,7 @@ class Migration
 		    ->put('/db/migrations.json', json_encode($migrationContent, JSON_PRETTY_PRINT));
     }
 
-    public function down()
+    public function down(): void
     {
         foreach (glob(app_path('/app/migrate/Migration_*.php')) as $migration) {
             $migration = self::MIGRATION_DIR.basename(str_replace('.php', '', $migration));
@@ -49,7 +49,7 @@ class Migration
         $this->storage->remove('/db/migrations.json');
     }
 
-    public function dump()
+    public function dump(): void
     {
         $this->up(true);
     }

@@ -3,7 +3,6 @@
 namespace App\Facades\Url;
 
 use App\Facades\Http\Router\Router;
-use JetBrains\PhpStorm\Pure;
 
 class Url
 {
@@ -34,7 +33,7 @@ class Url
 		return $url.'/'.self::withAlias();
 	}
 	
-	#[Pure] public static function full(): string
+	public static function full(): string
 	{
 		return Router::checkProtocol().'://'.$_SERVER['HTTP_HOST'];
 	}

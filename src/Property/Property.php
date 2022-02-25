@@ -4,7 +4,7 @@ namespace App\Facades\Property;
 
 class Property
 {
-    public static function exist($iterable, iterable $offset, int $i)
+    public static function exist($iterable, iterable $offset, int $i): mixed
     {
         if (is_object($iterable)) {
             if (! property_exists($iterable, $offset[$i])) {

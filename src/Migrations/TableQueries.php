@@ -11,8 +11,12 @@ trait TableQueries
 
     public function hasColumn(string $table, string $name): bool
     {
-        $result = $this->db->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "'.$table.'"
-                        AND COLUMN_NAME = "'.$name.'" AND TABLE_SCHEMA = "'.$this->db->getDbName().'"');
+        $result = $this->db->query(
+        	'SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+						WHERE TABLE_NAME = "'.$table.'"
+                        AND COLUMN_NAME = "'.$name.'"
+                        AND TABLE_SCHEMA = "'.$this->db->getDbName().'"'
+        );
 
         if (! empty($result)) {
             return true;
@@ -23,8 +27,11 @@ trait TableQueries
 
     public function hasTable(string $table): bool
     {
-        $result = $this->db->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "'.$table.'"
-                        AND TABLE_SCHEMA = "'.$this->db->getDbName().'"');
+        $result = $this->db->query(
+        	'SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+						WHERE TABLE_NAME = "'.$table.'"
+                        AND TABLE_SCHEMA = "'.$this->db->getDbName().'"'
+        );
 
         if (! empty($result)) {
             return true;

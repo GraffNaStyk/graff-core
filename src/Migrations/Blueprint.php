@@ -58,15 +58,15 @@ class Blueprint
 
     public function generate($name, $fnName, $length = null)
     {
-        $this->lastCalled = $fnName;
+        $this->lastCalled       = $fnName;
         $this->currentFieldName = '`'.$name.'`';
-        $this->tableFields[] = '`'.$name.'`'.' '.$this->lastCalled.' '.
+        $this->tableFields[]    = '`'.$name.'`'.' '.$this->lastCalled.' '.
             ($length ? '('.$length.')' : $this->length[$this->lastCalled]).' '.$this->notNull;
 
         $this->currentKey = array_key_last($this->tableFields);
     }
 
-    public function run()
+    public function run(): ?bool
     {
 	    $this->initialize();
 
@@ -82,7 +82,7 @@ class Blueprint
                 $this->sql = $this->startSql.'`'.trim($this->table).'`'.' ( '.$fields.$this->endSql;
             }
 
-            if ($this->store === true) {
+            if ($this->store) {
                 $this->storeMigration();
                 return true;
             } else {
@@ -120,9 +120,11 @@ class Blueprint
                 }
             }
         }
+        
+        return null;
     }
 
-    public function drop()
+    public function drop(): void
     {
     	$this->initialize();
 
@@ -134,13 +136,13 @@ class Blueprint
             .$this->db->getDbName().'"');
 
         foreach ($triggers as $trigger) {
-            if ((string) mb_strtolower($this->db->table) === (string) mb_strtolower($triggers->event_object_table)) {
+            if (mb_strtolower($this->db->table) === mb_strtolower($triggers->event_object_table)) {
                 $this->db->query('DROP TRIGGER '.$trigger->trigger_name);
             }
         }
     }
 
-    public function clear()
+    public function clear(): void
     {
 	    $this->initialize();
 
@@ -149,7 +151,7 @@ class Blueprint
         }
     }
 
-    protected function storeMigration()
+    protected function storeMigration(): void
     {
 	    $name = $this->db->getConnectionName().'_dump_'.date('Y_m_d__H_i_s').'.sql';
         file_put_contents(app_path('app/migrate/'.$name), $this->sql.';'.PHP_EOL.PHP_EOL, FILE_APPEND);

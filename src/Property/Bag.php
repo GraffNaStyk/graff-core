@@ -16,7 +16,7 @@ class Bag
 		return Has::check($this->bag, $offset);
 	}
 	
-	public function get(?string $offset=null)
+	public function get(?string $offset=null): mixed
 	{
 		if ($offset === null) {
 			return $this->bag;
@@ -25,7 +25,7 @@ class Bag
 		return Get::check($this->bag, $offset);
 	}
 	
-	public function all()
+	public function all(): mixed
 	{
 		return $this->get();
 	}

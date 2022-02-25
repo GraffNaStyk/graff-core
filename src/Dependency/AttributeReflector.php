@@ -8,7 +8,7 @@ class AttributeReflector
 {
 	use PropertyFacade;
 	
-	public function reflect(\ReflectionClass $reflectionClass)
+	public function reflect(\ReflectionClass $reflectionClass): ?self
 	{
 		$attributes = [];
 		

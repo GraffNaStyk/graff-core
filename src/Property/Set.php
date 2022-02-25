@@ -4,7 +4,7 @@ namespace App\Facades\Property;
 
 class Set
 {
-    public static function set($where, $data, $item)
+    public static function set($where, $data, $item): mixed
     {
         $item = explode('.', $item);
 

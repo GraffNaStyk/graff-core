@@ -7,32 +7,32 @@ use App\Facades\Helpers\Dir;
 class Storage
 {
     public const MIMES = [
-        'txt' => 'text/plain',
-        'css' => 'text/css',
+        'txt'  => 'text/plain',
+        'css'  => 'text/css',
         'json' => 'application/json',
-        'xml' => 'application/xml',
+        'xml'  => 'application/xml',
         // images
-        'png' => 'image/png',
-        'jpe' => 'image/jpeg',
+        'png'  => 'image/png',
+        'jpe'  => 'image/jpeg',
         'jpeg' => 'image/jpeg',
-        'jpg' => 'image/jpeg',
-        'gif' => 'image/gif',
-        'bmp' => 'image/bmp',
-        'ico' => 'image/vnd.microsoft.icon',
+        'jpg'  => 'image/jpeg',
+        'gif'  => 'image/gif',
+        'bmp'  => 'image/bmp',
+        'ico'  => 'image/vnd.microsoft.icon',
         'tiff' => 'image/tiff',
-        'tif' => 'image/tiff',
-        'svg' => 'image/svg+xml',
+        'tif'  => 'image/tiff',
+        'svg'  => 'image/svg+xml',
         // archives
         'zip' => 'application/zip',
         // audio/video
         'mp3' => 'audio/mpeg',
-        'qt' => 'video/quicktime',
+        'qt'  => 'video/quicktime',
         'mov' => 'video/quicktime',
         // adobe
         'pdf' => 'application/pdf',
         // ms office
-        'doc' => 'application/msword',
-        'xls' => 'application/vnd.ms-excel',
+        'doc'  => 'application/msword',
+        'xls'  => 'application/vnd.ms-excel',
         'docx' => 'application/msword',
         'xlsx' => 'application/vnd.ms-excel',
     ];
@@ -111,11 +111,12 @@ class Storage
 			$location .= $as
 				? mb_strtolower($as).'.'.$pathInfo['extension']
 				: mb_strtolower($file['name']);
+			$mask      = umask(0);
 			
-			
-			if (move_uploaded_file($file['tmp_name'], $location) && $this->checkFile($location)) {
+			if ($this->checkFile($location) && move_uploaded_file($file['tmp_name'], $location)) {
 				chmod($location, 0775);
-				
+				umask($mask);
+
 				if ($closure !== null) {
 					$closure([
 						'name' => $pathInfo['filename'],

@@ -4,7 +4,7 @@ namespace App\Facades\Property;
 
 class Get
 {
-    public static function check($iterable, $offset)
+    public static function check($iterable, $offset): mixed
     {
         if (! is_array($offset)) {
             $offset = explode('.', $offset);

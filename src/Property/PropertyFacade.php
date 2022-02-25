@@ -18,7 +18,7 @@ trait PropertyFacade
 		return Has::check($this->params, $offset);
 	}
 
-	public function get(?string $offset=null)
+	public function get(?string $offset=null): mixed
 	{
 		if ($offset === null) {
 			return $this->params;
