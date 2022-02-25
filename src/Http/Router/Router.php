@@ -130,7 +130,7 @@ final class Router extends Route
             'rights'      => self::$route->getRights(),
             'middlewares' => self::$route->getMiddleware(),
             'method'      => self::$route->getMethod(),
-            'params'      => $this->request->getData()
+            'params'      => $this->request->all()
         ];
     }
 
