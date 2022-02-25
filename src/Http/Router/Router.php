@@ -223,7 +223,7 @@ final class Router extends Route
     private function getMethodParams(array $reflectionParams, object $controller): array
     {
 	     $combinedParams   = [];
-	     $requestParams    = $this->request->getData();
+	     $requestParams    = $this->request->all();
 	     $reqParamIterator = 0;
 	     
 	     foreach ($reflectionParams as $key => $param) {
