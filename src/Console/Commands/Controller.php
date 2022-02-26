@@ -47,7 +47,7 @@ class Controller extends Command
 			if (! file_exists(view_path(strtolower($namespace).'/'.strtolower($name).'/'.$view))) {
 				file_put_contents(
 					view_path(strtolower($namespace).'/'.strtolower($name).'/'.$view),
-					file_get_contents(app_path('/app/facades/files/view'))
+					file_get_contents(src_path('/Console/Files/view'))
 				);
 			}
 		}

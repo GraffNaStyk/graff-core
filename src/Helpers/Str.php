@@ -31,4 +31,9 @@ class Str
 	{
 		return strtolower(preg_replace('/(?<!^)[A-Z]+|(?<!^|\d)[\d]+/', '_$0', $string));
 	}
+	
+	public static function toLineSeparator(string $string): string
+	{
+		return strtolower(preg_replace('/(?<!^)[A-Z]+|(?<!^|\d)[\d]+/', '-$0', $string));
+	}
 }
