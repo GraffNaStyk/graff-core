@@ -36,13 +36,13 @@ class View extends Command
 		
 		$view = $this->input('Insert view name: ');
 		
-		Dir::create(view_path(strtolower($this->parser->get('ns')).'/'.ucfirst($this->parser->get('d'))));
-		
 		if (! is_readable(
 			view_path(
 				strtolower($this->parser->get('ns')).'/'.ucfirst($this->parser->get('d')).'/'.$view.'.twig'
 			)
 		)) {
+			Dir::create(view_path(strtolower($this->parser->get('ns')).'/'.ucfirst($this->parser->get('d'))));
+			
 			file_put_contents(
 				view_path(
 					strtolower($this->parser->get('ns')).'/'.ucfirst($this->parser->get('d')).'/'.$view.'.twig'
@@ -52,34 +52,22 @@ class View extends Command
 		}
 		
 		if ($this->input('Create Javascript file?') === 'y') {
-			if (! is_readable(
-				js_path(
-					strtolower($this->parser->get('ns')).'/'.strtolower($this->parser->get('d')).'/'.Str::toLineSeparator($view).'.js'
-				)
-			)) {
-				Dir::create(js_path(strtolower($this->parser->get('ns')).'/'.strtolower($this->parser->get('d'))));
-				
-				file_put_contents(
-					js_path(
-						strtolower($this->parser->get('ns')) .'/'.strtolower($this->parser->get('d')).'/'.Str::toLineSeparator($view).'.js'
-					),
-					'');
+			$path = js_path(strtolower($this->parser->get('ns')).'/' .strtolower($this->parser->get('d')).'/');
+			$file = Str::toLineSeparator($view).'.js';
+			
+			if (! is_readable($path.$file)) {
+				Dir::create($path);
+				file_put_contents($path.$file,'');
 			}
 		}
 		
 		if ($this->input('Create css file?') === 'y') {
-			if (! is_readable(
-				css_path(
-					strtolower($this->parser->get('ns')).'/'.strtolower($this->parser->get('d')).'/'.Str::toLineSeparator($view).'.css'
-				)
-			)) {
-				Dir::create(css_path(strtolower($this->parser->get('ns')).'/'.strtolower($this->parser->get('d'))));
-				
-				file_put_contents(
-					css_path(
-						strtolower($this->parser->get('ns')).'/'.strtolower($this->parser->get('d')).'/'.Str::toLineSeparator($view).'.css'
-					),
-					'');
+			$path = css_path(strtolower($this->parser->get('ns')).'/'.strtolower($this->parser->get('d')).'/');
+			$file = Str::toLineSeparator($view).'.css';
+			
+			if (! is_readable($path.$file)) {
+				Dir::create($path);
+				file_put_contents($path.$file,'');
 			}
 		}
 		
