@@ -3,6 +3,7 @@
 namespace App\Facades\Http;
 
 use App\Facades\Config\Config;
+use App\Facades\Helpers\Str;
 use App\Facades\Http\Router\Router;
 use App\Facades\TwigExt\TwigExt;
 use Twig;
@@ -45,7 +46,7 @@ final class View
     private static function setView(): void
     {
         self::$view = self::$view ?? Router::getAction();
-        self::$view = strtolower(implode('-', preg_split('/(?=[A-Z])/', self::$view)));
+        self::$view = Str::toLineSeparator(self::$view);
     }
 
     public static function layout(string $layout): void

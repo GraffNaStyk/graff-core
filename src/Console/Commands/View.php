@@ -34,7 +34,7 @@ class View extends Command
 				->close();
 		}
 		
-		$view = $this->input('Insert view name: ');
+		$view = Str::toLineSeparator($this->input('Insert view name '));
 		
 		if (! is_readable(
 			view_path(
