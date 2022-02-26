@@ -110,13 +110,13 @@ abstract class AbstractController
         return $response->send();
     }
     
-    public function routeParams(?string $param = null)
+    public function routeParams(?string $param = null): mixed
     {
     	if ($param === null) {
     		return static::$routeParams;
 	    }
     	
-    	return static::$routeParams[$param];
+    	return static::$routeParams[$param] ?? null;
     }
     
     private function routes(string $route): ?string
