@@ -41,15 +41,11 @@ trait JavaScriptLoader
 	protected function enableJsAutoload(): void
 	{
 		$loaded = null;
+		$class  =  strtolower(Router::getClass());
 		
-		if (is_readable(js_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction().'.js'))) {
+		if (is_readable(js_path(Router::getAlias().'/'.$class.'/'.Router::getAction().'.js'))) {
 			$loaded = trim('<script type="application/javascript" src="'.
-				Url::full().'/'.str_replace(
-					app_path(),
-					'',
-					js_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction())
-				).
-				'.js"></script>'
+				Url::full().$this->jsDir.'/'.Router::getAlias().'/'.$class.'/'.Router::getAction().'.js"></script>'
 			);
 		}
 		

@@ -41,18 +41,14 @@ trait CssLoader
 	protected function enableCssAutoload(): void
 	{
 		$loaded = null;
+		$class  = strtolower(Router::getClass());
 		
-		if (is_readable(css_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction().'.css'))) {
+		if (is_readable(css_path(Router::getAlias().'/'.$class.'/'.Router::getAction().'.css'))) {
 			$loaded = trim('<link rel="stylesheet" href="'.
-				Url::full().'/'.str_replace(
-					app_path(),
-					'',
-					css_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction())
-				).
-				'.css">'
+				Url::full().$this->cssDir.'/'.Router::getAlias().'/'.$class.'/'.Router::getAction(). '.css">'
 			);
 		}
-
+		
 		if ($loaded !== null) {
 			View::set(['css' => [$loaded]]);
 		}
