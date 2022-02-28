@@ -123,4 +123,9 @@ abstract class AbstractController
     {
         return self::$routes[$route] ?? null;
     }
+    
+    public function getUser(): ?object
+    {
+		return Session::get('user') ?: null;
+    }
 }
