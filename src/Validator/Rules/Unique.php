@@ -11,13 +11,19 @@ class Unique extends Rule
 	 */
 	private Model $model;
 	
-	public function __construct(string $model, private string $compareField)
+	public function __construct(
+		string $description,
+		string $model,
+		private string $compareField,
+		private string $compareType = '='
+	)
 	{
 		$this->model = new $model;
+		$this->description = $description;
 	}
 	
 	public function run(): bool
 	{
-		return (bool) $this->model->select()->where($this->compareField, '=', $this->field)->exist();
+		return (bool) $this->model->select()->where($this->compareField, $this->compareType, $this->field)->exist();
 	}
 }
