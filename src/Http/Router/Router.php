@@ -15,6 +15,7 @@ use App\Facades\Http\View;
 use App\Facades\Log\Log;
 use ReflectionClass;
 use ReflectionMethod;
+use function Couchbase\defaultDecoder;
 
 final class Router extends Route
 {
@@ -163,17 +164,16 @@ final class Router extends Route
     private function create(string $controller)
     {
         if (! class_exists($controller) || ! method_exists($controller, self::getAction())) {
-            self::abort();
+	        throw new \ReflectionException('Controller or method not exist: '. $controller.' method: '.self::getAction());
         }
 	
 	    $reflectionClass = new ReflectionClass($controller);
 	
-	    if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
-		    self::abort();
+	    if ($reflectionClass->getMethod(self::getAction())->class !== $controller) {
 		    throw new \ReflectionException('Controller not exist : '. $controller);
 	    }
 
-        if (substr(self::getAction(), 0, 4) === self::TEST_METHOD_PREFIX && ! Config::get('app.dev')) {
+        if (str_starts_with(self::getAction(), self::TEST_METHOD_PREFIX) && ! Config::get('app.dev')) {
             throw new \LogicException('Cannot read test method if env is set to production');
         }
 
@@ -188,7 +188,7 @@ final class Router extends Route
         }
         
         if ($reflectionMethod->getReturnType()->getName() !== Response::class) {
-            throw new \LogicException('Controller return type declaration mus be a instance of '.Response::class);
+            throw new \LogicException('Controller return type declaration must be a instance of '.Response::class);
         }
 
         AbstractController::$routeParams = $this->routeParams();
@@ -225,7 +225,7 @@ final class Router extends Route
 	     $combinedParams   = [];
 	     $requestParams    = $this->request->all();
 	     $reqParamIterator = 0;
-	     
+
 	     foreach ($reflectionParams as $key => $param) {
 		     $refParam = new \ReflectionParameter([$controller, self::getAction()], $key);
 		     $class    = $refParam->getType()->getName();

@@ -31,6 +31,8 @@ class Db
 //	    PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8;'
     ];
 	
+    const PER_PAGE = 25;
+    
 	public function __construct(string $model)
 	{
 		$this->entity      = new Entity($model);
@@ -369,32 +371,32 @@ class Db
 
     public function paginate(int $page): Db
     {
-        $this->limit(App::PER_PAGE)
-            ->offset(($page - 1) * App::PER_PAGE);
+        $this->limit(self::PER_PAGE)
+            ->offset(($page - 1) * self::PER_PAGE);
 
         return $this;
     }
 
-    public function create(array $values)
+    public function create(array $values): mixed
     {
         $this->insert($values);
 
         return $this->execute();
     }
 
-    public function first()
+    public function first(): mixed
     {
         $this->first = true;
 
         return $this->execute();
     }
 
-    public function get()
+    public function get(): mixed
     {
         return $this->execute();
     }
 
-    public function exist()
+    public function exist(): mixed
     {
         $res = $this->first();
         
@@ -459,20 +461,12 @@ class Db
         } else {
             $twoValue = $this->prepareValueForWhere($value2);
         }
-	
-        $path         = Config::get('app.model_path');
-	    $object       = explode(' ', $table)[0];
-	    $stringObject = $path.$object;
-	
-	    if (class_exists($path.$object)) {
-		    $table = str_replace($object, $stringObject::$table, $table);
-	    }
-
+        
         $this->query .= " {$type} JOIN {$this->prepareValueForWhere($table)} ON
                             {$this->prepareValueForWhere($value1)} {$by} {$twoValue}";
     }
 
-    private function execute()
+    private function execute(): mixed
     {
 	    if (empty($this->query)) {
 		    return null;
@@ -596,19 +590,21 @@ class Db
         return $this;
     }
 	
-	public function getEnumValues(string $field): array
+	public function getEnumValues(string $field): ?array
 	{
 		$this->first = true;
-		$res = $this->query("SELECT SUBSTRING(COLUMN_TYPE,5) as params
-								FROM information_schema.COLUMNS
-								WHERE TABLE_NAME='{$this->table}' AND COLUMN_NAME='{$field}'"
-		);
+		$res = $this->query(
+			"SELECT SUBSTRING(COLUMN_TYPE,5) as params
+					 FROM information_schema.COLUMNS
+					   WHERE TABLE_NAME = '{$this->table}'
+					   AND COLUMN_NAME = '{$field}'"
+			);
 
 		if (isset($res[0]->params)) {
 			return explode(',', str_replace(['(', ')', "'"], ['', '', ''], $res[0]->params));
 		}
 		
-		return [];
+		return null;
 	}
 	
 	public function getConnectionName(): string
