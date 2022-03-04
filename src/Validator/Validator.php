@@ -29,4 +29,9 @@ class Validator implements ValidatorInterface
 	{
 		return static::$errors;
 	}
+	
+	public static function setErrors(array $errors): void
+	{
+		static::$errors = $errors;
+	}
 }

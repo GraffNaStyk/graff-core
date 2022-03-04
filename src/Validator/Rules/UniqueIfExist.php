@@ -4,7 +4,7 @@ namespace App\Facades\Validator\Rules;
 
 use App\Facades\Db\Model;
 
-class Unique extends Rule
+class UniqueIfExist extends Rule
 {
 	/**
 	 * @var Model
@@ -24,6 +24,9 @@ class Unique extends Rule
 	
 	public function run(): bool
 	{
-		return ! (bool) $this->model->select()->where($this->compareField, $this->compareType, $this->field)->exist();
+		return ! (bool) $this->model->select()
+			->where($this->compareField, $this->compareType, $this->field)
+			->where($this->compareField, '<>', $this->field)
+			->exist();
 	}
 }

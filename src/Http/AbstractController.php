@@ -65,7 +65,13 @@ abstract class AbstractController
 	
 	public function validate(array $request, object $rule): bool
 	{
-		return Validator::validate($request, $rule->getRules());
+		$validate = Validator::validate($request, $rule->getRules());
+		
+		if (method_exists($rule, 'afterValidate')) {
+			Validator::setErrors($rule->afterValidate(Validator::getErrors()));
+		}
+		
+		return $validate;
 	}
 
     public function sendSuccess(string $message = null, array $params = [], int $status = 200): Response
