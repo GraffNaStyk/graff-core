@@ -72,6 +72,8 @@ class TwigExt extends AbstractExtension
 				foreach ($params as $key => $param) {
 					$url = str_replace('{'.$key.'}', $param, $url);
 				}
+			} else {
+				$url = rtrim(preg_replace('/{(.*?)}/', null, $url), '/');
 			}
 			
 			echo $url;
