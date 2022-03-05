@@ -13,7 +13,6 @@ class Unique extends Rule
 	
 	public function __construct(
 		string $model,
-		private string $compareField,
 		?string $description = null,
 		private string $compareType = '=',
 	)
@@ -24,6 +23,6 @@ class Unique extends Rule
 	
 	public function run(): bool
 	{
-		return ! (bool) $this->model->select()->where($this->compareField, $this->compareType, $this->field)->exist();
+		return ! (bool) $this->model->select()->where($this->key, $this->compareType, $this->field)->exist();
 	}
 }

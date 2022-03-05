@@ -13,6 +13,7 @@ class Validator implements ValidatorInterface
 		foreach ($rules as $key => $rule) {
 			foreach ($rule as $eachRule) {
 				$eachRule->setField($request[$key]);
+				$eachRule->setKey($key);
 
 				if (! $eachRule->run()) {
 					$errors[] = ['field' => $key, 'msg' => $eachRule->getErrorMessage()];

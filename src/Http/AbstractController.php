@@ -3,7 +3,6 @@
 namespace App\Facades\Http;
 
 use App\Facades\Http\Router\Router;
-use App\Facades\Storage\Storage;
 use App\Facades\Url\Url;
 use App\Facades\Validator\Validator;
 
@@ -21,29 +20,36 @@ abstract class AbstractController
     {
         Session::remove('beAjax');
     }
-
-    public function redirect(?string $path, int $code = 302, bool $direct = false): Response
-    {
-        return (new Response())->redirect($path, $code, $direct)->send();
-    }
     
-    public function redirectToRoute(string $route, int $code = 302, bool $direct = false): Response
+    public function redirectToRoute(string $route, array $params = [], bool $direct = false): Response
     {
     	$route = $this->routes($route);
     	
     	if ($route === null) {
     		throw new \LogicException('Route '.$route.' not exist');
 	    }
+	
+	    if (! empty($params)) {
+		    foreach ($params as $key => $param) {
+			    $route = str_replace('{'.$key.'}', $param, $route);
+		    }
+	    }
 
-	    return (new Response())->redirect($route, $code, $direct)->send();
+	    return (new Response())->redirect($route, 302, $direct)->send();
     }
 
-    public function path(string $route, bool $relative = false): string
+    public function getRoute(string $route, array $params = [], bool $relative = false): string
     {
 	    $route = $this->routes($route);
 	
 	    if ($route === null) {
 		    throw new \LogicException('Route '.$route.' not exist');
+	    }
+	
+	    if (! empty($params)) {
+		    foreach ($params as $key => $param) {
+			    $route = str_replace('{'.$key.'}', $param, $route);
+		    }
 	    }
 	    
 	    if ($relative) {

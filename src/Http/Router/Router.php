@@ -213,7 +213,7 @@ final class Router extends Route
         }
 
         AbstractController::$routeParams = $this->routeParams();
-        AbstractController::$routes = self::$urls;
+        AbstractController::$routes      = self::$urls;
 	       
         $constructorParams = $this->builder->getConstructorParameters($reflectionClass);
         $params            = $reflectionMethod->getParameters();
