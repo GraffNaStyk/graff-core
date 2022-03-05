@@ -13,7 +13,7 @@ class TriggerResolver
     {
         $object = Config::get('app.triggers_path').ucfirst($object).'Trigger';
 		
-        if (class_exists($object)) {
+        if (class_exists($object) && method_exists($object, $method)) {
 	        $reflector = new ReflectionClass($object);
 	
 	        if ($reflector->hasMethod('__construct')) {

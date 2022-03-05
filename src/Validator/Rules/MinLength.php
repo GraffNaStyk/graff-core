@@ -14,6 +14,6 @@ class MinLength extends Rule
 	
 	public function run(): bool
 	{
-		return strlen($this->field) >= $this->length;
+		return strlen($this->field) <= $this->length;
 	}
 }
