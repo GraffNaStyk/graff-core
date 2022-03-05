@@ -21,7 +21,8 @@ class TwigExt extends AbstractExtension
             $this->tooltip(),
             $this->options(),
             $this->route(),
-            $this->assets()
+            $this->assets(),
+	        $this->storage()
         ];
     }
 
@@ -47,6 +48,13 @@ class TwigExt extends AbstractExtension
 	        echo Url::full().'assets/'.ltrim('/', $url);
         });
     }
+	
+	public function storage(): TwigFunction
+	{
+		return new TwigFunction('storage', function ($url) {
+			echo Url::full().'/storage'.$url;
+		});
+	}
 
     public function url(): TwigFunction
     {

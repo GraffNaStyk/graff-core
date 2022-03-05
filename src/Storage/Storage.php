@@ -3,6 +3,7 @@
 namespace App\Facades\Storage;
 
 use App\Facades\Helpers\Dir;
+use App\Facades\Http\Response;
 
 class Storage
 {
@@ -51,6 +52,22 @@ class Storage
     {
     	return $this->disk.$path;
     }
+	
+	public function display(string $path): ?string
+	{
+		$path = str_replace('/storage', null, $path);
+		$path = array_filter(explode('/', $path));
+		$name = end($path);
+		array_pop($path);
+		
+		$disk = storage_path(implode('/', $path));
+		
+		if (is_readable($disk.'/'.$name)) {
+			return (new Response())->file($disk.'/'.$name)->getResponse();
+		}
+		
+		return null;
+	}
     
     public function put(string $file, string $content, ?int $flags = null): Storage
     {
@@ -113,14 +130,14 @@ class Storage
 				: mb_strtolower($file['name']);
 			$mask      = umask(0);
 			
-			if ($this->checkFile($location) && move_uploaded_file($file['tmp_name'], $location)) {
+			if (move_uploaded_file($file['tmp_name'], $location) && $this->checkFile($location)) {
 				chmod($location, 0775);
 				umask($mask);
 
 				if ($closure !== null) {
 					$closure([
 						'name' => $pathInfo['filename'],
-						'dir'  => $this->disk.$destination,
+						'dir'  => str_replace(storage_path(), '/storage/', $this->disk),
 						'ext'  => '.'.$pathInfo['extension'],
 						'sha1' => sha1_file($location)
 					]);

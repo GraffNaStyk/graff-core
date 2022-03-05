@@ -13,9 +13,9 @@ use App\Facades\Http\Request;
 use App\Facades\Http\Response;
 use App\Facades\Http\View;
 use App\Facades\Log\Log;
+use App\Facades\Storage\Storage;
 use ReflectionClass;
 use ReflectionMethod;
-use function Couchbase\defaultDecoder;
 
 final class Router extends Route
 {
@@ -32,6 +32,8 @@ final class Router extends Route
     private static ?Collection $route = null;
     
     const TEST_METHOD_PREFIX = 'test';
+    
+    const STORAGE_URL_PREFIX = '/storage/';
 
     public function __construct()
     {
@@ -50,6 +52,11 @@ final class Router extends Route
     public function boot(): void
     {
         $this->parseUrl();
+	
+	    if (str_contains(self::$url, self::STORAGE_URL_PREFIX)) {
+		    $this->returnStorageItem();
+	    }
+        
         $this->setParams();
         $this->request->sanitize();
 	
@@ -65,6 +72,20 @@ final class Router extends Route
         $this->runMiddlewares('before');
 	    $this->dispatchEvents('before');
     }
+	
+	private function returnStorageItem(): void
+	{
+		if ($this->builder->container->has(Storage::class)) {
+			$storage = $this->builder->container->get(Storage::class);
+		} else {
+			$storage = new Storage();
+			$this->builder->container->add(Storage::class, $storage);
+		}
+		
+		$storage->display(self::$url);
+
+		exit;
+	}
     
     public function resolveRequest(): void
     {
