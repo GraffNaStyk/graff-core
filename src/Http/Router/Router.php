@@ -33,7 +33,7 @@ final class Router extends Route
     
     const TEST_METHOD_PREFIX = 'test';
     
-    const STORAGE_URL_PREFIX = '/storage/';
+    const STORAGE_URL_PREFIX = '/storage';
 
     public function __construct()
     {

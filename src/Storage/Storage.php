@@ -148,7 +148,7 @@ class Storage
 			
 			throw new \Exception('Cannot upload file '.$file['name']);
 		}
-		
+
 		throw new \Exception('File has error '.$file['name']);
 	}
 	
