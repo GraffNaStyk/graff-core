@@ -6,10 +6,10 @@ class MaxLength extends Rule
 {
 	private int $length;
 	
-	public function __construct(int $length, string $description)
+	public function __construct(int $length, ?string $description = null)
 	{
 		$this->length      = $length;
-		$this->description = $description;
+		$this->description = $description ?? 'Max length is '.$this->length;
 	}
 	
 	public function run(): bool

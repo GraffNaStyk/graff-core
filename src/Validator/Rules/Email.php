@@ -4,9 +4,9 @@ namespace App\Facades\Validator\Rules;
 
 class Email extends Rule
 {
-	public function __construct(string $description)
+	public function __construct(?string $description = null)
 	{
-		$this->description = $description;
+		$this->description = $description ?? 'Must be a email';
 	}
 	
 	public function run(): bool

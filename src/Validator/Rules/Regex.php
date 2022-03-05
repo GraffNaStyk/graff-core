@@ -11,7 +11,7 @@ class Regex extends Rule
 	public function __construct(string $regex, string $description)
 	{
 		$this->regex       = '/'.trim($regex, '/').'/'.$this->flags;
-		$this->description = $description;
+		$this->description = $description ?? 'Must be like pattern '.$this->regex;
 	}
 	
 	public function run(): bool

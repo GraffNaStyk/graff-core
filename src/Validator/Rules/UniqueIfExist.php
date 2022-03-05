@@ -12,14 +12,14 @@ class UniqueIfExist extends Rule
 	private Model $model;
 	
 	public function __construct(
-		string $description,
 		string $model,
 		private string $compareField,
+		?string $description = null,
 		private string $compareType = '='
 	)
 	{
 		$this->model       = new $model;
-		$this->description = $description;
+		$this->description = $description ?? 'This value exist now';
 	}
 	
 	public function run(): bool

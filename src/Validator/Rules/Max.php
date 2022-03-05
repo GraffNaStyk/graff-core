@@ -6,10 +6,10 @@ class Max extends Rule
 {
 	private int $max;
 	
-	public function __construct(int $max, string $description)
+	public function __construct(int $max, ?string $description = null)
 	{
 		$this->max         = $max;
-		$this->description = $description;
+		$this->description = $description ?? 'Max value is '.$this->max;
 	}
 
 	public function run(): bool

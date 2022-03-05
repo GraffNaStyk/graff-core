@@ -6,10 +6,10 @@ class Min extends Rule
 {
 	private int $min;
 	
-	public function __construct(int $min, string $description)
+	public function __construct(int $min, ?string $description = null)
 	{
 		$this->min         = $min;
-		$this->description = $description;
+		$this->description = $description ?? 'Min value is '.$this->min;
 	}
 
 	public function run(): bool

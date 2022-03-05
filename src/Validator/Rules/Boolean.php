@@ -4,9 +4,9 @@ namespace App\Facades\Validator\Rules;
 
 class Boolean extends Rule
 {
-	public function __construct(string $description)
+	public function __construct(?string $description = null)
 	{
-		$this->description = $description;
+		$this->description = $description ?? 'Only 0 or 1.';
 	}
 	
 	public function run(): bool
