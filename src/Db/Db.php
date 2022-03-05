@@ -611,4 +611,14 @@ class Db
 	{
 		return $this->connection;
 	}
+	
+	public function beginTransaction()
+	{
+		$this->beginTransaction();
+	}
+	
+	public function commit()
+	{
+		$this->commit();
+	}
 }

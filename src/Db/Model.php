@@ -45,6 +45,8 @@ namespace App\Facades\Db;
  * @method Db endBracket()
  * @method Db getEnumValues(string $field)
  * @method Db getConnectionName()
+ * @method Db beginTransaction()
+ * @method Db commit()
  */
 abstract class Model
 {
