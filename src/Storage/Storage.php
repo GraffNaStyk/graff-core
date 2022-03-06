@@ -3,6 +3,7 @@
 namespace App\Facades\Storage;
 
 use App\Facades\Helpers\Dir;
+use App\Facades\Helpers\Str;
 use App\Facades\Http\Response;
 
 class Storage
@@ -123,32 +124,34 @@ class Storage
 		if ($file['error'] === UPLOAD_ERR_OK) {
 			$this->mkDir($destination);
 			
+			$hash      = Str::hash(40);
 			$pathInfo  = pathinfo($file['name']);
 			$location  = $this->disk.$destination;
 			$location .= $as
 				? mb_strtolower($as).'.'.$pathInfo['extension']
-				: mb_strtolower($file['name']);
+				: $hash.'.'.$pathInfo['extension'];
 			$mask      = umask(0);
 			
 			if (move_uploaded_file($file['tmp_name'], $location) && $this->checkFile($location)) {
 				chmod($location, 0775);
 				umask($mask);
-
+				
 				if ($closure !== null) {
 					$closure([
 						'name' => $pathInfo['filename'],
-						'dir'  => str_replace(storage_path(), '/storage/', $this->disk),
+						'dir'  => str_replace(storage_path(), '/', $this->disk),
 						'ext'  => '.'.$pathInfo['extension'],
-						'sha1' => sha1_file($location)
+						'sha1' => sha1_file($location),
+						'hash' => $hash
 					]);
 				}
-	
+				
 				return true;
 			}
 			
 			throw new \Exception('Cannot upload file '.$file['name']);
 		}
-
+		
 		throw new \Exception('File has error '.$file['name']);
 	}
 	

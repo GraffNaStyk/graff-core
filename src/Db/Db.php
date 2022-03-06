@@ -2,10 +2,8 @@
 
 namespace App\Facades\Db;
 
-use App\Attributes\Table\Table;
 use App\Facades\Config\Config;
 use App\Facades\Dependency\AttributeReflector;
-use App\Facades\Http\App;
 use App\Facades\Url\Url;
 use App\Facades\Validator\Type;
 use PDO;
@@ -614,11 +612,11 @@ class Db
 	
 	public function beginTransaction()
 	{
-		$this->beginTransaction();
+		self::$db->beginTransaction();
 	}
 	
 	public function commit()
 	{
-		$this->commit();
+		self::$db->commit();
 	}
 }

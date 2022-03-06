@@ -46,6 +46,7 @@ namespace App\Facades\Db;
  * @method Db getEnumValues(string $field)
  * @method Db getConnectionName()
  * @method Db beginTransaction()
+ * @method Db onDuplicate(array $duplicated = [])
  * @method Db commit()
  */
 abstract class Model
