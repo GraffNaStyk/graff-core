@@ -13,7 +13,6 @@ class UniqueIfExist extends Rule
 	
 	public function __construct(
 		string $model,
-		private int|string|double|bool $compareValue,
 		private string $compareToField = 'id',
 		?string $description = null,
 		private string $compareType = '='
@@ -25,9 +24,13 @@ class UniqueIfExist extends Rule
 
 	public function run(): bool
 	{
+		if (! $this->requestParams->has($this->compareToField)) {
+			return false;
+		}
+
 		return ! (bool) $this->model->select()
 			->where($this->key, $this->compareType, $this->field)
-			->where($this->compareToField, '<>', $this->compareValue)
+			->where($this->compareToField, '<>', $this->requestParams->get($this->compareToField))
 			->exist();
 	}
 }
