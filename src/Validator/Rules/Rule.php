@@ -12,7 +12,7 @@ abstract class Rule
 	
 	protected string $description;
 	
-	protected Bag $requestParams;
+	private static ?Bag $requestBag = null;
 
 	public abstract function run(): bool;
 	
@@ -31,8 +31,15 @@ abstract class Rule
 		return $this->description;
 	}
 	
-	public function setRequestBag(array $params)
+	public static function setRequestBag(array $params): void
 	{
-		$this->requestParams = new Bag($params);
+		if (self::$requestBag === null) {
+			self::$requestBag = new Bag($params);
+		}
+	}
+	
+	public function getRequestBag(): ?Bag
+	{
+		return self::$requestBag;
 	}
 }

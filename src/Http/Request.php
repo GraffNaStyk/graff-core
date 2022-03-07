@@ -18,7 +18,7 @@ final class Request
 	use PropertyFacade;
 	use Header;
 	
-    protected array $file = [];
+    protected FileBag $file;
 
     private string $method = 'post';
 
@@ -70,7 +70,7 @@ final class Request
 	    $this->headers = new ParametersBag($this->setHeaders());
 	    
         if (isset($_FILES) && ! empty($_FILES)) {
-            $this->file = $_FILES;
+            $this->file = new FileBag($_FILES);
         }
 	
 	    $data = (array) json_decode(file_get_contents('php://input'));
@@ -209,15 +209,6 @@ final class Request
     public function all(): array
     {
         return $this->data;
-    }
-
-    public function file(?string $file = null)
-    {
-        if ($file !== null && isset($this->file[$file])) {
-            return $this->file[$file];
-        }
-
-        return $this->file;
     }
 
     public function has(string $offset): bool

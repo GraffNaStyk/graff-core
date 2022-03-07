@@ -24,13 +24,13 @@ class UniqueIfExist extends Rule
 
 	public function run(): bool
 	{
-		if (! $this->requestParams->has($this->compareToField)) {
+		if (! $this->getRequestBag()->has($this->compareToField)) {
 			return false;
 		}
 
 		return ! (bool) $this->model->select()
 			->where($this->key, $this->compareType, $this->field)
-			->where($this->compareToField, '<>', $this->requestParams->get($this->compareToField))
+			->where($this->compareToField, '<>', $this->getRequestBag()->get($this->compareToField))
 			->exist();
 	}
 }

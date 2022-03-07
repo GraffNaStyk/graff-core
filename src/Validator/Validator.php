@@ -2,6 +2,8 @@
 
 namespace App\Facades\Validator;
 
+use App\Facades\Validator\Rules\Rule;
+
 class Validator implements ValidatorInterface
 {
 	private static array $errors = [];
@@ -9,10 +11,10 @@ class Validator implements ValidatorInterface
 	public static function validate(array $request, array $rules): bool
 	{
 		$errors = [];
+		Rule::setRequestBag($request);
 		
 		foreach ($rules as $key => $rule) {
 			foreach ($rule as $eachRule) {
-				$eachRule->setRequestBag($request);
 				$eachRule->setField($request[$key]);
 				$eachRule->setKey($key);
 
