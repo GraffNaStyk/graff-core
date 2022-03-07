@@ -12,6 +12,7 @@ class Validator implements ValidatorInterface
 		
 		foreach ($rules as $key => $rule) {
 			foreach ($rule as $eachRule) {
+				$eachRule->setRequestBag($request);
 				$eachRule->setField($request[$key]);
 				$eachRule->setKey($key);
 

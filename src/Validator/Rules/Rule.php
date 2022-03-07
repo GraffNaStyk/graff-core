@@ -2,6 +2,8 @@
 
 namespace App\Facades\Validator\Rules;
 
+use App\Facades\Property\Bag;
+
 abstract class Rule
 {
 	protected mixed $field;
@@ -9,6 +11,8 @@ abstract class Rule
 	protected string $key;
 	
 	protected string $description;
+	
+	protected Bag $requestParams;
 
 	public abstract function run(): bool;
 	
@@ -25,5 +29,10 @@ abstract class Rule
 	public function getErrorMessage(): string
 	{
 		return $this->description;
+	}
+	
+	public function setRequestBag(array $params)
+	{
+		$this->requestParams = new Bag($params);
 	}
 }
