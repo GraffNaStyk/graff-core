@@ -17,8 +17,6 @@ final class Request
 {
 	use PropertyFacade;
 	use Header;
-	
-    protected FileBag $file;
 
     private string $method = 'post';
 
@@ -29,6 +27,8 @@ final class Request
     public Bag $server;
     
     public Bag $cookie;
+	
+	public FileBag $file;
     
     private Sanitizer $sanitizer;
     
