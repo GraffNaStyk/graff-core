@@ -2,9 +2,6 @@
 
 namespace App\Facades\Http;
 
-use App\Facades\Property\Bag;
-use App\Facades\Property\PropertyFacade;
-
 class FileBag
 {
 	private ?array $files = null;
@@ -45,7 +42,11 @@ class FileBag
 	private function setFile(array $file): void
 	{
 		if (self::FILE_KEYS === array_keys($file) && UPLOAD_ERR_NO_FILE !== (int) $file['error']) {
-			$this->files[] = $file;
+			if ($this->isMultiple()) {
+				$this->files[] = $file;
+			} else {
+				$this->files = $file;
+			}
 		}
 	}
 	

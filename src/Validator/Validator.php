@@ -14,6 +14,12 @@ class Validator implements ValidatorInterface
 		Rule::setRequestBag($request);
 		
 		foreach ($rules as $key => $rule) {
+//			foreach ($rule as $checkRule) {
+//				if (! isset($request[$key]) && $checkRule instanceof Required) {
+//					continue 2;
+//				}
+//			}
+			
 			foreach ($rule as $eachRule) {
 				$eachRule->setField($request[$key]);
 				$eachRule->setKey($key);
