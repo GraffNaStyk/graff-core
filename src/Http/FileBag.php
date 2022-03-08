@@ -2,29 +2,65 @@
 
 namespace App\Facades\Http;
 
+use App\Facades\Property\Bag;
+use App\Facades\Property\PropertyFacade;
+
 class FileBag
 {
-	private array $files;
+	private ?array $files = null;
+	
+	private bool $multiple = false;
+	
+	private const FILE_KEYS = ['name', 'full_path', 'type', 'tmp_name', 'error', 'size'];
 	
 	public function __construct(array $files)
 	{
-		$this->normalize($files);
+		$this->normalize(reset($files));
 	}
 	
-	private function normalize(array $files)
+	private function normalize(array $file): void
 	{
-		$fileCount = count($files['files']['name']);
-		$fileKeys  = array_keys($files['files']);
-		
-		for ($i = 0; $i < $fileCount; $i++) {
-			foreach ($fileKeys as $key) {
-				$this->files[$i][$key] = $files['files'][$key][$i];
-			}
+		if (is_array($file['name'])) {
+			$this->multiple = true;
+			$this->refactor($file);
+		} else {
+			$this->setFile($file);
 		}
 	}
 	
-	public function show()
+	private function refactor(array $files): void
 	{
-		dd($this->files);
+		$count = count($files['name']);
+		
+		for ($i = 0; $i < $count; $i++) {
+			foreach (self::FILE_KEYS as $key) {
+				$result[$key] = $files[$key][$i];
+			}
+			
+			$this->setFile($result);
+			unset($result);
+		}
+	}
+	
+	private function setFile(array $file): void
+	{
+		if (self::FILE_KEYS === array_keys($file) && UPLOAD_ERR_NO_FILE !== (int) $file['error']) {
+			$this->files[] = $file;
+		}
+	}
+	
+	public function isMultiple(): bool
+	{
+		return $this->multiple;
+	}
+	
+	public function get():? array
+	{
+		return $this->files;
+	}
+	
+	public function hasFiles(): bool
+	{
+		return ! ($this->files === null);
 	}
 }
