@@ -2,6 +2,7 @@
 
 namespace App\Facades\Validator;
 
+use App\Facades\Validator\Rules\Required;
 use App\Facades\Validator\Rules\Rule;
 
 class Validator implements ValidatorInterface
@@ -14,18 +15,23 @@ class Validator implements ValidatorInterface
 		Rule::setRequestBag($request);
 		
 		foreach ($rules as $key => $rule) {
-//			foreach ($rule as $checkRule) {
-//				if (! isset($request[$key]) && $checkRule instanceof Required) {
-//					continue 2;
-//				}
-//			}
+			$validate = false;
 			
-			foreach ($rule as $eachRule) {
-				$eachRule->setField($request[$key]);
-				$eachRule->setKey($key);
-
-				if (! $eachRule->run()) {
-					$errors[] = ['field' => $key, 'msg' => $eachRule->getErrorMessage()];
+			foreach ($rule as $checkRule) {
+				if ((! isset($request[$key]) && $checkRule instanceof Required) || (string) $request[$key] !== '') {
+					$validate = true;
+					break;
+				}
+			}
+			
+			if ($validate) {
+				foreach ($rule as $eachRule) {
+					$eachRule->setField($request[$key]);
+					$eachRule->setKey($key);
+					
+					if (! $eachRule->run()) {
+						$errors[] = ['field' => $key, 'msg' => $eachRule->getErrorMessage()];
+					}
 				}
 			}
 		}
