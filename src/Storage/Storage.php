@@ -157,6 +157,10 @@ class Storage
 	
 	public function remove(string $path = null): bool
 	{
+		if ($path === null) {
+			return false;
+		}
+		
 		$path = ltrim($path, '/');
 		
 		if (is_dir($this->disk.'/'.$path)) {
