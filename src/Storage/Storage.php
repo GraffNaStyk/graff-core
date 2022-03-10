@@ -160,7 +160,7 @@ class Storage
 		if ($path === null) {
 			return false;
 		}
-		
+
 		$path = ltrim($path, '/');
 		
 		if (is_dir($this->disk.'/'.$path)) {

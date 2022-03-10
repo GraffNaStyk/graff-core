@@ -83,7 +83,12 @@ class Schema extends Blueprint
 
     public function null(): Schema
     {
-        $this->tableFields[$this->currentKey] = str_replace(' NOT NULL', ' NULL DEFAULT NULL', $this->tableFields[$this->currentKey]);
+        $this->tableFields[$this->currentKey] = str_replace(
+        	' NOT NULL',
+	        ' NULL DEFAULT NULL',
+	        $this->tableFields[$this->currentKey]
+        );
+        
         return $this;
     }
 
@@ -130,7 +135,7 @@ class Schema extends Blueprint
                 $uniques .= $val.', ';
         }
 
-        if ((int) strlen($uniques) !== 0) {
+        if (strlen($uniques) !== 0) {
             $uniques = rtrim($uniques, ', ');
             $uniques = ' , '.$uniques;
         }
@@ -151,7 +156,14 @@ class Schema extends Blueprint
         return $this;
     }
 	
-	public function alter(string $field, $type, $length = null, $isNull = false, $default = null, $where = null): Schema
+	public function addColumn(
+		string $field,
+		string $type,
+		?int $length = null,
+		bool $isNull = false,
+		mixed $default = null,
+		string $where = null
+	): Schema
 	{
 		if (! $this->hasColumn($this->table, $field)) {
 			if ($isNull) {
