@@ -190,11 +190,13 @@ class Blueprint
     {
     	return $this->db->getConnectionName();
     }
-    
-    public function dropColumn(string $column): void
-    {
-    	if ($this->hasColumn($this->table, $column)) {
-		    $this->db->query('ALTER TABLE "'.$this->table.'" DROP COLUM "'.$column.'"');
-	    }
-    }
+	
+	public function dropColumn(string $column): void
+	{
+		$this->initialize();
+		
+		if ($this->hasColumn($this->table, $column)) {
+			$this->db->query('ALTER TABLE '.$this->table.' DROP COLUMN '.$column);
+		}
+	}
 }
