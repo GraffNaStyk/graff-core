@@ -23,8 +23,7 @@ class Sanitizer
 			$item = preg_replace('/<link (.*?)>/is', '', $item);
 			$item = preg_replace('/<video (.*?)>(.+)<\/video>/', '', $item);
 		}
-		
-		$item = filter_var($item, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+
 		$item = strtr(
 			$item,
 			'???????��������������������������������������������������������������',
