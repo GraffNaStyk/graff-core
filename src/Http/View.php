@@ -3,6 +3,7 @@
 namespace App\Facades\Http;
 
 use App\Facades\Config\Config;
+use App\Facades\Helpers\Dir;
 use App\Facades\Helpers\Str;
 use App\Facades\Http\Router\Router;
 use App\Facades\TwigExt\TwigExt;
@@ -93,7 +94,8 @@ final class View
     {
         if (! self::$twig instanceof Twig\Environment) {
             if (Config::get('app.cache_view')) {
-                $config['cache'] = storage_path('/private/framework/views');
+            	Dir::create(storage_path('/var/views'));
+                $config['cache'] = storage_path('/var/views');
             }
 
             $config['debug'] = true;

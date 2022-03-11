@@ -2,6 +2,7 @@
 
 namespace App\Facades\Validator;
 
+use App\Facades\Validator\Rules\NotNull;
 use App\Facades\Validator\Rules\Required;
 use App\Facades\Validator\Rules\Rule;
 
@@ -18,7 +19,11 @@ class Validator implements ValidatorInterface
 			$validate = false;
 			
 			foreach ($rule as $checkRule) {
-				if ((! isset($request[$key]) && $checkRule instanceof Required) || (string) $request[$key] !== '') {
+				if (
+					(! isset($request[$key]) && $checkRule instanceof Required) ||
+					(string) $request[$key] !== '' ||
+					($request[$key] === null && $checkRule instanceof NotNull)
+				) {
 					$validate = true;
 					break;
 				}
