@@ -15,7 +15,7 @@ class Sanitizer
 		'/[\x{2700}-\x{27BF}]/u',
 	];
 	
-	public function clear($item): string|int|bool|array|null|float|object
+	public function clear(mixed $item): string|int|bool|array|null|float|object
 	{
 		if (! is_numeric($item)) {
 			$item = urldecode($item);
@@ -41,10 +41,11 @@ class Sanitizer
 		$item = preg_replace('/(;|\||`|&|^|{|}|[|]|\)|\()/i', '', $item);
 		$item = preg_replace('/(\)|\(|\||&)/', '', $item);
 		$item = $this->cleanEmoji($item);
+
 		return Type::get($item);
 	}
 	
-	private function cleanEmoji($text)
+	private function cleanEmoji(mixed $text): mixed
 	{
 		foreach ($this->regex as $regex) {
 			$text = preg_replace($regex, null, $text);

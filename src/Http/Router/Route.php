@@ -149,4 +149,19 @@ abstract class Route
 	{
 		return self::$urls;
 	}
+	
+	public function getRoutes(): array
+	{
+		return self::$routes;
+	}
+	
+	public function setRoutes(array $routes): void
+	{
+		self::$routes = $routes;
+	}
+	
+	public function setUrls(array $urls): void
+	{
+		self::$urls = $urls;
+	}
 }
