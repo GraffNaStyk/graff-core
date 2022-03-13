@@ -157,7 +157,7 @@ class Storage
 	
 	public function remove(string $path = null): bool
 	{
-		if ($path === null) {
+		if ($path === null || $path === '') {
 			return false;
 		}
 
