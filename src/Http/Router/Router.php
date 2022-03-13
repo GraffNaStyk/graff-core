@@ -315,7 +315,7 @@ final class Router extends Route
 
                 $routeExist = true;
                 $this->setCurrentRoute($route);
-                $this->setMatches(array_slice($matches, 1));
+                $this->setMatches(array_slice($matches, 1), ltrim(str_replace('(.*?)', null, $pattern), '/'));
                 break;
             }
         }
@@ -329,10 +329,14 @@ final class Router extends Route
         }
     }
 	
-	private function setMatches(array $matches): void
+	private function setMatches(array $matches, string $matchesSeparator = '/'): void
 	{
-		if (str_contains($matches[0][0], '/')) {
-			$matches = explode('/', $matches[0][0]);
+		if ($matchesSeparator === '') {
+			$matchesSeparator = '/';
+		}
+		
+		if (str_contains($matches[0][0], $matchesSeparator)) {
+			$matches = explode($matchesSeparator, $matches[0][0]);
 		}
 		
 		foreach ($matches as $value) {

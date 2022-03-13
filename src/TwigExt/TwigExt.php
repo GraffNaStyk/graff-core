@@ -45,21 +45,21 @@ class TwigExt extends AbstractExtension
     public function assets(): TwigFunction
     {
         return new TwigFunction('assets', function ($url) {
-	        echo Url::full().'assets/'.ltrim('/', $url);
+	        echo Url::full().'/assets/'.ltrim($url, '/');
         });
     }
 	
 	public function storage(): TwigFunction
 	{
 		return new TwigFunction('storage', function ($url) {
-			echo Url::full().'/storage'.$url;
+			echo Url::full().'/storage/'.ltrim($url,'/');
 		});
 	}
 
     public function url(): TwigFunction
     {
         return new TwigFunction('url', function ($url = null) {
-	        echo Url::full().ltrim('/', $url);
+	        echo Url::full().'/'.ltrim($url,'/');
         });
     }
 	
