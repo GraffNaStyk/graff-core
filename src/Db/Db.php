@@ -477,7 +477,7 @@ class Db
         if (preg_match('/^(INSERT|UPDATE|DELETE)/', $this->query)) {
             try {
                 if (self::$db->prepare($this->query)->execute($this->data)) {
-	                if (str_starts_with('INSERT', $this->query)) {
+	                if (str_starts_with($this->query, 'INSERT')) {
 		                static::$lastInsertedIds[Config::get('app.model_path').$this->model] = (int) self::$db->lastInsertId();
 	                }
 	
