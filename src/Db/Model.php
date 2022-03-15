@@ -69,7 +69,7 @@ abstract class Model
 		if (isset($arguments[1])) {
 			return call_user_func_array([$db, $name], $arguments);
 		} else {
-			return $db->$name($arguments[0] ?? $arguments);
+			return $db->$name($arguments[0] ?? $arguments ?? null);
 		}
 	}
 }
