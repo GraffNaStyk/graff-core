@@ -399,7 +399,7 @@ class Db
         $res = $this->first();
         
         if (empty($res)) {
-            return false;
+	        return null;
         }
 
         return $res;
@@ -477,14 +477,14 @@ class Db
         if (preg_match('/^(INSERT|UPDATE|DELETE)/', $this->query)) {
             try {
                 if (self::$db->prepare($this->query)->execute($this->data)) {
-                    if ($this->hasTrigger && $this->triggerMethod !== null) {
-                        TriggerResolver::resolve($this->model, $this->triggerMethod, $this);
-                        $this->triggerMethod = null;
-                    }
-
-                    if (preg_match('/^(INSERT)/', $this->query)) {
-                        return self::lastId();
-                    }
+	                if (str_starts_with('INSERT', $this->query)) {
+		                self::$lastInsertedId = self::$db->lastInsertId();
+	                }
+	
+	                if ($this->hasTrigger && $this->triggerMethod !== null) {
+		                TriggerResolver::resolve($this->model, $this->triggerMethod, $this);
+		                $this->triggerMethod = null;
+	                }
 
                     return true;
                 }
@@ -532,7 +532,7 @@ class Db
 
     public function lastId(): int
     {
-        return (int) self::$db->lastInsertId();
+        return self::$lastInsertedId;
     }
 
     public function debug(): Db

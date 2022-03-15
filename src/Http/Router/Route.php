@@ -126,7 +126,7 @@ abstract class Route
         session_regenerate_id();
 	
 	    header(
-		    'location: '.Url::fullWithAlias().$path,
+		    'location: '.Url::full().$path,
 		    true,
 		    $code
 	    );
