@@ -38,5 +38,5 @@ trait Variables
 	
 	private ?string $model;
 	
-	private static int $lastInsertedId;
+	private static array $lastInsertedIds = [];
 }

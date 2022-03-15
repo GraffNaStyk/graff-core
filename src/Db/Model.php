@@ -37,7 +37,7 @@ namespace App\Facades\Db;
  * @method Db join(string $table, string $value1, string $by, string $value2, bool $isRigidly = false)
  * @method Db leftJoin(string $table, string $value1, string $by, string $value2, bool $isRigidly = false)
  * @method Db rightJoin(string $table, string $value1, string $by, string $value2, bool $isRigidly = false)
- * @method Db lastId()
+ * @method Db lastId(?string $model = null)
  * @method Db debug()
  * @method Db query(string $query)
  * @method Db getColumnsInfo()

@@ -478,7 +478,7 @@ class Db
             try {
                 if (self::$db->prepare($this->query)->execute($this->data)) {
 	                if (str_starts_with('INSERT', $this->query)) {
-		                self::$lastInsertedId = self::$db->lastInsertId();
+		                static::$lastInsertedIds[Config::get('app.model_path').$this->model] = (int) self::$db->lastInsertId();
 	                }
 	
 	                if ($this->hasTrigger && $this->triggerMethod !== null) {
@@ -529,11 +529,15 @@ class Db
 	    	unset($record);
 	    }
     }
-
-    public function lastId(): int
-    {
-        return self::$lastInsertedId;
-    }
+	
+	public function lastId(?string $model = null): int
+	{
+		if ($model !== null) {
+			$model = '\\'.$model;
+		}
+		
+		return self::$lastInsertedIds[$model ?? Config::get('app.model_path').$this->model] ?? 0;
+	}
 
     public function debug(): Db
     {
