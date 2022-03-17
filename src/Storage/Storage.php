@@ -2,6 +2,7 @@
 
 namespace App\Facades\Storage;
 
+use App\Facades\Config\Config;
 use App\Facades\Helpers\Dir;
 use App\Facades\Helpers\Str;
 use App\Facades\Http\Response;
@@ -63,8 +64,10 @@ class Storage
 		
 		$disk = storage_path(implode('/', $path));
 		
-		if (is_readable($disk.'/'.$name)) {
+		if (is_readable($disk.'/'.$name) && is_file($disk.'/'.$name)) {
 			return (new Response())->file($disk.'/'.$name)->getResponse();
+		} else if (Config::get('app.no_photo_assets_img') !== null) {
+			return (new Response())->file(assets_path(Config::get('app.no_photo_assets_img')))->getResponse();
 		}
 		
 		return null;

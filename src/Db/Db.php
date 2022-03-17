@@ -530,13 +530,9 @@ class Db
 	    }
     }
 	
-	public function lastId(?string $model = null): int
+	public function lastId(string $model): int
 	{
-		if ($model !== null) {
-			$model = '\\'.$model;
-		}
-		
-		return self::$lastInsertedIds[$model ?? Config::get('app.model_path').$this->model] ?? 0;
+		return self::$lastInsertedIds['\\'.$model] ?? 0;
 	}
 
     public function debug(): Db
