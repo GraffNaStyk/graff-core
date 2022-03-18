@@ -49,11 +49,7 @@ class Blueprint
 	    $attrReflector->reflect(new \ReflectionClass($model));
         $this->table = $attrReflector->get('table');
         $this->store = $store;
-    }
-    
-    public function connection(string $connection): void
-    {
-    	$this->db->connection($connection);
+	    $this->db->connect();
     }
 
     public function generate($name, $fnName, $length = null)
@@ -68,8 +64,6 @@ class Blueprint
 
     public function run(): ?bool
     {
-	    $this->initialize();
-
         if (! empty($this->tableFields)) {
             $fields = implode(', ', $this->tableFields);
             $fields = rtrim($fields, ',');
@@ -126,8 +120,6 @@ class Blueprint
 
     public function drop(): void
     {
-    	$this->initialize();
-
         if ($this->hasTable($this->table)) {
             $this->db->query('DROP TABLE '.$this->table);
         }
@@ -144,8 +136,6 @@ class Blueprint
 
     public function clear(): void
     {
-	    $this->initialize();
-
         if ($this->hasTable($this->table)) {
             $this->db->query('TRUNCATE TABLE '.$this->table);
         }
@@ -180,21 +170,9 @@ class Blueprint
             }
         }
     }
-    
-    private function initialize(): void
-    {
-	    $this->db->connect();
-    }
-    
-    public function getConnectionName(): string
-    {
-    	return $this->db->getConnectionName();
-    }
 	
 	public function dropColumn(string $column): void
 	{
-		$this->initialize();
-		
 		if ($this->hasColumn($this->table, $column)) {
 			$this->db->query('ALTER TABLE '.$this->table.' DROP COLUMN '.$column);
 		}
