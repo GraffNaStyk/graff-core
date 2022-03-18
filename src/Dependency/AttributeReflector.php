@@ -8,15 +8,15 @@ class AttributeReflector
 {
 	use PropertyFacade;
 	
-	public function reflect(\ReflectionClass $reflectionClass): ?self
+	public function reflect(\ReflectionClass|\ReflectionProperty $reflection): ?self
 	{
 		$attributes = [];
 		
-		if (empty($reflectionClass->getAttributes())) {
+		if (empty($reflection->getAttributes())) {
 			return null;
 		}
 		
-		foreach ($reflectionClass->getAttributes() as $attribute) {
+		foreach ($reflection->getAttributes() as $attribute) {
 			foreach ($attribute->getArguments() as $key => $value) {
 				$attributes[$key] = $value;
 			}

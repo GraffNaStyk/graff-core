@@ -6,7 +6,7 @@ use App\Facades\Validator\Type;
 
 trait PropertyFacade
 {
-	private $params;
+	private mixed $params;
 	
 	public function setParams($params): void
 	{
