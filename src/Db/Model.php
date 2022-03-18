@@ -64,6 +64,11 @@ abstract class Model
 	private static function resolveMagicCall(string $name, array $arguments)
 	{
 		$db = new Db(get_called_class());
+
+		if ($name === 'connection') {
+			$db->connection($arguments[0]);
+		}
+
 		$db->connect();
 
 		if (isset($arguments[1])) {
