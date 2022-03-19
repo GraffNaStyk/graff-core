@@ -41,7 +41,7 @@ trait JavaScriptLoader
 	protected function enableJsAutoload(): void
 	{
 		$loaded = null;
-		$class  =  strtolower(Router::getClass());
+		$class  = Str::toLineSeparator(Router::getClass());
 		
 		if (is_readable(js_path(Router::getAlias().'/'.$class.'/'.Router::getAction().'.js'))) {
 			$loaded = trim('<script type="application/javascript" src="'.

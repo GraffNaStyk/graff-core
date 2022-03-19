@@ -41,7 +41,7 @@ trait CssLoader
 	protected function enableCssAutoload(): void
 	{
 		$loaded = null;
-		$class  = strtolower(Router::getClass());
+		$class  = Str::toLineSeparator(Router::getClass());
 		
 		if (is_readable(css_path(Router::getAlias().'/'.$class.'/'.Router::getAction().'.css'))) {
 			$loaded = trim('<link rel="stylesheet" href="'.
