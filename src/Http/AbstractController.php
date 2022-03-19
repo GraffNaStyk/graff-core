@@ -109,18 +109,30 @@ abstract class AbstractController
 		    ])
 		    ->send();
     }
-
-    public function response(array $data = [], int $status = 200, array $headers = []): Response
-    {
-    	$response = new Response();
-    	$response->setData($data)->setCode($status);
-    	
-    	if (! empty($headers)) {
-    		$response->setHeaders($headers);
-	    }
-    	
-        return $response->send();
-    }
+	
+	public function response(array $data = [], int $status = 200, array $headers = []): Response
+	{
+		$response = new Response();
+		$response->setData($data)->setCode($status);
+		
+		if (! empty($headers)) {
+			$response->setHeaders($headers);
+		}
+		
+		return $response->send();
+	}
+	
+	public function responseJson(array $data = [], int $status = 200, array $headers = []): Response
+	{
+		$response = new Response();
+		$response->json()->setData($data)->setCode($status);
+		
+		if (! empty($headers)) {
+			$response->setHeaders($headers);
+		}
+		
+		return $response->send();
+	}
     
     public function routeParams(?string $param = null): mixed
     {
