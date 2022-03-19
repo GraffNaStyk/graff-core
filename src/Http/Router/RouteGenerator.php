@@ -24,4 +24,21 @@ class RouteGenerator
 		
 		return $url;
 	}
+	
+	public static function generateWithQuery(string $route, array $queryParams): string
+	{
+		$url = Url::full().Route::urls()[$route];
+		
+		if ($url === null) {
+			throw new \LogicException('Route '.$route.' not exist');
+		}
+		
+		$url .= '?';
+		
+		foreach ($queryParams as $key => $param) {
+			$url .= $key.'='.$param.'&';
+		}
+		
+		return rtrim($url, '&');
+	}
 }
