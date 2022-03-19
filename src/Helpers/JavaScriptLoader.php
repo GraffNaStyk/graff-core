@@ -42,10 +42,11 @@ trait JavaScriptLoader
 	{
 		$loaded = null;
 		$class  = Str::toLineSeparator(Router::getClass());
+		$action = Str::toLineSeparator(Router::getAction());
 		
-		if (is_readable(js_path(Router::getAlias().'/'.$class.'/'.Router::getAction().'.js'))) {
+		if (is_readable(js_path(Router::getAlias().'/'.$class.'/'.$action.'.js'))) {
 			$loaded = trim('<script type="application/javascript" src="'.
-				Url::full().$this->jsDir.'/'.Router::getAlias().'/'.$class.'/'.Router::getAction().'.js"></script>'
+				Url::full().$this->jsDir.'/'.Router::getAlias().'/'.$class.'/'.$action.'.js"></script>'
 			);
 		}
 		

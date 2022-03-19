@@ -42,10 +42,11 @@ trait CssLoader
 	{
 		$loaded = null;
 		$class  = Str::toLineSeparator(Router::getClass());
+		$action = Str::toLineSeparator(Router::getAction());
 		
-		if (is_readable(css_path(Router::getAlias().'/'.$class.'/'.Router::getAction().'.css'))) {
+		if (is_readable(css_path(Router::getAlias().'/'.$class.'/'.$action.'.css'))) {
 			$loaded = trim('<link rel="stylesheet" href="'.
-				Url::full().$this->cssDir.'/'.Router::getAlias().'/'.$class.'/'.Router::getAction(). '.css">'
+				Url::full().$this->cssDir.'/'.Router::getAlias().'/'.$class.'/'.$action. '.css">'
 			);
 		}
 		
