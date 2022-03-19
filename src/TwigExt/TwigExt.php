@@ -3,6 +3,7 @@
 namespace App\Facades\TwigExt;
 
 use App\Facades\Http\Router\Route;
+use App\Facades\Http\Router\RouteGenerator;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\Session;
 use App\Facades\Url\Url;
@@ -66,17 +67,7 @@ class TwigExt extends AbstractExtension
 	public function route(): TwigFunction
 	{
 		return new TwigFunction('route', function ($route, $params = []) {
-			$url = Url::full().Route::urls()[$route];
-
-			if (! empty($params)) {
-				foreach ($params as $key => $param) {
-					$url = str_replace('{'.$key.'}', $param, $url);
-				}
-			} else {
-				$url = rtrim(preg_replace('/{(.*?)}/', null, $url), '/');
-			}
-			
-			echo $url;
+			echo RouteGenerator::generate($route, $params);
 		});
 	}
 

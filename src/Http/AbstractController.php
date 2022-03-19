@@ -2,14 +2,13 @@
 
 namespace App\Facades\Http;
 
+use App\Facades\Http\Router\RouteGenerator;
 use App\Facades\Http\Router\Router;
-use App\Facades\Url\Url;
 use App\Facades\Validator\Validator;
 
 abstract class AbstractController
 {
 	public static array $routeParams = [];
-	public static array $routes      = [];
 	
     public function __construct()
     {
@@ -23,40 +22,13 @@ abstract class AbstractController
     
     public function redirectToRoute(string $route, array $params = [], bool $direct = false): Response
     {
-    	$route = $this->routes($route);
-    	
-    	if ($route === null) {
-    		throw new \LogicException('Route '.$route.' not exist');
-	    }
-	
-	    if (! empty($params)) {
-		    foreach ($params as $key => $param) {
-			    $route = str_replace('{'.$key.'}', $param, $route);
-		    }
-	    }
-
+    	$route = RouteGenerator::generate($route, $params);
 	    return (new Response())->redirect($route, 302, $direct)->send();
     }
 
     public function getRoute(string $route, array $params = [], bool $relative = false): string
     {
-	    $route = $this->routes($route);
-	
-	    if ($route === null) {
-		    throw new \LogicException('Route '.$route.' not exist');
-	    }
-	
-	    if (! empty($params)) {
-		    foreach ($params as $key => $param) {
-			    $route = str_replace('{'.$key.'}', $param, $route);
-		    }
-	    }
-	    
-	    if ($relative) {
-	    	return $route;
-	    }
-	    
-	    return Url::full().$route;
+	    return RouteGenerator::generate($route, $params);
     }
     
     public function setData(array $data): void
@@ -141,11 +113,6 @@ abstract class AbstractController
 	    }
     	
     	return static::$routeParams[$param] ?? null;
-    }
-    
-    private function routes(string $route): ?string
-    {
-        return self::$routes[$route] ?? null;
     }
     
     public function getUser(): ?object
