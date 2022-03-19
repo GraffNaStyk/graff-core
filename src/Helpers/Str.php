@@ -36,4 +36,9 @@ class Str
 	{
 		return strtolower(preg_replace('/(?<!^)[A-Z]+|(?<!^|\d)[\d]+/', '-$0', $string));
 	}
+	
+	public static function toSeoUrl(string $string): string
+	{
+		return trim(strtolower(preg_replace('/[\s]+/', '-', $string)));
+	}
 }
