@@ -21,9 +21,13 @@ class Str
 	
 	public static function sanitize(string $string): string
 	{
-		$string = strtolower(trim(preg_replace('~[^\\pL\d]+~u', '-', $string)));
-		$string = iconv('utf-8', 'us-ascii//TRANSLIT', $string);
+		$from   = ['ą','ć','ę','ł','ń','ó','ś','ż','ź'];
+		$to     = ['a','c','e','l','n','o','s','z','z'];
+		
+		$string = str_replace($from, $to, mb_strtolower($string));
+		$string = preg_replace('~[^\\pL\d]+~u', '-', $string);
 		$string = preg_replace('~[^-\w]+~', '', $string);
+		
 		return trim($string);
 	}
 	

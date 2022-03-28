@@ -14,4 +14,13 @@ abstract class AbstractEventProvider
 
     	return [];
     }
+	
+	public static function getRequestListener(string $when): ?array
+	{
+		if (Config::has('events.'.$when)) {
+			return Config::get('events.'.$when);
+		}
+		
+		return [];
+	}
 }

@@ -8,7 +8,7 @@ class Regex extends Rule
 	
 	private string $flags = 'i';
 	
-	public function __construct(string $regex, string $description)
+	public function __construct(string $regex, ?string $description = null)
 	{
 		$this->regex       = '/'.trim($regex, '/').'/'.$this->flags;
 		$this->description = $description ?? 'Must be like pattern '.$this->regex;

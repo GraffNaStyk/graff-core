@@ -38,7 +38,7 @@ class Sanitizer
 			'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy'
 		);
 		
-		$item = preg_replace('/(;|\||`|&|^|{|}|[|]|\)|\()/i', '', $item);
+		$item = preg_replace('/(;|\||`|&|^|\)|\()/i', '', $item);
 		$item = preg_replace('/(\)|\(|\||&)/', '', $item);
 		$item = $this->cleanEmoji($item);
 

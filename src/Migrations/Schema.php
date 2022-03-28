@@ -182,6 +182,31 @@ class Schema extends Blueprint
 
 		return $this;
 	}
+	
+	public function changeColumnName(
+		string $fromName,
+		string $toName,
+		string $type,
+		?int $length = null,
+		bool $isNull = false,
+		mixed $default = null
+	) {
+		if ($this->hasColumn($this->table, $fromName)) {
+			if ($isNull) {
+				$qStr = ' DEFAULT NULL ';
+			} else if ($isNull === false && $default !== null) {
+				$qStr = ' NOT NULL DEFAULT '.($default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'");
+			} else if ($isNull === true && $default !== null) {
+				$qStr = ' DEFAULT '.($default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'");
+			} else if ($isNull === false && $default === null) {
+				$qStr = ' NOT NULL ';
+			}
+			
+			$length = $length ? '('.$length.')' : $this->length[$type];
+			
+			$this->queries[] = "ALTER TABLE `".$this->table."` CHANGE `".$fromName."` `".$toName."` $type".$length." $qStr";
+		}
+	}
 
     public function foreign(array $reference = []): void
     {

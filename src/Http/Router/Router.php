@@ -99,6 +99,14 @@ final class Router extends Route
 
     private function dispatchEvents(string $when): void
     {
+	    $requestEvents = AbstractEventProvider::getRequestListener($when.'Request');
+	
+	    foreach ($requestEvents as $event) {
+		    $reflector = new ReflectionClass($event);
+		    (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
+			    ->handle();
+	    }
+	    
         $events = AbstractEventProvider::getListener(
         	$when,
             self::$route->getNamespace().'\\'.self::getClass().'Controller'

@@ -165,26 +165,26 @@ final class Request
 	public function sanitize(): void
 	{
 		foreach ($this->data as $key => $item) {
-			if (is_array($item)) {
-				$this->data[$key] = $this->reSanitize($item);
+			if (is_array($item) || is_object($item)) {
+				$this->data[$key] = $this->reSanitize((array) $item);
 			} else {
 				$this->data[$key] = $this->sanitizer->clear($item);
 			}
 		}
 	}
-
-    protected function reSanitize(array $data): array
-    {
-        foreach ($data as $key => $item) {
-            if (is_array($item)) {
-	            $data[$key] = $this->reSanitize($item);
-            } else {
-                $data[$key] = $this->sanitizer->clear($item);
-            }
-        }
-
-        return $data;
-    }
+	
+	protected function reSanitize(array|object $data): array
+	{
+		foreach ($data as $key => $item) {
+			if (is_array($item) || is_object($item)) {
+				$data[$key] = $this->reSanitize((array) $item);
+			} else {
+				$data[$key] = $this->sanitizer->clear($item);
+			}
+		}
+		
+		return $data;
+	}
 
     public function getMethod(): string
     {
@@ -214,12 +214,12 @@ final class Request
     {
         return Has::check($this->data, $offset);
     }
-
-    public function set(mixed $item, mixed $data): void
-    {
-        $this->data = array_merge($this->data, Set::set($this->data, Type::get($data), $item));
-    }
-
+	
+	public function set(mixed $item, mixed $data): void
+	{
+		$this->data = [... $this->data, ... Set::set($this->data, Type::get($data), $item)];
+	}
+	
     public function remove(string $offset): void
     {
         $this->data = Remove::remove($this->data, $offset);

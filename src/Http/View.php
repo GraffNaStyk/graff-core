@@ -64,7 +64,7 @@ final class View
     {
         foreach ($data as $key => $value) {
         	if (isset(self::$data[$key]) && is_array($value)) {
-		        self::$data[$key] = array_unique([...self::$data[$key], ...$value]);
+		        self::$data[$key] = array_unique([... self::$data[$key], ... $value], SORT_REGULAR);
 	        } else {
 		        self::$data[$key] = $value;
 	        }
