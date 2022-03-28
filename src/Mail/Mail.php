@@ -2,23 +2,27 @@
 
 namespace App\Facades\Mail;
 
+use App\Facades\Config\Config;
 use App\Facades\Http\View;
 use App\Facades\Url\Url;
 
 class Mail
 {
     protected static object $mailer;
+    private static $mailConfig = [];
     private \Swift_Message $message;
 
     public static function init(array $data = []): Mail
     {
         if (empty($data)) {
-            $data = app('mail');
+            self::$mailConfig = Config::get('app.mail');
+        } else {
+	        self::$mailConfig = $data;
         }
 
-        $transport = (new \Swift_SmtpTransport($data['smtp'], $data['port'], $data['ssl']))
-            ->setUsername($data['user'])
-            ->setPassword($data['password']);
+        $transport = (new \Swift_SmtpTransport(self::$mailConfig['smtp'], self::$mailConfig['port'], self::$mailConfig['ssl']))
+            ->setUsername(self::$mailConfig['user'])
+            ->setPassword(self::$mailConfig['password']);
 
         self::$mailer = new \Swift_Mailer($transport);
 
@@ -34,7 +38,7 @@ class Mail
     public function from(array $from = []): Mail
     {
         if (empty($from)) {
-            $from = [app['mail']['from'] => app['mail']['fromName']];
+            $from = [self::$mailConfig['from'] => self::$mailConfig['fromName']];
         }
 
         $this->message->setFrom($from);

@@ -13,6 +13,6 @@ class Json extends Rule
 	{
 		json_decode($this->field);
 		
-		return json_last_error() !== JSON_ERROR_NONE;
+		return json_last_error() === JSON_ERROR_NONE;
 	}
 }
