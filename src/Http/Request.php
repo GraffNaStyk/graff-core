@@ -209,6 +209,17 @@ final class Request
     {
         return $this->data;
     }
+    
+    public function only(string ...$args): array
+    {
+    	$result = [];
+    	
+    	foreach ($args as $arg) {
+    		$result[] = $this->get($arg);
+	    }
+    	
+    	return $result;
+    }
 
     public function has(string $offset): bool
     {
