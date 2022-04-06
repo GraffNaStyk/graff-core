@@ -215,9 +215,9 @@ final class Request
     	$result = [];
     	
     	foreach ($args as $arg) {
-    		$result[] = $this->get($arg);
+    		$result[$arg] = $this->get($arg);
 	    }
-    	
+
     	return $result;
     }
 
