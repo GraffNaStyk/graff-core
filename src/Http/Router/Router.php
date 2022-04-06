@@ -389,11 +389,6 @@ final class Router extends Route
 
     public static function abort(int $code = 404, ?string $message = null): void
     {
-        Log::custom('aborted', [
-            'message'    => 'Aborted operation from router, code: '.$code.' '.Response::RESPONSE_CODES[$code],
-            'custom_msg' => $message
-        ]);
-
         if (Config::get('app.enable_api') || Request::isAjax()) {
 	        echo (new Response())->json()->setData(['msg' => Response::RESPONSE_CODES[$code]])->setCode($code)->getResponse();
             exit;
