@@ -11,8 +11,8 @@ class NotEmptyJson extends Rule
 	
 	public function run(): bool
 	{
-		$field = json_decode($this->field);
+		$field = json_decode($this->field, true);
 		
-		return empty($field);
+		return ! empty($field);
 	}
 }
