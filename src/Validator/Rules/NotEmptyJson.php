@@ -13,6 +13,6 @@ class NotEmptyJson extends Rule
 	{
 		$field = json_decode($this->field);
 		
-		return ! empty($field);
+		return empty($field);
 	}
 }
