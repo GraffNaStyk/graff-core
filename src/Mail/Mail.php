@@ -12,6 +12,7 @@ class Mail
 {
 	private Transport\Smtp\EsmtpTransport $transport;
 	private Mailer $mailer;
+	private bool $debugMode = false;
 	
 	public function __construct()
 	{
@@ -26,6 +27,17 @@ class Mail
 	
 	public function getTemplate(string $template, array $data): ?string
 	{
-		return View::mail($template, $data);
+		$tpl = View::mail($template, $data);
+		
+		if ($this->debugMode) {
+			exit($tpl);
+		}
+		
+		return $tpl;
+	}
+	
+	public function debugMode(bool $enable = true): void
+	{
+		$this->debugMode = $enable;
 	}
 }
