@@ -10,9 +10,4 @@ class CLASSNAME extends AbstractService
     {
 
     }
-
-    public function boot()
-    {
-
-    }
 }

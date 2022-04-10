@@ -6,11 +6,8 @@ use App\Facades\Db\Db;
 
 class CLASSNAME
 {
-    private Db $db;
-
-    public function __construct(Db $db)
+    public function __construct()
     {
-        $this->db = $db;
     }
 
     public function created()

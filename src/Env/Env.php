@@ -21,7 +21,7 @@ class Env
 	        $item = str_replace([' ', "\n", "\t", "\r"], '', $item);
             $item = explode('=', $item);
 
-            if ($item[0] === '') {
+            if (trim($item[0]) === '') {
             	continue;
             }
 

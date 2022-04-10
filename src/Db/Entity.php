@@ -53,7 +53,7 @@ class Entity
 				$property->isPrivate()   => 'private',
 				$property->isProtected() => 'protected',
 				$property->isPublic()    => 'public',
-				default => throw new \Exception('Unexpected match value')
+				default                  => throw new \Exception('Unexpected match value')
 			};
 			
 			$name = $this->reflector->has('name') ? $this->reflector->get('name') : Str::toSnakeCase($property->getName());

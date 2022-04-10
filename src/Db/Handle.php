@@ -12,11 +12,11 @@ abstract class Handle
         if (Config::get('app.dev')) {
             print_r("<b>SQL Error</b>: {$e->getMessage()} <br>");
             pd("<b> Query </b>: {$error}", true);
+        } else {
+	        Log::sql([
+		        'error' => $e->getMessage(),
+		        'query' => $error,
+	        ]);
         }
-
-        Log::sql([
-            'error' => $e->getMessage(),
-            'query' => $error,
-        ]);
     }
 }
