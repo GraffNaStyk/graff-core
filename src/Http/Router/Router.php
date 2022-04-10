@@ -12,7 +12,6 @@ use App\Facades\Http\AbstractEventProvider;
 use App\Facades\Http\Request;
 use App\Facades\Http\Response;
 use App\Facades\Http\View;
-use App\Facades\Log\Log;
 use App\Facades\Storage\Storage;
 use ReflectionClass;
 use ReflectionMethod;

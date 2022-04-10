@@ -4,7 +4,6 @@ namespace App\Facades\Http\Router;
 
 use App\Facades\Config\Config;
 use App\Facades\Csrf\Csrf;
-use App\Facades\Url\Url;
 
 abstract class Route
 {
@@ -119,20 +118,20 @@ abstract class Route
             static::redirect($then);
         }
     }
-
-    public static function redirect(string $path, int $code = 302): void
-    {
-        session_write_close();
-        session_regenerate_id();
 	
-	    header(
-		    'location: '.Url::full().$path,
-		    true,
-		    $code
-	    );
-
-        exit;
-    }
+	public static function redirect(string $path, int $code = 302): void
+	{
+		session_write_close();
+		session_regenerate_id();
+		
+		header(
+			'location: '.$path,
+			true,
+			$code
+		);
+		
+		exit;
+	}
 
     public static function goTo(string $url): void
     {
