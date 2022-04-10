@@ -10,6 +10,18 @@ class Html
 	
 	private array $otherTags = [];
 	
+	private bool $robotsFollow = true;
+	
+	public function getRobotsFollow(): bool
+	{
+		return $this->robotsFollow;
+	}
+	
+	public function setRobotsFollow(bool $follow): void
+	{
+		$this->robotsFollow = $follow;
+	}
+	
 	public function setMetaTag(string $name, string $content): void
 	{
 		$this->metaTags[$name] = trim($content);
