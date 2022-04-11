@@ -7,7 +7,7 @@ use App\Facades\Property\Get;
 class Env
 {
 	private static array $env;
-	
+
     public static function set(): void
     {
     	if (! empty(static::$env)) {
@@ -30,13 +30,13 @@ class Env
 
 	    static::$env = $environment;
     }
-    
+
     public static function get(string $offset = null)
     {
     	if ($offset) {
 		    return Get::check(static::$env, $offset);
 	    }
-    	
+
     	return static::$env;
     }
 }

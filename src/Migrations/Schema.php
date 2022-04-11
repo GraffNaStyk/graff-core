@@ -159,7 +159,7 @@ class Schema extends Blueprint
 	public function addColumn(
 		string $field,
 		string $type,
-		?int $length = null,
+		mixed $length = null,
 		bool $isNull = false,
 		mixed $default = null,
 		string $where = null
@@ -187,7 +187,7 @@ class Schema extends Blueprint
 		string $fromName,
 		string $toName,
 		string $type,
-		?int $length = null,
+		mixed $length = null,
 		bool $isNull = false,
 		mixed $default = null
 	) {
