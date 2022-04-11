@@ -41,6 +41,8 @@ class FileBag
 	
 	private function setFile(array $file): void
 	{
+		unset($file['full_path']);
+		
 		if (self::FILE_KEYS === array_keys($file) && UPLOAD_ERR_NO_FILE !== (int) $file['error']) {
 			if ($this->isMultiple()) {
 				$this->files[] = $file;
