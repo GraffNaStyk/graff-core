@@ -8,7 +8,7 @@ class FileBag
 	
 	private bool $multiple = false;
 	
-	private const FILE_KEYS = ['name', 'full_path', 'type', 'tmp_name', 'error', 'size'];
+	private const FILE_KEYS = ['name', 'type', 'tmp_name', 'error', 'size'];
 	
 	public function __construct(array $files)
 	{
