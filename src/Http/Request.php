@@ -228,7 +228,7 @@ final class Request
 	
 	public function set(mixed $item, mixed $data): void
 	{
-		$this->data = [... $this->data, ... Set::set($this->data, Type::get($data), $item)];
+		$this->data = array_merge($this->data, Set::set($this->data, Type::get($data), $item));
 	}
 	
     public function remove(string $offset): void
