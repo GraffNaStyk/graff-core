@@ -30,7 +30,7 @@ class Get
 	        }
 
             if (! $res) {
-                return false;
+                return null;
             }
 
             $tmp = $res;
