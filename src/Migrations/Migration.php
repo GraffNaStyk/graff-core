@@ -24,7 +24,7 @@ class Migration
             true
         );
 
-        foreach ($this->sortByDate(glob(app_path('/app/migrate/Migration_*.php'))) as $migration) {
+        foreach ($this->sortByDate(glob(app_path('/app/migrate/*.php'))) as $migration) {
             $migration = self::MIGRATION_DIR.basename(str_replace('.php', '', $migration));
 
             if (! isset($migrationContent[$migration]) || $isDump) {
@@ -40,7 +40,7 @@ class Migration
 
     public function down(): void
     {
-        foreach (glob(app_path('/app/migrate/Migration_*.php')) as $migration) {
+        foreach (glob(app_path('/app/migrate/*.php')) as $migration) {
             $migration = self::MIGRATION_DIR.basename(str_replace('.php', '', $migration));
             $migration = new $migration();
 	        $migration->down(new Schema(Config::get('app.model_path').$migration->model));
@@ -68,8 +68,7 @@ class Migration
         $migrations = [];
 
         foreach ($files as $file) {
-            $tmp = str_replace(app_path('/app/migrate/Migration_'), '', $file);
-            $tmp = preg_replace('/[a-zA-Z__.]/', '', $tmp);
+	        $tmp = preg_replace('/[a-zA-Z__.]/', '', basename($file));
             $migrations[$tmp] = $file;
         }
 
