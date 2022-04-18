@@ -15,7 +15,7 @@ class Migration extends Command
 	
 	public function execute()
 	{
-		$name     = $this->input('Please set model name for migration');
+		$name     = ucfirst($this->input('Please set model name for migration'));
 		$nameName = $name.'_'.date('Y_m_d__H_i_s');
 		
 		$migration = $this->getFile('migration');
