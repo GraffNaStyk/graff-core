@@ -39,7 +39,7 @@ class Db
 		
 		$this->table       = $this->reflector->get('table');
 		$this->model       = Url::segment($model, 'end', '\\');
-		$this->hasTrigger = $this->reflector->get('isTriggered');
+		$this->hasTrigger = $this->reflector->has('isTriggered');
 	}
     
     public function connection(string $connection): Db
