@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Facades\Html;
 
 use App\Facades\Db\Db;
 use App\Facades\Http\Router\RouteGenerator;
