@@ -6,7 +6,7 @@ use App\Facades\Url\Url;
 
 class RouteGenerator
 {
-	public static function generate(string $route, ?array $params = null): string
+	public static function generate(string $route, ?array $params = null, array $queryParams = []): string
 	{
 		$url = Url::full().Route::urls()[$route];
 		
@@ -22,21 +22,14 @@ class RouteGenerator
 			$url = rtrim(preg_replace('/{(.*?)}/', null, $url), '/');
 		}
 		
-		return $url;
-	}
-	
-	public static function generateWithQuery(string $route, array $queryParams): string
-	{
-		$url = Url::full().Route::urls()[$route];
-		
-		if ($url === null) {
-			throw new \LogicException('Route '.$route.' not exist');
-		}
-		
-		$url .= '?';
-		
-		foreach ($queryParams as $key => $param) {
-			$url .= $key.'='.$param.'&';
+		if (!empty($queryParams)) {
+			$url .= '?';
+			
+			foreach ($queryParams as $key => $param) {
+				if ($param) {
+					$url .= $key.'='.$param.'&';
+				}
+			}
 		}
 		
 		return rtrim($url, '&');

@@ -26,9 +26,9 @@ abstract class AbstractController
 	    return (new Response())->redirect($route, 302, $direct)->send();
     }
 
-    public function getRoute(string $route, array $params = [], bool $relative = false): string
+    public function getRoute(string $route, array $params = [], array $queryParams = []): string
     {
-	    return RouteGenerator::generate($route, $params);
+	    return RouteGenerator::generate($route, $params, $queryParams);
     }
     
     public function setData(array $data): void
