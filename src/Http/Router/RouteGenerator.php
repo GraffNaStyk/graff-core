@@ -21,7 +21,7 @@ class RouteGenerator
 		} else {
 			$url = rtrim(preg_replace('/{(.*?)}/', null, $url), '/');
 		}
-		
+
 		if (!empty($queryParams)) {
 			$url .= '?';
 			

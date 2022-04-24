@@ -67,10 +67,7 @@ final class Request
 	    $this->server  = new Bag($_SERVER);
 	    $this->cookie  = new Bag($_COOKIE);
 	    $this->headers = new ParametersBag($this->setHeaders());
-	    
-        if (isset($_FILES) && ! empty($_FILES)) {
-            $this->file = new FileBag($_FILES);
-        }
+	    $this->file    = new FileBag($_FILES);
 	
 	    $data = (array) json_decode(file_get_contents('php://input'));
 

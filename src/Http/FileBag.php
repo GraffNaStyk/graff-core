@@ -12,11 +12,15 @@ class FileBag
 	
 	public function __construct(array $files)
 	{
-		$this->normalize(reset($files));
+		$this->normalize((array) reset($files));
 	}
 	
 	private function normalize(array $file): void
 	{
+		if (empty($file)) {
+			return;
+		}
+
 		if (is_array($file['name'])) {
 			$this->multiple = true;
 			$this->refactor($file);
