@@ -69,7 +69,13 @@ class Storage
     {
     	$file = ltrim($file, '/');
     	$mask = umask(0);
-    	$this->mkDir($file);
+    	$dest = explode('/', $file);
+	    array_pop($dest);
+	    $dest = implode('/', $dest);
+	    
+	    if (! str_contains($dest, '.')) {
+		    $this->mkDir($file);
+	    }
 
     	if (file_put_contents($this->disk.'/'.$file, $content, $flags)) {
 		    chmod($this->disk.'/'.$file, 0775);
@@ -94,7 +100,7 @@ class Storage
 
 	public function mkDir(string $path, int $mode = 0775): Storage
 	{
-		Dir::create(dirname($this->disk.'/'.ltrim($path, '/')), $mode);
+		Dir::create($this->disk.'/'.ltrim($path, '/'), $mode);
 
 		return $this;
 	}
