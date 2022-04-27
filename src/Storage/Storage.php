@@ -40,21 +40,13 @@ class Storage
         'xlsx' => 'application/vnd.ms-excel',
     ];
 
-    private ?string $disk = null;
-
-    public function disk(string $disk): Storage
+    private string $disk;
+    
+    public function __construct()
     {
-        Dir::create(storage_path($disk));
-        $this->disk = storage_path($disk);
-
-        return $this;
+	    $this->disk = storage_path();
     }
-
-    public function path(string $path): string
-    {
-    	return $this->disk.$path;
-    }
-
+    
 	public function display(string $path): ?string
 	{
 		$path = str_replace('/storage', null, $path);
@@ -77,6 +69,7 @@ class Storage
     {
     	$file = ltrim($file, '/');
     	$mask = umask(0);
+    	$this->mkDir($file);
 
     	if (file_put_contents($this->disk.'/'.$file, $content, $flags)) {
 		    chmod($this->disk.'/'.$file, 0775);
@@ -101,8 +94,7 @@ class Storage
 
 	public function mkDir(string $path, int $mode = 0775): Storage
 	{
-		$path = ltrim($path, '/');
-		Dir::create($this->disk.'/'.$path, $mode);
+		Dir::create(dirname($this->disk.'/'.ltrim($path, '/')), $mode);
 
 		return $this;
 	}
@@ -142,7 +134,7 @@ class Storage
 				if ($closure !== null) {
 					$closure([
 						'name' => $pathInfo['filename'],
-						'dir'  => str_replace(storage_path(), '/', $this->disk).rtrim($destination, '/'),
+						'dir'  => rtrim($destination, '/'),
 						'ext'  => '.'.$pathInfo['extension'],
 						'sha1' => sha1_file($location),
 						'hash' => $hash
@@ -163,10 +155,6 @@ class Storage
 		if ($path === null || $path === '') {
 			return false;
 		}
-		
-		if (str_starts_with($path, '/public')) {
-			$path = str_replace('/public', null, $path);
-		}
 
 		$path = ltrim($path, '/');
 
@@ -185,6 +173,16 @@ class Storage
 		}
 
 		return true;
+	}
+	
+	public function copy(string $oldFile, string $newFile): bool
+	{
+		return $this->copy($this->disk.'/'.ltrim($oldFile), $this->disk.'/'.ltrim($newFile));
+	}
+	
+	public function move(string $oldFile, string $newFile): bool
+	{
+		return rename($this->disk.'/'.ltrim($oldFile), $this->disk.'/'.ltrim($newFile));
 	}
 
 	public static function create(): Storage
