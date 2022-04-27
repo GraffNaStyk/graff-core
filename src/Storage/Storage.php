@@ -183,7 +183,7 @@ class Storage
 	
 	public function copy(string $oldFile, string $newFile): bool
 	{
-		return $this->copy($this->disk.'/'.ltrim($oldFile), $this->disk.'/'.ltrim($newFile));
+		return copy($this->disk.'/'.ltrim($oldFile), $this->disk.'/'.ltrim($newFile));
 	}
 	
 	public function move(string $oldFile, string $newFile): bool
