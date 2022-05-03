@@ -415,7 +415,7 @@ final class Router extends Route
 				$response->setHeader('Content-type', 'text/css');
 			} else if (str_contains(self::$url, '.js')) {
 				$response->setHeader('Content-type', 'application/javascript');
-			} else if (str_contains(self::$url, '.ttf')  || str_contains(self::$url, '.woff')) {
+			} else if (str_contains(self::$url, '.ttf') || str_contains(self::$url, '.woff')) {
 				$response->setHeader('Content-type', 'font/woff2');
 			} else {
 				$response->setHeader('Content-type', mime_content_type($path));

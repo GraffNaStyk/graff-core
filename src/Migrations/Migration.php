@@ -14,13 +14,12 @@ class Migration
 	public function __construct()
 	{
 		$this->storage = Storage::create();
-		$this->storage->disk('/var');
 	}
 	
     public function up(bool $isDump = false): void
     {
         $migrationContent = (array) json_decode(
-	        $this->storage->get('/db/migrations.json'),
+	        $this->storage->get('/var/db/migrations.json'),
             true
         );
 
@@ -35,7 +34,7 @@ class Migration
         }
 	
 	    $this->storage
-		    ->put('/db/migrations.json', json_encode($migrationContent, JSON_PRETTY_PRINT));
+		    ->put('/var/db/migrations.json', json_encode($migrationContent, JSON_PRETTY_PRINT));
     }
 
     public function down(): void
@@ -46,7 +45,7 @@ class Migration
 	        $migration->down(new Schema(Config::get('app.model_path').$migration->model));
         }
 
-        $this->storage->remove('/db/migrations.json');
+        $this->storage->remove('/var/db/migrations.json');
     }
 
     public function dump(): void

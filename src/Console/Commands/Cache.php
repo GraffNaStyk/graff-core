@@ -20,7 +20,7 @@ class Cache extends Command
 	{
 		$this->output('Execute command...', 'green');
 		
-		if ($this->storage->disk('/var')->remove('/cache')) {
+		if ($this->storage->remove('/var/cache')) {
 			$this->output('Cache cleared', 'green');
 		}
 		

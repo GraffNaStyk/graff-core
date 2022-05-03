@@ -74,7 +74,7 @@ class Storage
 	    $dest = implode('/', $dest);
 	    
 	    if (! str_contains($dest, '.')) {
-		    $this->mkDir($file);
+		    $this->mkDir($dest);
 	    }
 
     	if (file_put_contents($this->disk.'/'.$file, $content, $flags)) {

@@ -18,7 +18,7 @@ class Log extends Command
 	
 	public function execute(): int
 	{
-		$this->storage->disk('/var')->remove('/logs');
+		$this->storage->remove('/var/logs');
 		return Command::SUCCESS;
 	}
 }
