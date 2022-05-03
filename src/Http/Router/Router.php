@@ -12,6 +12,7 @@ use App\Facades\Http\AbstractEventProvider;
 use App\Facades\Http\Request;
 use App\Facades\Http\Response;
 use App\Facades\Http\View;
+use App\Facades\Security\Sanitizer;
 use App\Facades\Storage\Storage;
 use ReflectionClass;
 use ReflectionMethod;
@@ -27,6 +28,8 @@ final class Router extends Route
     private Csrf $csrf;
     
     private ContainerBuilder $builder;
+    
+    private Sanitizer $sanitizer;
 
     private static ?Collection $route = null;
     
@@ -36,7 +39,7 @@ final class Router extends Route
 
     public function __construct()
     {
-        $this->request  = new Request();
+        $this->request = new Request();
 
         if ($this->request->isOptionsCall()) {
             echo (new Response())->send()->getResponse();
@@ -250,8 +253,9 @@ final class Router extends Route
     private function getMethodParams(array $reflectionParams, object $controller): array
     {
 	     $combinedParams   = [];
-	     $requestParams    = $this->request->all();
+	     $requestParams    = self::$params;
 	     $reqParamIterator = 0;
+	     $this->sanitizer  = new Sanitizer();
 
 	     foreach ($reflectionParams as $key => $param) {
 		     $refParam = new \ReflectionParameter([$controller, self::getAction()], $key);
@@ -270,6 +274,8 @@ final class Router extends Route
 			     $combinedParams[$key] = $this->builder->container->get($class);
 			     unset($reflector, $refParam, $reflectionParams[$key]);
 		     } else {
+			     $requestParams[$reqParamIterator] = $this->sanitizer->clear($requestParams[$reqParamIterator]);
+
 			     if ($refParam->isOptional() && ! isset($requestParams[$reqParamIterator])) {
 				     unset($refParam, $reflector);
 				     $reqParamIterator++;
@@ -328,10 +334,6 @@ final class Router extends Route
 		
         if (! $routeExist) {
             self::abort();
-        }
-
-        if (! empty(self::$params)) {
-            $this->request->setData(self::$params);
         }
     }
 	
