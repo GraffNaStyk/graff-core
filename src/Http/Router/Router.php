@@ -268,7 +268,7 @@ final class Router extends Route
 				     $params = $this->builder->reflectConstructorParams($reflector->getConstructor()->getParameters());
 				     $this->builder->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
 			     } else {
-				     $this->builder->container->add($class, new $class());
+				     $this->builder->container->add($class, new ($reflector->getName())());
 			     }
 			
 			     $combinedParams[$key] = $this->builder->container->get($class);
