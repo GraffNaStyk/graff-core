@@ -13,7 +13,7 @@ class Cookie
 		setcookie($item, $value, time() + $seconds, '/', $_SERVER['SERVER_NAME'], Router::checkProtocol() === 'https', true);
 	}
 	
-	public static function get($item): ?bool
+	public static function get($item): mixed
 	{
 		return Get::check($_COOKIE, $item);
 	}

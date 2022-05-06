@@ -6,7 +6,12 @@ use App\Facades\Http\Request;
 
 class CLASSNAME
 {
-    public function handle(Request $request)
+    public function __construct()
+    {
+
+    }
+
+    public function handle()
     {
 
     }
