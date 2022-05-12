@@ -9,8 +9,9 @@ trait Header
     protected function prepareHeaders(): void
     {
         header('X-Frame-Options: sameorigin');
-        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0');
-        header('Pragma: no-cache');
+	    header('Cache-Control: no-cache, no-store, must-revalidate');
+	    header('Pragma: no-cache');
+	    header('Expires: 0');
         header('Referrer-Policy: no-referrer');
 
         if (Config::get('app.security.enabled')) {
