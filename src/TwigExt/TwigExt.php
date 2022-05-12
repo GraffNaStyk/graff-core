@@ -66,8 +66,8 @@ class TwigExt extends AbstractExtension
 	
 	public function route(): TwigFunction
 	{
-		return new TwigFunction('route', function ($route, $params = []) {
-			echo RouteGenerator::generate($route, $params);
+		return new TwigFunction('route', function ($route, $params = [], $queryParams = []) {
+			echo RouteGenerator::generate($route, $params, $queryParams = []);
 		});
 	}
 
