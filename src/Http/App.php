@@ -36,6 +36,8 @@ final class App
 					$this->setRouteCache();
 				}
 			} else {
+				unlink(storage_path('/var/cache/routes.cache'));
+				unlink(storage_path('/var/cache/urls.cache'));
 				require_once app_path('/app/routes/http.php');
 			}
 			
@@ -55,6 +57,6 @@ final class App
 		}
 
 		file_put_contents(storage_path('/var/cache/urls.cache'), serialize($urls));
-		file_put_contents(storage_path('/var/cache/routes.cache'), serialize($this->router->getRoutes()));
+		file_put_contents(storage_path('/var/cache/routes.cache'), serialize($routes));
 	}
 }
