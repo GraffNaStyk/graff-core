@@ -2,9 +2,14 @@
 
 namespace App\Facades\Error;
 
+use App\Facades\Http\Router\Router;
+
 class LogErrorFormatter
 {
-	public function __construct(private \Throwable $throwable){}
+	public function __construct(
+		private \Throwable $throwable,
+		private Router $router
+	) {}
 	
 	public function format()
 	{
@@ -14,7 +19,6 @@ class LogErrorFormatter
             color: #fff;
             font-family: \'Nunito\', sans-serif;
             text-align: justify;
-            overflow: hidden;
             font-weight: bold;
         } </style>';
 		
@@ -25,6 +29,9 @@ class LogErrorFormatter
 		pd($this->throwable->getTraceAsString(), false);
 		
 		pd('File: &nbsp;'. $this->throwable->getFile(), false);
-		pd('Line: '.$this->throwable->getLine());
+		pd('Line: '.$this->throwable->getLine(), false);
+		
+		pd('Router info: ', false);
+		pd($this->router->routeParams());
 	}
 }

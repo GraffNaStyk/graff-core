@@ -3,10 +3,18 @@
 namespace App\Facades\Error;
 
 use App\Facades\Config\Config;
+use App\Facades\Http\Router\Router;
 use App\Facades\Log\Log;
 
 class ErrorListener
 {
+	private static Router $router;
+	
+	public static function setRouter(Router $router): void
+	{
+		self::$router = $router;
+	}
+	
 	public static function listen(): void
 	{
 		$error = error_get_last();
@@ -25,19 +33,20 @@ class ErrorListener
 				exit('Your custom exception listener " '.Config::get('app.error_listener').'" not exist!');
 			}
 			
-			(new (Config::get('app.error_listener')))->listen($exception);
+			(new (Config::get('app.error_listener')))->listen($exception, self::$router);
 		} else if (php_sapi_name() === 'cli') {
 			dd($exception);
 			exit;
 		} else if (Config::get('app.dev')) {
-			(new LogErrorFormatter($exception))->format();
+			(new LogErrorFormatter($exception, self::$router))->format();
 		} else {
 			Log::custom('php', [
 					'line'    => $exception->getLine(),
 					'file'    => $exception->getFile(),
 					'trace'   => $exception->getTraceAsString(),
 					'code'    => $exception->getCode(),
-					'message' => $exception->getMessage()
+					'message' => $exception->getMessage(),
+					'router'  => self::$router->routeParams()
 				]
 			);
 			exit (require_once view_path('errors/error.php'));
