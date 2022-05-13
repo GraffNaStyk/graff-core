@@ -40,15 +40,18 @@ class ErrorListener
 		} else if (Config::get('app.dev')) {
 			(new LogErrorFormatter($exception, self::$router))->format();
 		} else {
-			Log::custom('php', [
-					'line'    => $exception->getLine(),
-					'file'    => $exception->getFile(),
-					'trace'   => $exception->getTraceAsString(),
-					'code'    => $exception->getCode(),
-					'message' => $exception->getMessage(),
-					'router'  => self::$router->routeParams()
-				]
-			);
+			if (! in_array($exception::class, (array) Config::get('app.no_logged_exceptions'), true)) {
+				Log::custom('php', [
+						'line'    => $exception->getLine(),
+						'file'    => $exception->getFile(),
+						'trace'   => $exception->getTraceAsString(),
+						'code'    => $exception->getCode(),
+						'message' => $exception->getMessage(),
+						'router'  => self::$router->routeParams()
+					]
+				);
+			}
+			
 			exit (require_once view_path('errors/error.php'));
 		}
 	}
