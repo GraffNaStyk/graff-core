@@ -47,24 +47,6 @@ class Storage
 	    $this->disk = storage_path();
     }
     
-	public function display(string $path): ?string
-	{
-		$path = str_replace('/storage', null, $path);
-		$path = array_filter(explode('/', $path));
-		$name = end($path);
-		array_pop($path);
-
-		$disk = storage_path(implode('/', $path));
-
-		if (is_readable($disk.'/'.$name) && is_file($disk.'/'.$name)) {
-			return (new Response())->file($disk.'/'.$name)->getResponse();
-		} else if (Config::get('app.no_photo_assets_img') !== null) {
-			return (new Response())->file(assets_path(Config::get('app.no_photo_assets_img')))->getResponse();
-		}
-
-		return null;
-	}
-
     public function put(string $file, string $content, ?int $flags = null): Storage
     {
     	$file = ltrim($file, '/');
