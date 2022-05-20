@@ -373,7 +373,7 @@ final class Router extends Route
 	        echo (new Response())->json()->setData(['msg' => Response::RESPONSE_CODES[$code]])->setCode($code)->getResponse();
             exit;
         } else {
-            exit(require_once(view_path('errors/error.php')));
+            exit(View::display('/errors/error.twig', ['exception' => ['getCode' => $code, 'getMessage' => $message]]));
         }
     }
 
