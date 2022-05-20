@@ -43,6 +43,18 @@ final class View
 
         exit(require_once view_path('/errors/view-not-found.php'));
     }
+	
+	public static function display(string $view, array $data = [])
+	{
+		self::set($data);
+		self::register();
+		
+		if (is_readable(view_path($view))) {
+			return self::$twig->render($view, self::$data);
+		}
+		
+		exit(require_once view_path('/errors/view-not-found.php'));
+	}
 
     private static function setView(): void
     {
@@ -93,14 +105,18 @@ final class View
     private static function register(): void
     {
         if (! self::$twig instanceof Twig\Environment) {
-            if (Config::get('app.cache_view')) {
+            if (Config::get('twig.cache_view')) {
             	Dir::create(storage_path('/var/views'));
                 $config['cache'] = storage_path('/var/views');
             }
 
             $config['debug'] = true;
             self::$twig = new Twig\Environment(new Twig\Loader\FilesystemLoader(view_path()), $config);
-            self::$twig->addGlobal('isAjax', ((int) Request::isAjax() || Session::get('beAjax')));
+            
+            foreach ((array) Config::get('twig.globals') as $key => $value) {
+	            self::$twig->addGlobal($key, $value);
+            }
+
             self::registerFunctions();
         }
     }
