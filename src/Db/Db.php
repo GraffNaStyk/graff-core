@@ -37,6 +37,10 @@ class Db
 		$this->reflector   = new AttributeReflector();
 		$this->reflector->reflect(new \ReflectionClass($model));
 		
+		if ($this->reflector->has('connection')) {
+			$this->connection = $this->reflector->get('connection');
+		}
+		
 		$this->table       = $this->reflector->get('table');
 		$this->model       = Url::segment($model, 'end', '\\');
 		$this->hasTrigger = $this->reflector->has('isTriggered');
