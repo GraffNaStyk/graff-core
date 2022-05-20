@@ -39,7 +39,7 @@ class ContainerBuilder
 						$params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
 						$this->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
 					} else {
-						$this->container->add($class, new $class());
+						$this->container->add($class, new ($reflector->getName())());
 					}
 				}
 				
