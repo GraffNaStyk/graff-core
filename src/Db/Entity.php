@@ -56,7 +56,11 @@ class Entity
 				default                  => throw new \Exception('Unexpected match value')
 			};
 			
-			$name = $this->reflector->has('name') ? $this->reflector->get('name') : Str::toSnakeCase($property->getName());
+			if (empty(get_object_vars($this->reflector))) {
+				$name = Str::toSnakeCase($property->getName());
+			} else {
+				$name = $this->reflector->get('name');
+			}
 			
 			$this->properties[$name] = [
 				'propertyName' => $property->getName(),
