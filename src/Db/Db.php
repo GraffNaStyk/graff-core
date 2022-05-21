@@ -19,6 +19,7 @@ class Db
 	private string $connection = 'default';
 	private static array $connections = [];
 	private Entity $entity;
+	private EntityConverter $entityConverter;
 	private AttributeReflector $reflector;
 
     private static array $options = [
@@ -33,8 +34,9 @@ class Db
     
 	public function __construct(string $model)
 	{
-		$this->entity      = new Entity($model);
-		$this->reflector   = new AttributeReflector();
+		$this->entity          = new Entity($model);
+		$this->reflector       = new AttributeReflector();
+		$this->entityConverter = new EntityConverter($model);
 		$this->reflector->reflect(new \ReflectionClass($model));
 		
 		if ($this->reflector->has('connection')) {

@@ -5,6 +5,7 @@ namespace App\Facades\Db;
 use App\Facades\Config\Config;
 use App\Facades\Dependency\AttributeReflector;
 use App\Facades\Helpers\Str;
+use App\Models\Gmoto\Manufacturer;
 
 class Entity
 {
@@ -22,9 +23,9 @@ class Entity
 		if (! Config::get('app.use_entity')) {
 			return $items;
 		}
-
+		
 		$reflection = new \ReflectionClass($this->model);
-		$result     = null;
+		$result     = [];
 		
 		$this->prepareProperties($reflection);
 		
@@ -45,10 +46,10 @@ class Entity
 			if (in_array($property->getName(), $this->reserved, true)) {
 				continue;
 			}
-
+			
 			$this->reflector->reflect($property);
 			$setter = 'set'.$property->getName();
-
+			
 			$type = match (true) {
 				$property->isPrivate()   => 'private',
 				$property->isProtected() => 'protected',
@@ -56,13 +57,9 @@ class Entity
 				default                  => throw new \Exception('Unexpected match value')
 			};
 			
-			if (empty(get_object_vars($this->reflector))) {
-				$name = Str::toSnakeCase($property->getName());
-			} else {
-				$name = $this->reflector->get('name');
-			}
+			$name = $this->reflector?->has('name') ? $this->reflector->get('name') : Str::toSnakeCase($property->getName());
 			
-			$this->properties[$name] = [
+			$this->properties[mb_strtolower($name)] = [
 				'propertyName' => $property->getName(),
 				'setter'       => $reflectionClass->hasMethod($setter) ? $reflectionClass->getMethod($setter)->getName() : null,
 				'type'         => $type,
@@ -75,8 +72,8 @@ class Entity
 		$object = new $this->model;
 		
 		foreach ($item as $key => $value) {
-			if (isset($this->properties[$key])) {
-				$current = $this->properties[$key];
+			if (isset($this->properties[mb_strtolower($key)])) {
+				$current = $this->properties[mb_strtolower($key)];
 				if ($current['type'] !== 'public' && $current['setter'] === null) {
 					throw new \Exception(
 						'Cannot set value for field '.$current['propertyName']. ' property has '.$current['type'].' access'
