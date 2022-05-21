@@ -15,11 +15,12 @@ class EntityConverter
 	
 	public function parse(string $value)
 	{
-		if (! Config::get('app.use_entity')) {
+		$reflection = new \ReflectionClass($this->model);
+		
+		if (! Config::get('app.use_entity') || ! $reflection->hasProperty($value)) {
 			return $value;
 		}
-		
-		$reflection = new \ReflectionClass($this->model);
+
 		$property = $reflection->getProperty($value);
 	
 		if ($property->getName() === $value) {

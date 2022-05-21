@@ -223,9 +223,13 @@ final class Request
         return Has::check($this->data, $offset);
     }
 	
-	public function set(mixed $item, mixed $data): void
+	public function set(mixed $item, mixed $data, bool $keepOriginal = false): void
 	{
-		$this->data = array_merge($this->data, Set::set($this->data, Type::get($data), $item));
+		if ($keepOriginal) {
+			$this->data = array_merge($this->data, Set::set($this->data, $data, $item));
+		} else {
+			$this->data = array_merge($this->data, Set::set($this->data, Type::get($data), $item));
+		}
 	}
 	
     public function remove(string $offset): void
