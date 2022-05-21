@@ -21,6 +21,7 @@ class Db
 	private Entity $entity;
 	private EntityConverter $entityConverter;
 	private AttributeReflector $reflector;
+	private string $modelNamespace;
 
     private static array $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -37,7 +38,10 @@ class Db
 		$this->entity          = new Entity($model);
 		$this->reflector       = new AttributeReflector();
 		$this->entityConverter = new EntityConverter($model);
-		$this->reflector->reflect(new \ReflectionClass($model));
+		$reflectionClass       = new \ReflectionClass($model);
+		$this->reflector->reflect($reflectionClass);
+		
+		$this->modelNamespace = $reflectionClass->getName();
 		
 		if ($this->reflector->has('connection')) {
 			$this->connection = $this->reflector->get('connection');
@@ -484,7 +488,7 @@ class Db
             try {
                 if (self::$db->prepare($this->query)->execute($this->data)) {
 	                if (str_starts_with($this->query, 'INSERT')) {
-		                static::$lastInsertedIds[Config::get('app.model_path').$this->model] = (int) self::$db->lastInsertId();
+		                static::$lastInsertedIds[$this->modelNamespace] = (int) self::$db->lastInsertId();
 	                }
 	
 	                if ($this->hasTrigger && $this->triggerMethod !== null) {
@@ -538,7 +542,7 @@ class Db
 	
 	public function lastId(string $model): int
 	{
-		return self::$lastInsertedIds['\\'.$model] ?? 0;
+		return self::$lastInsertedIds[$model] ?? 0;
 	}
 
     public function debug(): Db
