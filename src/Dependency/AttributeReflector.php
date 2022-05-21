@@ -13,6 +13,7 @@ class AttributeReflector
 		$attributes = [];
 		
 		if (empty($reflection->getAttributes())) {
+			$this->setParams([]);
 			return null;
 		}
 		
