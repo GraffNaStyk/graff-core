@@ -2,9 +2,7 @@
 
 namespace App\Facades\TwigExt;
 
-use App\Facades\Http\Router\Route;
 use App\Facades\Http\Router\RouteGenerator;
-use App\Facades\Http\Router\Router;
 use App\Facades\Http\Session;
 use App\Facades\Url\Url;
 use Twig\Extension\AbstractExtension;
@@ -23,7 +21,9 @@ class TwigExt extends AbstractExtension
             $this->options(),
             $this->route(),
             $this->assets(),
-	        $this->storage()
+	        $this->storage(),
+	        $this->dump(),
+	        $this->in_array()
         ];
     }
 
@@ -84,4 +84,18 @@ class TwigExt extends AbstractExtension
             echo htmlspecialchars(json_encode($options));
         });
     }
+	
+	public function in_array(): TwigFunction
+	{
+		return new TwigFunction('in_array', function ($item, $array) {
+			return in_array($item, $array, true);
+		});
+	}
+	
+	public function dump(): TwigFunction
+	{
+		return new TwigFunction('dump', function ($items) {
+			echo dump($items);
+		});
+	}
 }

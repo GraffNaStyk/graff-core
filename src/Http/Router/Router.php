@@ -275,7 +275,7 @@ final class Router extends Route
 				     $type = 'double';
 			     }
 			
-			     if (gettype($requestParams[$reqParamIterator]) !== $type) {
+			     if (gettype($requestParams[$reqParamIterator]) !== $type && $type !== 'mixed') {
 				     self::abort(400, 'Wrong param type, param: ' . $requestParams[$reqParamIterator]);
 			     }
 			
