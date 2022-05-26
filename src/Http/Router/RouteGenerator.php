@@ -6,7 +6,7 @@ use App\Facades\Url\Url;
 
 class RouteGenerator
 {
-	public static function generate(string $route, ?array $params = null, array $queryParams = []): string
+	public static function generate(string $route, ?array $params = [], ?array $queryParams = []): string
 	{
 		$url = Url::full().Route::urls()[$route];
 		

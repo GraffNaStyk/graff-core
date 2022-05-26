@@ -27,15 +27,15 @@ class Pagination
 		View::set([
 			'pagination' => [
 				'previousLink' => RouteGenerator::generate($url, ['page' => ($page - 1 === 0 ? 1 : $page - 1)], $params),
-				'nextLink' => RouteGenerator::generate($url, ['page' => ($page + 1)], $params),
-				'previous' => ($page - 1 === 0 ? 1 : $page - 1),
-				'next' => ($page + 1),
-				'currentPage' => ($page),
-				'total' => $total,
-				'first' => RouteGenerator::generate($url, ['page' => 1], $params),
-				'last' => RouteGenerator::generate($url, ['page' => $total], $params),
-				'current' => RouteGenerator::generate($url, ['page' => $page], $params),
-				'page' => $page
+				'nextLink'     => RouteGenerator::generate($url, ['page' => ($page + 1)], $params),
+				'previous'     => ($page - 1 === 0 ? 1 : $page - 1),
+				'next'         => ($page + 1),
+				'currentPage'  => ($page),
+				'total'        => $total,
+				'first'        => RouteGenerator::generate($url, ['page' => 1], $params),
+				'last'         => RouteGenerator::generate($url, ['page' => $total], $params),
+				'current'      => RouteGenerator::generate($url, ['page' => $page], $params),
+				'page'         => $page
 			]
 		]);
 	}
