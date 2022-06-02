@@ -25,7 +25,7 @@ class ContainerBuilder
 		$combinedParams = [];
 		
 		foreach ($reflectionParams as $key => $refParam) {
-			$class = $refParam->getClass()->getName();
+			$class = $refParam->getClass()?->getName();
 			
 			if (class_exists($class) || interface_exists($class)) {
 				$reflector = $this->checkIsInterface(new ReflectionClass($class));
