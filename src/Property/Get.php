@@ -24,13 +24,13 @@ class Get
             }
 
             $res = Property::exist($i === 0 ? $iterable : $tmp, $offset, $i);
-	
+
 	        if ($res === 0 || $res === null) {
 		        return $res;
 	        }
 
             if (! $res) {
-                return $res;
+                return null;
             }
 
             $tmp = $res;
