@@ -53,7 +53,7 @@ class ErrorListener
 				);
 			}
 
-            exit(View::display('errors/error.php', ['exception' => $exception]));
+            exit(View::display('/errors/error.twig', ['exception' => $exception]));
 		}
 	}
 
