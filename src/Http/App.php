@@ -17,10 +17,6 @@ final class App
 	
 	public function run(): void
 	{
-		if (! isset($_SESSION)) {
-			$_SESSION = [];
-		}
-
 		if (session_status() === PHP_SESSION_NONE) {
 			session_start();
 		}
