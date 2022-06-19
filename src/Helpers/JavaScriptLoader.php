@@ -9,13 +9,14 @@ use App\Facades\Url\Url;
 trait JavaScriptLoader
 {
 	protected string $jsDir = '/js';
+	protected string $loadType = 'application/javascript';
 	
 	public function loadJs(... $scripts): void
 	{
 		$loaded = [];
 		
 		foreach ($scripts as $item) {
-			$loaded[] = trim('<script type="application/javascript" src="'.Url::full().$this->jsDir.$item.'.js"></script>');
+			$loaded[] = trim('<script type="'.$this->loadType.'" src="'.Url::full().$this->jsDir.$item.'.js"></script>');
 		}
 		
 		View::set(['js' => $loaded]);
@@ -31,10 +32,10 @@ trait JavaScriptLoader
 		
 		foreach (new \DirectoryIterator(js_path($dir)) as $item) {
 			if ($item->getExtension() === 'js' && $item->isReadable()) {
-				$loaded[] = trim('<script type="application/javascript" src="'.Url::full().$this->jsDir.$dir.'/'.$item->getBaseName().'"></script>');
+				$loaded[] = trim('<script type="'.$this->loadType.'" src="'.Url::full().$this->jsDir.$dir.'/'.$item->getBaseName().'"></script>');
 			}
 		}
-
+		
 		View::set(['js' => $loaded]);
 	}
 	
@@ -45,7 +46,7 @@ trait JavaScriptLoader
 		$action = Str::toLineSeparator(Router::getAction());
 		
 		if (is_readable(js_path(Router::getAlias().'/'.$class.'/'.$action.'.js'))) {
-			$loaded = trim('<script type="application/javascript" src="'.
+			$loaded = trim('<script type="'.$this->loadType.'" src="'.
 				Url::full().$this->jsDir.'/'.Router::getAlias().'/'.$class.'/'.$action.'.js"></script>'
 			);
 		}
@@ -58,5 +59,10 @@ trait JavaScriptLoader
 	public function setJsDir(string $jsDir): void
 	{
 		$this->jsDir = $jsDir;
+	}
+	
+	public function setJsLoadType(string $loadType): void
+	{
+		$this->loadType = $loadType;
 	}
 }
