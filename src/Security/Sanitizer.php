@@ -17,10 +17,6 @@ class Sanitizer
 
 	public function clear(mixed $item): string|int|bool|array|null|float|object
 	{
-		if (! is_numeric($item)) {
-			$item = urldecode($item);
-		}
-
 		if (Config::get('app.security.enabled')) {
 			$item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
 			$item = preg_replace('/<noscript\b[^>]*>(.*?)<\/noscript>/is', '', $item);

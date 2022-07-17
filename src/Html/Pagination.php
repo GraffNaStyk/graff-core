@@ -15,13 +15,17 @@ class Pagination
 			
 			foreach ($params as $key => $param) {
 				if ($param) {
-					$total->where($key, '=', $param);
+					if (is_int($param)) {
+						$total->where($key, '=', $param);
+					} else {
+						$total->where($key, 'like', '%'.$param.'%');
+					}
 				}
 			}
 			
-			$total = ceil($total->get()->count / Db::PER_PAGE);
+			$total = (int) ceil($total->get()->count / Db::PER_PAGE);
 		} else {
-			$total = ceil($model::count('id')->get()->count / Db::PER_PAGE);
+			$total = (int) ceil($model::count('id')->get()->count / Db::PER_PAGE);
 		}
 		
 		View::set([
