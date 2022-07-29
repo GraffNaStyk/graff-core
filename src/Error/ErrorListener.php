@@ -3,6 +3,7 @@
 namespace App\Facades\Error;
 
 use App\Facades\Config\Config;
+use App\Facades\Http\Response;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\View;
 use App\Facades\Log\Log;
@@ -52,8 +53,11 @@ class ErrorListener
 					]
 				);
 			}
-
-            exit(View::display('/errors/error.twig', ['exception' => $exception]));
+			
+			exit ((new Response())->setContent(
+				View::display('/errors/error.twig', ['exception' => $exception])
+			)->setCode($exception->getCode())
+				->getResponse());
 		}
 	}
 

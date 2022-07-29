@@ -366,16 +366,18 @@ final class Router extends Route
             }
         }
     }
-
-    public static function abort(int $code = 404, ?string $message = null): void
-    {
-        if (Config::get('app.enable_api') || Request::isAjax()) {
-	        echo (new Response())->json()->setData(['msg' => Response::RESPONSE_CODES[$code]])->setCode($code)->getResponse();
-            exit;
-        } else {
-            exit(View::display('/errors/error.twig', ['exception' => ['getCode' => $code, 'getMessage' => $message]]));
-        }
-    }
+	
+	public static function abort(int $code = 404, ?string $message = null): void
+	{
+		if (Config::get('app.enable_api') || Request::isAjax()) {
+			exit((new Response())->json()->setData(['msg' => Response::RESPONSE_CODES[$code]])->setCode($code)->getResponse());
+		} else {
+			exit((new Response())->setContent(
+				View::display('/errors/error.twig', ['exception' => ['getCode' => $code, 'getMessage' => $message]])
+			)->setCode($code)
+				->getResponse());
+		}
+	}
 
     public static function csrfPath(): string
     {
