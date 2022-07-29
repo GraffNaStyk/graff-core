@@ -312,7 +312,7 @@ final class Router extends Route
         }
 		
         if (! $routeExist) {
-            self::abort();
+            self::abort(404);
         }
     }
 	

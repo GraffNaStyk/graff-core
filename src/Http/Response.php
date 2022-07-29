@@ -173,10 +173,10 @@ class Response
 				Cookie::flash($key, $cookie['value'], $cookie['time']);
 			}
 		}
-
-		ob_flush();
+		
 		ob_clean();
-
+		ob_end_flush();
+		
 		if ($this->isFileResponse || $this->isDownloadResponse) {
 			return readfile($this->content);
 		}
