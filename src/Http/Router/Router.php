@@ -276,7 +276,7 @@ final class Router extends Route
 			     }
 			
 			     if (gettype($requestParams[$reqParamIterator]) !== $type && $type !== 'mixed') {
-				     self::abort(400, 'Wrong param type, param: ' . $requestParams[$reqParamIterator]);
+				     self::abort(404, 'Wrong param type, param: ' . $requestParams[$reqParamIterator]);
 			     }
 			
 			     $combinedParams[$key] = $requestParams[$reqParamIterator];
