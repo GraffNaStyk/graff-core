@@ -387,8 +387,7 @@ final class Router extends Route
 	private function resolveCliCall()
 	{
 		$response = new Response();
-		
-		
+
 		if (preg_match('/\.(?:css|js|jpe?g|gif|png|ico|ttf|woff)$/', self::$url)) {
 			$path = app_path('/public'.self::$url);
 			$file = file_get_contents($path);
