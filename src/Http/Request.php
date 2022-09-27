@@ -15,7 +15,6 @@ use App\Facades\Validator\Type;
 final class Request
 {
 	use PropertyFacade;
-	use Header;
 
     private string $method = 'post';
 
@@ -55,7 +54,9 @@ final class Request
     public function isOptionsCall(): bool
     {
         if ($_SERVER['REQUEST_METHOD'] === self::METHOD_OPTIONS) {
-            self::setAllowedOptions();
+	        header('Access-Control-Allow-Origin', '*');
+	        header('Access-Control-Allow-Headers', '*');
+	        header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
             return true;
         }
 

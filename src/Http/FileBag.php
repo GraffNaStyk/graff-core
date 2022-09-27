@@ -12,20 +12,26 @@ class FileBag
 	
 	public function __construct(array $files)
 	{
-		$this->normalize((array) reset($files));
+		$this->normalize($files);
 	}
 	
-	private function normalize(array $file): void
+	private function normalize(array $files): void
 	{
-		if (empty($file)) {
+		if (empty($files)) {
 			return;
 		}
-
-		if (is_array($file['name'])) {
+		
+		if (is_array($files[array_key_first($files)]['name'])) {
 			$this->multiple = true;
-			$this->refactor($file);
-		} else {
-			$this->setFile($file);
+			$this->refactor((array) reset($files));
+		}
+		
+		foreach ($files as $name => $file) {
+			if (empty($file)) {
+				continue;
+			}
+			
+			$this->setFile($file, $name);
 		}
 	}
 	
@@ -37,21 +43,24 @@ class FileBag
 			foreach (self::FILE_KEYS as $key) {
 				$result[$key] = $files[$key][$i];
 			}
-			
-			$this->setFile($result);
+
+			$this->setFile($result ?? []);
 			unset($result);
 		}
 	}
 	
-	private function setFile(array $file): void
+	private function setFile(array $file, ?string $name = null): void
 	{
 		unset($file['full_path']);
 		
-		if (self::FILE_KEYS === array_keys($file) && UPLOAD_ERR_NO_FILE !== (int) $file['error']) {
+		if (self::FILE_KEYS === array_keys($file)
+			&& UPLOAD_ERR_NO_FILE !== (int) $file['error']
+			&& !is_array($file['error'])
+		) {
 			if ($this->isMultiple()) {
 				$this->files[] = $file;
 			} else {
-				$this->files = $file;
+				$this->files[$name] = $file;
 			}
 		}
 	}
@@ -61,7 +70,20 @@ class FileBag
 		return $this->multiple;
 	}
 	
-	public function get():? array
+	public function get(?string $name = null):? array
+	{
+		if (! $this->isMultiple() && count($this->files) === 1 && $name === null) {
+			return $this->files[array_key_first($this->files)];
+		}
+		
+		if ($name === null) {
+			return $this->files;
+		}
+		
+		return $this->files[$name];
+	}
+	
+	public function all(): ?array
 	{
 		return $this->files;
 	}

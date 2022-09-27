@@ -2,12 +2,11 @@
 
 namespace App\Facades\Http;
 
+use App\Facades\Config\Config;
 use App\Facades\Http\Router\Route;
 
 class Response
 {
-	use Header;
-	
 	public const RESPONSE_CODES = [
 		400 => 'Bad Request',
 		401 => 'Unauthorized',
@@ -153,6 +152,17 @@ class Response
 		}
 		
 		return $this;
+	}
+	
+	public function prepareHeaders(): void
+	{
+		if (Config::get('app.dev') && is_array(Config::get('headers.dev'))) {
+			$this->setHeaders(Config::get('headers.dev'));
+		} else if (! Config::get('app.dev') && is_array(Config::get('headers.prod'))) {
+			$this->setHeaders(Config::get('headers.prod'));
+		} else {
+			$this->setHeaders(Config::get('headers'));
+		}
 	}
 	
 	public function getResponse(): ?string
