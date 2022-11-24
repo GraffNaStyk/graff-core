@@ -185,9 +185,9 @@ class Response
 		}
 		
 		ob_clean();
-		ob_end_flush();
 		
 		if ($this->isFileResponse || $this->isDownloadResponse) {
+            ob_start();
 			return readfile($this->content);
 		}
 		
