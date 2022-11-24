@@ -68,7 +68,7 @@ class FileProvider
             return false;
         }
 
-        if (is_file($this->disk.'/'.$file)) {
+        if (is_file($file)) {
             unlink($file);
             return true;
         }
