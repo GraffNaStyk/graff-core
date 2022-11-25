@@ -72,8 +72,8 @@ class FileProvider
 
         $file = ltrim($file, '/');
 
-        if (is_file($this->disk.'/'.$file)) {
-            unlink($this->disk.'/'.$file);
+        if (is_file($this->disk.$file)) {
+            unlink($this->disk.$file);
         }
 
         return true;
