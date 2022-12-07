@@ -31,7 +31,7 @@ class FileProvider
     public function upload(array $file, ?string $as = null, ?\Closure $closure = null): bool
     {
         if ($file['error'] === UPLOAD_ERR_OK) {
-            $hash      = Str::hash(50);
+            $hash      = Str::hash(70);
             $pathInfo  = pathinfo($file['name']);
             $location  = $this->disk;
             $location .= $as
@@ -72,8 +72,8 @@ class FileProvider
 
         $file = ltrim($file, '/');
 
-        if (is_file($this->disk.'/'.$file)) {
-            unlink($this->disk.'/'.$file);
+        if (is_file($this->disk.$file)) {
+            unlink($this->disk.$file);
         }
 
         return true;
