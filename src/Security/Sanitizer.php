@@ -24,12 +24,8 @@ class Sanitizer
 		if (Config::get('app.security.enabled')) {
 			$item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
 			$item = preg_replace('/<noscript\b[^>]*>(.*?)<\/noscript>/is', '', $item);
-			$item = preg_replace('/<a(.*?)>(.+)<\/a>/', '', $item);
 			$item = preg_replace('/<iframe(.*?)>(.+)<\/iframe>/', '', $item);
-			$item = preg_replace('/<img (.*?)>/is', '', $item);
 			$item = preg_replace('/<embed (.*?)>/is', '', $item);
-			$item = preg_replace('/<link (.*?)>/is', '', $item);
-			$item = preg_replace('/<video (.*?)>(.+)<\/video>/', '', $item);
 		}
 
 		$item = strtr(
