@@ -182,11 +182,11 @@ class Db
 
             if (! empty($this->duplicated)) {
                 foreach ($this->duplicated as $field) {
-                    $this->query .= "`{$field}` = VALUES($field), ";
+                    $this->query .= "`{$field}` = VALUES(`{$field}`), ";
                 }
             } else {
                 foreach ($this->multiple ? $values[0] : $values as $key => $field) {
-                    $this->query .= "`{$key}` = VALUES($key), ";
+                    $this->query .= "`{$key}` = VALUES(`{$key}`), ";
                 }
             }
         }
